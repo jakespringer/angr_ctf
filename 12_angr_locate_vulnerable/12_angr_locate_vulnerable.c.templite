@@ -1,0 +1,79 @@
+${
+import random
+
+def recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth):
+  if depth == 0:
+    write(end_target_statement if on_target else end_miss_statement)
+  else:
+    if_true = random.choice([True, False])
+    if (if_true):
+      write('if (CHECK_BIT(%s, %d - 1) && CHECK_BIT(%s, %d + 8 - 1) && CHECK_BIT(%s, %d + 16 - 1) && CHECK_BIT(%s, %d + 24 - 1)) {' 
+        % (variable, depth, variable, depth, variable, depth, variable, depth))
+      recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth - 1)
+      write('} else {')
+      recursive_if_else(variable, False, end_miss_statement, end_target_statement, depth - 1)
+      write('}')
+    else:
+      write('if (CHECK_BIT(%s, %d - 1) && CHECK_BIT(%s, %d + 8 - 1) && CHECK_BIT(%s, %d + 16 - 1) && CHECK_BIT(%s, %d + 24 - 1)) {' 
+        % (variable, depth, variable, depth, variable, depth, variable, depth))
+      recursive_if_else(variable, False, end_miss_statement, end_target_statement, depth - 1)
+      write('} else {')
+      recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth - 1)
+      write('}')
+}$
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <sys/ptrace.h>
+
+#define CHECK_BIT(integer, bit) ((integer & (1 << bit)) || 0)
+#define USERDEF "${ userdef }$"
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int main(int argc, char* argv[]) {
+  char padding0[${ write(random.randint(0, 256)) }$];
+  char user_buffer[33];
+  char padding1[${ write(random.randint(0, 256)) }$];
+  char program_buffer[33];
+  char padding2[${ write(random.randint(0, 256)) }$];
+  char strcpy_buffer[16];
+  char* unsafe = &strcpy_buffer[8];
+  uint32_t key;
+
+  print_msg();
+
+  memset(program_buffer, 0, 33);
+  strcpy(program_buffer, "THEPASS");
+  strcpy(unsafe, "7HEPASS");
+
+  printf("Enter the password: ");
+  scanf("%u", &key);
+  scanf("%32s", user_buffer);
+  //scanf("%u %32s", &key, user_buffer);
+  
+  ${
+  end_hit_statement = """
+  strcpy(strcpy_buffer, user_buffer);
+  """
+  end_miss_statement = """
+  strcpy(strcpy_buffer, program_buffer);
+  """
+  recursive_if_else('key', True, end_miss_statement, end_hit_statement, 4)
+  }$
+
+  if (strncmp(unsafe, USERDEF, 8)) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
+  }
+
+  return 0;
+}

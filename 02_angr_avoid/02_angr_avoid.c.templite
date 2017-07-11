@@ -1,0 +1,94 @@
+#include <stdlib.h>
+#include <stdio.h>
+
+#define USERDEF0 ${ USERDEF0 }$
+#define USERDEF1 ${ USERDEF1 }$
+#define USERDEF2 ${ USERDEF2 }$
+#define USERDEF3 ${ USERDEF3 }$
+#define USERDEF4 ${ USERDEF4 }$
+#define USERDEF5 ${ USERDEF5 }$
+
+char msg[] =
+ "This level runs the command line arguments through a series of checks.\n"
+ "If all of the checks pass, the program prints \"Success\" If any of the\n"
+ "checks fail, the fail() function in called, causing the program to fail.\n"
+ "Solve this challenge with angr by searching for a path that prints\n"
+ "\"Success\" while avoiding the fail() function.\n";
+
+char success[] = "Success.\n";
+char false_success[] = "Success... Just kidding! Try again.\n";
+char failure[] = "Try again.\n";
+char* to_print = &failure[0];
+
+void path0(int value1, int value0, int value3, int value4, int value2, int value5);
+void path1(int value4, int value2, int value3, int value1, int value5);
+void path2(int value5, int value4, int value3, int value2);
+void path3(int value4, int value5, int value3);
+void path4(int value5, int value4);
+void path5(int value5);
+
+void fail(int value) {
+  to_print = &false_success[0];
+}
+
+void path0(int value1, int value0, int value3, int value4, int value2, int value5) {
+  if (value0 == USERDEF0) {
+    path1(value4, value2, value3, value1, value5);
+  } else {
+    fail(value0);
+  }
+}
+
+void path1(int value4, int value2, int value3, int value1, int value5) {
+  if (value1 == USERDEF1) {
+    path2(value5, value4, value3, value2);
+  } else {
+    fail(value1);
+  }
+}
+
+void path2(int value5, int value4, int value3, int value2) {
+  if (value2 == USERDEF2) {
+    path3(value4, value5, value3);
+  } else {
+    fail(value2);
+  }
+}
+
+void path3(int value4, int value5, int value3) {
+  if (value3 == USERDEF3) {
+    path4(value5, value4);
+  } else {
+    fail(value3);
+  }
+}
+
+void path4(int value5, int value4) {
+  if (value4 == USERDEF4) {
+    path5(value5);
+  } else {
+    fail(value4);
+  }
+}
+
+void path5(int value5) {
+  if (value5 == USERDEF5) {
+    to_print = &success[0];
+  } else {
+    fail(value5);
+  }
+}
+
+int main(int argc, char* argv[]) {
+  printf("%sEnter password: ", msg);
+
+  int user_input[6];
+  for (int i=0; i<6; ++i) {
+    scanf("%4x", &user_input[i]);
+  }
+
+  path0(user_input[1], user_input[0], user_input[3], user_input[4], user_input[2], user_input[5]);
+  printf("%s", to_print);
+
+  return 0;
+}

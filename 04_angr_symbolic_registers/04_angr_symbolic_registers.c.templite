@@ -1,0 +1,84 @@
+${
+import random
+
+def randomly_modify(var):
+  operator = random.choice(['+=', '^='])
+  random_int = random.randint(0, 0xFFFFFFFF)
+  write(var + operator + str(random_int) + ';')
+}$
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+
+register int eax asm("eax");
+register int ebx asm("ebx");
+register int edx asm("edx");
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function_1(int input) {
+${
+for i in range(0, random.randint(16, 48)):
+  randomly_modify('input')
+}$
+  return input;
+}
+
+int complex_function_2(int input) {
+${
+for i in range(0, random.randint(16, 48)):
+  randomly_modify('input')
+}$
+  return input;
+}
+
+int complex_function_3(int input) {
+${
+for i in range(0, random.randint(16, 48)):
+  randomly_modify('input')
+}$
+  return input;
+}
+
+void get_user_input() {
+  int first, second, third;
+  scanf("%x %x %x", &first, &second, &third);
+  eax = first;
+  ebx = second;
+  edx = third;
+}
+
+int main(int argc, char* argv[]) {
+  print_msg();
+  printf("Enter the password: ");
+  get_user_input();
+  int non_eax = eax;
+  int non_ebx = ebx;
+  int non_edx = edx;
+  non_eax = complex_function_1(non_eax);
+  non_ebx = complex_function_2(non_ebx);
+  non_edx = complex_function_3(non_edx);
+
+  if (non_eax || non_ebx || non_edx) {
+    printf("Try again.\n");
+    printf("%x %x %x\n", non_eax, non_ebx, non_edx);
+  } else {
+    printf("Success.\n");
+  }
+   
+  return 0;
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) {
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    };
+};
+

@@ -1,0 +1,73 @@
+${
+import random
+}$
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <sys/ptrace.h>
+
+#define USERDEF0 "${ userdef0 }$"
+#define USERDEF1 "${ userdef1 }$"
+#define USERDEF2 "${ userdef2 }$"
+#define USERDEF3 "${ userdef3 }$"
+#define USERDEF4 "${ userdef4 }$"
+#define USERDEF5 "${ userdef5 }$"
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+uint32_t f, e, d, c, b, a;
+uint32_t f0, e0, d0, c0, b0, a0;
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int octcmp(uint32_t input, const char *buffer) {
+  char* oct_string = malloc(12);
+  memset(oct_string, '0', 11);
+  oct_string[11] = '\0';
+  sprintf(oct_string, "%11o", input);
+  for (int i=0; i<11; ++i) {
+    if (oct_string[i] < '0' || oct_string[i] > '9') {
+      oct_string[i] = '0';
+    }
+  }  
+
+  printf("%s\n", oct_string);
+
+  int res = strncmp(oct_string, buffer, 11);
+  free(oct_string);
+  return res;
+}
+
+int main(int argc, char* argv[]) {
+  print_msg();
+
+  printf("Enter the password: ");
+  scanf("%u %u %u %u %u %u", &a, &b, &c, &d, &e, &f);
+  f0 = f + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+  e0 = e + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+  d0 = d + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+  c0 = c + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+  b0 = b + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$; 
+  a0 = a + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+
+  int result = octcmp(a0, USERDEF0) | octcmp(b0, USERDEF1) | octcmp(c0, USERDEF2) | 
+    octcmp(d0, USERDEF3) | octcmp(e0, USERDEF4) | octcmp(f0, USERDEF5);
+
+  if (result) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
+  }
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+    exit(1);
+  }; 
+};

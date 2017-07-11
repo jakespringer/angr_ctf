@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ptrace.h>
+
+#define USERDEF "${ USERDEF }$"
+#define LEN_USERDEF ${ write(len(USERDEF)) }$
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int main(int argc, char* argv[]) {
+  char buffer[20];
+  char password[20];
+
+  print_msg();
+
+  for (int i=0; i < 20; ++i) {
+    password[i] = 0;
+  }
+  
+  strncpy(password, USERDEF, LEN_USERDEF);
+
+  password[0] ^= password[1];
+  password[1] ^= password[0];
+  password[0] ^= password[1];
+
+  printf("Enter the password: ");
+  scanf("%8s", buffer);
+
+  if (strcmp(buffer, password)) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
+  }
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    }; 
+};

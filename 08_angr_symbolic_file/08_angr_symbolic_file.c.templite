@@ -1,0 +1,67 @@
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ptrace.h>
+#define USERDEF0 "${ userdef0 }$"
+#define USERDEF1 "${ userdef1 }$.txt"
+#define FILESIZE 64
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+char buffer[FILESIZE];
+FILE* fp;
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+  return (((value - 33 + 23*i) % 94) + 33);
+}
+
+void write_string_to_file(char* buffer, int length) {
+  char buffer_break_angr[length];
+  int i;
+  
+  memset(buffer_break_angr, 0, length);
+  unlink(USERDEF1);
+  FILE* file = fopen(USERDEF1, "a+b"); 
+  fwrite(buffer, 1, length, file);
+  fseek(file, 0, SEEK_SET);
+  fscanf(file, "%64s", buffer_break_angr);
+  fseek(file, 0, SEEK_SET);
+  fwrite(buffer_break_angr, 1, length, file);
+  fclose(file);
+}
+
+int main(int argc, char* argv[]) {
+  memset(buffer, 0, FILESIZE);
+
+  print_msg();
+  printf("Enter the password: ");
+  scanf("%64s", buffer);
+  write_string_to_file(buffer, FILESIZE);
+  memset(buffer, 0, FILESIZE);
+  fp = fopen(USERDEF1, "rb");
+  fread(buffer, 1, FILESIZE, fp);
+  fclose(fp);
+  unlink(USERDEF1);
+
+  if (strncmp(buffer, USERDEF0, 8)) {
+    printf("Try again.\n");
+    exit(1);
+  } else {
+    printf("Success.\n");
+    exit(0);
+  }
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    }; 
+};

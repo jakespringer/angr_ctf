@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/ptrace.h>
+#include <time.h>
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int salt) {
+  value = (((value - 33 + 17*salt) % 94) + 33)
+}
+
+/* void waste_time(char* str, int length) {
+  for (int i=0; i<length; ++i) {
+    int temp = str[i];
+    while (1) {
+      temp = (temp + 17) % 10000;
+      if (temp == str[i]) {
+        str[i] = temp;
+        break;
+      } else {
+        continue;
+      }
+    }
+  }
+}
+
+void recursive_function(char* str, int length) {
+  if (length > 0) {
+    waste_time(str, length);
+    str[length-1] = (((str[length-1] - 33 + 1) % 94) + 33);
+    recursive_function(str, length-1);
+  }
+} */
+
+int main(int argc, char* argv[]) {
+  print_msg();
+  srand(time(0));
+  printf("Enter the password: ");
+}   
+    
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    }; 
+};

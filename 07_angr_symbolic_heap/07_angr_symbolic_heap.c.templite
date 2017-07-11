@@ -1,0 +1,59 @@
+${
+import random
+}$
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ptrace.h>
+#define USERDEF "${ userdef }$"
+
+char padding2[${ padding2 }$];
+char* padding0;
+char* buffer;
+char* padding1;
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+  //return (((value - 33 + 19*i) % 94) + 33);
+  return value;
+}
+
+int main(int argc, char* argv[]) {
+  padding0 = malloc(${ write(random.randint(0, 2**26)) }$);
+  buffer = malloc(33);
+  padding1 = malloc(${ write(random.randint(0, 2**26)) }$);
+
+  memset(buffer, 0, 33);
+
+  print_msg();
+  printf("Enter the password: ");
+  scanf("%8s %8s %8s %8s", buffer, &buffer[8], &buffer[16], &buffer[24]);
+
+  //for (int i=0; i<32; ++i) {
+  //  buffer[i] = complex_function(buffer[i], i); 
+  //}
+
+  if (strncmp(buffer, USERDEF, 32)) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
+  }
+
+  free(padding1);
+  free(buffer);
+  free(padding0);
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    }; 
+};

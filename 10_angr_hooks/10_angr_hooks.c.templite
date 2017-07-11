@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <sys/ptrace.h>
+
+#define USERDEF0 "${ userdef0 }$"
+#define USERDEF1 "${ userdef1 }$"
+#define USERDEF2 "${ userdef2 }$"
+#define USERDEF3 "${ userdef3 }$"
+#define LEN_USERDEF 8
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+char buffer1[5];
+char buffer0[5];
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+  return (((value - 33 + 31*i) % 94) + 33);
+}
+
+int main(int argc, char* argv[]) {
+  char password[20*4];
+  int keep_going = 1;
+
+  print_msg();
+
+  memset(password, 0, 20*4);  
+  strncpy(&password[0], USERDEF0, LEN_USERDEF);
+  strncpy(&password[20], USERDEF1, LEN_USERDEF);
+  strncpy(&password[40], USERDEF2, LEN_USERDEF);
+  strncpy(&password[60], USERDEF3, LEN_USERDEF);
+
+  /* complex function on password */
+  for (int i=0; i<4; ++i) {
+    for (int j=0; j<8; ++j) {
+      password[20*i + j] = complex_function(password[20*i + j], 8*i + j);
+    }
+  }
+
+  printf("Enter the password: ");
+
+  for (int i=0; i<4; ++i) {
+    scanf("%u %u%*[ ]", (uint32_t*) buffer0, (uint32_t*) buffer1);
+    keep_going = keep_going && !strncmp(buffer0, &password[20*i], 4) && !strncmp(buffer1, &password[20*i+4], 4);
+  }
+
+  if (!keep_going) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
+  }
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) { 
+    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+        exit(1);
+    }; 
+};
