@@ -1,0 +1,108 @@
+Scrawled on a sticky note, the words "URGENT, SEE ME IN MY OFFICE. -Kelly" had
+been plastered to your monitor.
+
+You had just arrived fifteen minutes late, due to unusually bad traffic. Perhaps
+everyone had woken up late and were scrambling to get to work, all at the same
+time. It was Monday, after all. The worst day of the week.
+
+You grab the sticky note and crumple it up as you walk. You toss it in the
+trash can at the entrance to her office.
+
+-- Hey. Beautiful day!
+
+-- You're fifteen minutes late.
+
+Kelly is clearly not in the mood for small talk. 
+
+-- Sorry about that, the traffic--
+
+-- Never mind that. Eve Elle Software is about to release a new version of their
+   software today. To the public.
+
+-- Great! We have passwords to the backdoor. We can--
+
+-- See, that's why I called you in here. They won't work.
+
+-- But I thought you said they were perfect. We found the backdoor, and they
+   have no idea.
+
+-- That's what I thought, too. But yesterday evening, I got information that
+   they changed the locks again. I tried calling you, but you didn't answer.
+
+You had set up an app on your phone that blocks calls from her after work hours,
+but you don't mention that.
+
+She continues.
+
+-- According to my source, they figured out that we have the passwords. My sour-
+   ce said something else about how they know that you're angry. I think the 
+   exact words they used were that they know you 'have been using anger' or
+   something like that. Anyway, if there's something you need to tell me about 
+   that, you should know that you can always talk to me about it. 
+
+   But back to the issue at hand. My source informed me that the new security
+   they use to defend their backdoor. Take a look at this, it's from my source.
+
+She shows you part of an email, with some text highlighted.
+
+- The new binary asks the user to input three hexadecimal numbers. Each of these
+- numbers is then encrypted with a complex function. I'm pretty sure angr cannot
+- handle the way the binary inputs the three numbers. You'll have to do it man-
+- ually. After the binary inputs the numbers, it places them in three different
+- registers, though I'm not sure which ones. The following is an outline of how
+- you might accomplish breaking it:
+- 1. Skip the user input function, start executing after it. Trying to get angr
+-    to handle scanf correctly isn't worth the trouble right now.
+- 2. Figure out which registers would have the three numbers, had you executed
+-    the code that gets the user input, and initialize them with symbolic val-
+-    ues.
+- 3. From there, find a path to the backdoor and solve for the symbolic values.
+
+The email continues with links to various pieces of documentation.
+
+Kelly smiles and speaks, mostly to herself.
+
+-- I wonder why she keeps misspelling anger.
+
+-- Can you forward that to me, Kelly?
+
+-- Sure can. Oh, and before you go--try not to get angry. It's only code, after
+   all, isn't it?
+
+She smiles.
+
+You get back to your desk to find the forwarded email waiting for you. You open
+it up, and click on the documentation, to find a list of functions with some
+comments about each one.
+
+- # Take a look at the 'addr' parameter.
+- angr.factory.AngrObjectFactory.blank_state
+-
+- # Seems to instantiate a symbolic value of a given size (in a bitvector
+- # object.)
+- claripy.BVS
+-
+- # If you replace [register_name] with an actual register, such as eax or ebp,
+- # you get a reference to a bitvector object that stores the value of the reg-
+- # ister. The value might be symbolic. Additionally, you can set it equal to a
+- # bitvector of your choice, which will allow you overwrite the value with your
+- # own.
+- # Example: simuvex.s_state.SimState.regs.eax = claripy.BVS('sym_eax', 32)
+- # would replace eax with a symbolic value that would propogate through the
+- # program.
+- simuvex.s_state.SimState.regs.[register_name]
+-
+- # This is an instance of simuvex.plugins.solver.SimSolver for a given state.
+- simuvex.s_state.SimState.se
+-
+- # What integer could the argument bitvector be in order to arrive at the state
+- # that owns this SimSolver? If there is no possible value the bitvector could
+- # be that would reach this state, this function fails.
+- simuvex.plugins.solver.SimSolver.any_int(bitvector)
+
+Everything else seems unnecessary. Possibly useful in the future. For now, you
+plan to stick to this to see if you can solve the new binaries. If only you
+had them.
+
+Just at that moment, you recieve an email from Kelly with an awfully convenient
+attachment... Perfect timing.

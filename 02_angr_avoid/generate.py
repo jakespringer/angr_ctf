@@ -6,7 +6,7 @@ from templite import Templite
 
 description = ''
 with open('description.txt', 'r') as desc_file:
-  description = desc_file.read().encode('string_escape')
+  description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
 template = open('02_angr_avoid.c.templite', 'r').read()
 c_code = Templite(template).render(description=description, USERDEF0=random.randint(0, 0xFFFF), 

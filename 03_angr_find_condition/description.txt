@@ -1,0 +1,78 @@
+-- Did it work?
+
+It's 8am, you glance back at Jeff, not sure what he's asking in your non-
+caffeinated state.
+
+-- Did what work?
+
+-- The 'avoid' parameter to the 'explore' function...
+
+-- Oh! Yeah, it worked. Thanks. I really appreciate your help.
+
+He smiled, nodded, and walked off, probably to get a Red Bull from the vending
+machine.
+
+*Buzz* *Buzz*
+
+Another email.
+
+- Hello,
+- 
+- Good news! The passwords you found worked perfectly. In fact, with them, we
+- could get full access to their system, including all of their plans for the
+- new platform they plan to release, which would give us a huge leg up from a
+- competitive standpoint.
+-
+- Bad news: Someone seems to have leaked that information to Eve Elle Software.
+- We are still trying to figure out who the spy could possibly be. Legal is pre-
+- paring for the worse, in case Eve Elle Software wants to try and sue us. Eve
+- Elle also pushed changes to their software, adding an even more sophisicated
+- backdoor. My source tells me that in this version, the location of the code
+- that invokes the backdoor changes with every binary.
+-
+- Could you figure out a way to break it? I need it as soon as possible.
+-
+- As usual, thanks.
+- Kelly
+- Security Team Manager
+- Skynet Software
+
+-- Jeff!
+
+At this point, you're considering asking to trade cubicles with Sam. She works
+directly across from Jeff, so there would no longer be a physical barrior bet-
+ween you and him.
+
+-- Sorry, I'm busy at the moment. Can it wait 'till tomorrow?
+
+No, it can't, but you don't tell him that. Instead, you go online to look back
+at the 'explore' function. You notice that the 'find' parameter seems to be able
+to take more than just an address. You can specify a function that returns True
+if the program has found what it is looking for, and False otherwise. The func-
+tion is passed an angr.path.Path as a parameter, giving you access to the state
+of the branch that is currently running. For example:
+
+...
+def find_anything(path):
+  return True
+...
+path_group.explore(find=find_anything)
+...
+
+would tell Angr to find any state, regardless of what it is. The 'explore' func-
+tion would return immediate having found the instruction it started on.
+
+You also remember the 'dumps' function, recalling that Jeff told you to use the
+value '0' as the parameter. After looking at the documentation, you understand
+why. '0' happens to be the number that corresponds with stdin. You were asking
+Angr to return a possible string that could have been typed in to stdin in order
+to reach its current state. 'path.state.posix.dumps(1)', you think, would print 
+out the contents of stdout, since the program began executing. You aren't sure 
+yet how you will use this, but you sense its importance.
+
+After some thought, you think that you might be able to solve the binary by con-
+structing a condition that would tell Angr that it has found the state you are
+searching for, regardless of the memory address of the code that triggers the
+backdoor.
+
+Smiling, you head back to work.
