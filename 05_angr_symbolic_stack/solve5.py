@@ -6,7 +6,7 @@ import sys
 
 def main():
   proj = angr.Project(sys.argv[1])
-  bs = proj.factory.entry_state(addr=0x80485c4)
+  bs = proj.factory.blank_state(addr=0x80485c4)
   
   var_int = bs.se.BVS('int', 32)
   var_str = [bs.se.BVS('str', 8*4) for _ in range(16/4)]

@@ -1,0 +1,68 @@
+-- Hey, could you do me a quick favor?
+
+-- Uh. Depends on what it is, Jeff. It's almost 5pm on a Friday. I want to go
+   home and relax for the weekend.
+
+-- It'll be quick, I promise.
+
+-- Alright, what is it?
+
+-- I need you to crack a few binaries, find a backdoor.
+
+-- I don't know... That sounds like it'll take a while. I'm off the clock in
+   four minutes. Can it wait until Monday?
+
+-- Look, I helped you solve all of those binaries for Kelly--
+
+-- I know Jeff, thank you so much for that, I really appreciate it, but you're
+   just a fellow intern. I'd have to do it on my own time, I wouldn't get paid
+   for it. On top of this job, I'm trying to finish a degree, and honestly, I 
+   want my time at home to relax and watch TV so--
+
+-- Look, please? I'll repay the favor. I promise. It'll just take a little
+   while.
+
+-- Fine, I'll take a look.
+
+-- Thank you. Check your inbox.
+
+His email is pretty long. He must have typed it out before our conversation.
+
+- Hey,
+-
+- Again, thank you.
+-
+- The binary is fairly simple. It prompts the user for input with:
+- scanf("%u %8s", ...);
+- and then places the integer and the string on the stack. With the right input,
+- it opens the backdoor.
+-
+- Here is an outline of what I think might solve the problem:
+- 1. Begin the program after the scanf call. Angr can't handle multiple scanf
+-    calls with multiple parameters. 
+- 2. Since you're starting in the middle of a function, the ebp register will
+-    not be initialized. Make sure to initialize it.
+- 3. Write a symbolic value to the stack for the integer and for the string.
+-    Make sure you account for any padding that might be added before the int-
+-    eger and string, and also keep in mind that while scanf is reading 8 char-
+-    acters, the string's buffer may be longer.
+- 4. Search for the backdoor. Avoid any state you believe will not lead to the
+-    backdoor. Remember that since you started in the middle of a function, if
+-    you allow the program to exit that function, undesired effects may happen,
+-    unless you correctly set up the stack frame (but this isn't necessary if
+-    you avoid the end of the function altogether.)
+- 5. Solve for the symbolic input.
+-
+- There are definitely multiple ways to approach this problem, but here are some
+- interesting functions I found:
+-
+- # Pushes a bitvector to the top of the stack.
+- simuvex.s_state.SimState.stack_push(bitvector)
+-
+- # Pops a bitvector off of the top of the stack with length equal to the size
+- # of the architecture word size. In this case, it's 32 bits.
+- simuvex.s_state.SimState.stack_pop
+-
+- # Reads a bitvector at an offset from the stack pointer. You may want to look
+- # at more documentation elsewhere.
+- simuvex.s_state.SimState.stack_read
