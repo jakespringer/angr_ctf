@@ -8,8 +8,7 @@ import random
 #include <stdint.h>
 #include <sys/ptrace.h>
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

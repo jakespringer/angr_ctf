@@ -6,8 +6,7 @@
 #define USERDEF "${ USERDEF }$"
 #define LEN_USERDEF ${ write(len(USERDEF)) }$
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

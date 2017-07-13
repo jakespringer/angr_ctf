@@ -15,8 +15,7 @@ register int eax asm("eax");
 register int ebx asm("ebx");
 register int edx asm("edx");
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

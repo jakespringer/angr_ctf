@@ -8,8 +8,7 @@
 #define USERDEF1 "${ userdef1 }$.txt"
 #define FILESIZE 64
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 char buffer[FILESIZE];
 FILE* fp;

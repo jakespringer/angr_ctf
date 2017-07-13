@@ -10,8 +10,7 @@
 #define USERDEF3 "${ userdef3 }$"
 #define LEN_USERDEF 8
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 char buffer1[5];
 char buffer0[5];

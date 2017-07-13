@@ -8,12 +8,7 @@
 #define USERDEF4 ${ USERDEF4 }$
 #define USERDEF5 ${ USERDEF5 }$
 
-char msg[] =
- "This level runs the command line arguments through a series of checks.\n"
- "If all of the checks pass, the program prints \"Success\" If any of the\n"
- "checks fail, the fail() function in called, causing the program to fail.\n"
- "Solve this challenge with angr by searching for a path that prints\n"
- "\"Success\" while avoiding the fail() function.\n";
+char msg[] = "${ description }$";
 
 char success[] = "Success.\n";
 char false_success[] = "Success... Just kidding! Try again.\n";

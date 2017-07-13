@@ -10,8 +10,7 @@ char padding0[ ${ padding0 }$ ];
 char user_input[32+4];
 char padding1[ ${ padding1 }$ ];
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

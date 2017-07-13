@@ -52,8 +52,7 @@ def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
 #define CHECK_BIT(integer, bit) ((integer & (1 << bit)) || 0)
 #define USERDEF "${ userdef }$"
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

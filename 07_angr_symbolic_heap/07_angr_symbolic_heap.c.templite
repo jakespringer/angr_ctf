@@ -13,8 +13,7 @@ char* padding0;
 char* buffer;
 char* padding1;
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);

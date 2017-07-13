@@ -4,8 +4,12 @@ import sys, random, os, tempfile
 sys.path.append('/home/jake/templite')
 from templite import Templite
 
+description = ''
+with open('description.txt', 'r') as desc_file:
+  description = desc_file.read().encode('string_escape')
+
 template = open('13_angr_unconstrained.c.templite', 'r').read()
-c_code = Templite(template).render()
+c_code = Templite(template).render(description=description)
 with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
   temp.write(c_code)
   temp.seek(0)

@@ -15,8 +15,7 @@ import random
 #define USERDEF4 "${ userdef4 }$"
 #define USERDEF5 "${ userdef5 }$"
 
-char msg[] =
-  "TODO: Finish me.\n";
+char msg[] = "${ description }$";
 
 uint32_t f, e, d, c, b, a;
 uint32_t f0, e0, d0, c0, b0, a0;
