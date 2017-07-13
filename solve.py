@@ -2,6 +2,7 @@
 
 import angr
 import sys
+import os
 
 def main():
   proj = angr.Project(sys.argv[1])

@@ -1,9 +1,17 @@
 #include <stdio.h>
-
-extern int validate(char*, int);
-extern void print_msg();
+#include <string.h>
+#include <19_angr_shared_library_so.h>
 
 int main(int argc, char* argv[]) {
+  char buffer[16];
+  memset(buffer, 0, 16);
   print_msg();
+  printf("Enter the password: ");
+  scanf("%8s", buffer);
+  if (validate(buffer, 8)) {
+    printf("Success.\n");
+  } else {
+    printf("Try again.\n");
+  }
   return 0;
 }

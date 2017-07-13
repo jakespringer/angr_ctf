@@ -24,8 +24,6 @@ int validate(char* buffer, int length) {
 
   char password[20];
 
-  print_msg();
-
   for (int i=0; i < 20; ++i) {
     password[i] = 0;
   }

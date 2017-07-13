@@ -6,13 +6,16 @@ from templite import Templite
 
 userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
-template = open('lib19_angr_shared_library.so.c.templite', 'r').read()
+template = open('19_angr_shared_library_so.c.templite', 'r').read()
 c_code = Templite(template).render(USERDEF=userdef)
 
 with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
   temp.write(c_code)
   temp.seek(0)
-  os.system('gcc -static -fpic -shared -m32 -o lib19_angr_shared_library.so ' + temp.name)
+  os.system('gcc -fno-stack-protector -fpic -m32 -c -o 19_angr_shared_library.o ' + temp.name)
+  os.system('gcc -shared -m32 -o lib19_angr_shared_library.so 19_angr_shared_library.o')
+  os.system('rm 19_angr_shared_library.o')
+  os.system('chmod -x lib19_angr_shared_library.so')
 
 template = open('19_angr_shared_library.c.templite', 'r').read()
 c_code = Templite(template).render()
@@ -20,4 +23,4 @@ c_code = Templite(template).render()
 with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
   temp.write(c_code)
   temp.seek(0)
-  os.system('gcc -m32 -L . -l19_angr_shared_library -o 19_angr_shared_library ' + temp.name)
+  os.system('gcc -m32 -I . -L . -o 19_angr_shared_library ' + temp.name + ' -l19_angr_shared_library')
