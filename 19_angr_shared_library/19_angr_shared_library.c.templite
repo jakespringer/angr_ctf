@@ -1,0 +1,9 @@
+#include <stdio.h>
+
+extern int validate(char*, int);
+extern void print_msg();
+
+int main(int argc, char* argv[]) {
+  print_msg();
+  return 0;
+}

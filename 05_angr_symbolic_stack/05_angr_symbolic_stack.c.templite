@@ -1,7 +1,15 @@
+${
+import random
+}$
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/ptrace.h>
-#include <time.h>
+#include <stdint.h>
+#include <string.h>
+
+#define USERDEF0 "${ userdef0 }$"
+#define USERDEF1 ${ userdef1 }$
 
 char msg[] =
   "TODO: Finish me.\n";
@@ -10,42 +18,49 @@ void print_msg() {
   printf("%s", msg);
 }
 
-int complex_function(int value, int salt) {
-  value = (((value - 33 + 17*salt) % 94) + 33)
+uint32_t complex_function0(uint32_t value, uint32_t salt) {
+  if (value < 33 || value > 126) {
+    exit(1);
+  }
+  value = (((value - 33 + 17*salt) % 94) + 33);
+  return value;
 }
 
-/* void waste_time(char* str, int length) {
-  for (int i=0; i<length; ++i) {
-    int temp = str[i];
-    while (1) {
-      temp = (temp + 17) % 10000;
-      if (temp == str[i]) {
-        str[i] = temp;
-        break;
-      } else {
-        continue;
-      }
-    }
-  }
+uint32_t complex_function1(uint32_t value) {
+  value ^= ${ write(random.randint(0, 0xFFFFFFFF)) }$;
+  return value;
 }
 
-void recursive_function(char* str, int length) {
-  if (length > 0) {
-    waste_time(str, length);
-    str[length-1] = (((str[length-1] - 33 + 1) % 94) + 33);
-    recursive_function(str, length-1);
+void handle_user() {
+  uint32_t user_int;
+  char user_str[16];
+  scanf("%u %8s", &user_int, user_str);
+  user_str[0] = complex_function0(user_str[0], 0);
+  user_str[1] = complex_function0(user_str[1], 1);
+  user_str[2] = complex_function0(user_str[2], 1);
+  user_str[3] = complex_function0(user_str[3], 1);
+  user_str[4] = complex_function0(user_str[4], 1);
+  user_str[5] = complex_function0(user_str[5], 1);
+  user_str[6] = complex_function0(user_str[6], 1);
+  user_str[7] = complex_function0(user_str[7], 1);
+  user_str[8] = '\0';
+  user_int = complex_function1(user_int);
+  if ((user_int ^ USERDEF1) || strncmp(user_str, USERDEF0, 8)) {
+    printf("Try again.\n");
+  } else {
+    printf("Success.\n");
   }
-} */
+}
 
 int main(int argc, char* argv[]) {
   print_msg();
-  srand(time(0));
   printf("Enter the password: ");
+  handle_user();
 }   
     
 void detectTrace(void) __attribute__((constructor));
 void detectTrace(void) { 
-    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-        exit(1);
-    }; 
+  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+    exit(1);
+  }; 
 };

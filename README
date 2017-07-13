@@ -1,0 +1,11 @@
+Todo:
+
+- make angr_vulnerable more simple
+- fix angr_execute_stack
+
+Ideas:
+
+- return oriented programming (search blocks using angr to construct stack automatically)
+- loading from a shared/static library
+- loading from a core dump
+

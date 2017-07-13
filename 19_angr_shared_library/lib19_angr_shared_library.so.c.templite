@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ptrace.h>
+
+#define USERDEF "${ USERDEF }$"
+#define LEN_USERDEF ${ write(len(USERDEF)) }$
+
+char msg[] =
+  "TODO: Finish me.\n";
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+  return (((value - 33 + 17*i) % 94) + 33);
+}
+
+int validate(char* buffer, int length) {
+  if (length < 8) {
+    return 0;
+  }
+
+  char password[20];
+
+  print_msg();
+
+  for (int i=0; i < 20; ++i) {
+    password[i] = 0;
+  }
+
+  strncpy(password, USERDEF, LEN_USERDEF);
+
+  for (int i=0; i<8; ++i) {
+    password[i] = complex_function(password[i], i);
+  }
+
+  password[0] ^= password[1];
+  password[1] ^= password[0];
+  password[0] ^= password[1];
+
+  return !strcmp(buffer, password);
+}
+
+void detectTrace(void) __attribute__((constructor));
+void detectTrace(void) {
+  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+    exit(1);
+  };
+};
