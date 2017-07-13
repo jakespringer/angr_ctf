@@ -1,4 +1,87 @@
-Testing this out
-hello
+9:15am.
 
-thell
+You stare blankly at your 2012 Macbook Air and instinctively reach for your cof-
+fee. You pull the mug up to your lips to take a sip, but, much to your dispair,
+its completely empty.
+
+It's going to be a long day.
+
+A notification pops up on the screen. It's an email from Kelly, your manager. 
+It has been three months into your internship at one of the most well-known
+software companies in the world, and you have been tasked to find security vul-
+nerabilities in their primary competitor's software. It sounded exciting when 
+you signed up, but you're quite tired of pouring over hundreds of binaries by
+hand, manually reverse engineering the software trying to find a stray buffer
+overflow or hidden password. 
+
+Reluctantly, you open the email.
+
+- Hello,
+- Good morning!
+- 
+- We got ahold of a few more binaries from Eve Elle Software that seem to be inc-
+- luded in the next release of their software. They seem to have a backdoor into
+- their system if you type in the correct password, but the password seems to be
+- encrypted with a complex algorithm before it is compared with what you type in,
+- so it won't be easy to retrieve.
+-
+- Can you get the passwords on my desk before noon?
+-
+- P.S. I heard you were getting bored of reverse engineering these by hand. I
+- read about something called "symbolic execution" that might make your job a
+- little easier. You should check it out! http://angr.io
+- 
+- It looks like you can have the symbolic execution engine search for the back-
+- door and then try and solve for the input that would reach it. Imagine the
+- following pseudo-code:
+- 
+- ...
+- 16. if user_input == "P4$$W0RD":
+- 17.   print "Hello admin!"
+- 18.   enter_backdoor()
+- 19. else:
+- 20.   print "Hello normal user!"
+- ...
+-
+- If you didn't know to type in "P4$$W0RD", it would take forever to try and
+- guess it, but if you were instead to execute it symbolically, user_input would
+- be a symbol, meaning that it could be anything, much like the 'x' from high
+- school algebra. Just like with algebra, while 'x' alone could be anything,
+- when we insert it into an equation, such as 4x + 2 = 10, it constrains it so 
+- that it can only be equal to a particular value (or set of values.) In this
+- example, x = 2. We can do the same thing with a program! Instead of specifying
+- an equation, we might want to search for a particular address to reach. For the
+- code above, we might want to reach line 3. When a symbolc execution engine exe-
+- cutes this code, when it reaches the if statement on line 16, it will 'branch'
+- and execute both the code that would be run had the statement been true (line
+- 17 and on) and the code had the statement been false (line 20 and on) simul-
+- taniously. Eventually, when one of the branches reaches our target (line 18,)
+- it will recall the conditions it needed to satisfy in order to get there. In
+- this example, since it branched only once at the if statement on line 16, the
+- only condition would be that user_input has to be equal to "P4$$W0RD". In a
+- more sophisicated example, there could be hundreds or thousands of conditions.
+- At this point, it's a simple algebraic expression (user_input = "P4$$W0RD")
+- that leads to the answer.
+-
+- You might be wondering how "user_input" became a symbol. I am too. I'm not
+- entirely sure how to create symbols yet, but it seems that Angr automatically
+- makes user input symbolic, so you don't have to worry about that.
+-
+- I didn't spend too much time reading about it, but here are a few functions
+- and classes I saw that looked helpful:
+-  angr.Project  # this looks like the way to load the binary
+-  angr.factory.AngrObjectFactory.entry_state
+-  angr.path_group.PathGroup.explore  # check out the 'find' parameter
+-  simuvex.s_state.SimState.posix.dumps(0)  # seems to solve for user_input
+-
+- Thanks,
+- Kelly
+- Security Team Manager
+- Skynet Software
+
+*Sigh*
+
+You figure you might as well get started. You don't really want to deal with the
+binaries by hand, so you might as well try this 'symbolic execution' thing.
+
+
