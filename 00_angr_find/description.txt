@@ -27,14 +27,27 @@ Reluctantly, you open the email.
 -
 - Can you get the passwords on my desk before noon?
 -
-- P.S. I heard you were getting bored of reverse engineering these by hand. I
+- Thanks,
+- Kelly
+- Security Team Manager
+- Skynet Software
+
+*Sigh*
+
+Another notification. This time it's an email from Jeff. He's sitting right ac-
+ross from you, through the cubicle wall and about a hundred cans of Red Bull he
+proudly displays on his desk, as if it's some accomplishment that he's addicted.
+
+- Hey,
+- 
+- I heard you were getting bored of reverse engineering these by hand. I
 - read about something called "symbolic execution" that might make your job a
 - little easier. You should check it out! http://angr.io
-- 
+-
 - It looks like you can have the symbolic execution engine search for the back-
 - door and then try and solve for the input that would reach it. Imagine the
 - following pseudo-code:
-- 
+-
 - ...
 - 16. if user_input == "P4$$W0RD":
 - 17.   print "Hello admin!"
@@ -44,14 +57,14 @@ Reluctantly, you open the email.
 - ...
 -
 - If you didn't know to type in "P4$$W0RD", it would take forever to try and
-- guess it, but if you were instead to execute it symbolically, user_input would
+- guess it. If you were to instead execute it symbolically, user_input would
 - be a symbol, meaning that it could be anything, much like the 'x' from high
 - school algebra. Just like with algebra, while 'x' alone could be anything,
-- when we insert it into an equation, such as 4x + 2 = 10, it constrains it so 
+- when we insert it into an equation, such as 4x + 2 = 10, it constrains it so
 - that it can only be equal to a particular value (or set of values.) In this
 - example, x = 2. We can do the same thing with a program! Instead of specifying
 - an equation, we might want to search for a particular address to reach. For the
-- code above, we might want to reach line 3. When a symbolc execution engine exe-
+- code above, we might want to reach line 18. When a symbolc execution engine exe-
 - cutes this code, when it reaches the if statement on line 16, it will 'branch'
 - and execute both the code that would be run had the statement been true (line
 - 17 and on) and the code had the statement been false (line 20 and on) simul-
@@ -70,18 +83,20 @@ Reluctantly, you open the email.
 - I didn't spend too much time reading about it, but here are a few functions
 - and classes I saw that looked helpful:
 -  angr.Project  # this looks like the way to load the binary
--  angr.factory.AngrObjectFactory.entry_state
+-  angr.Project.factory  # object with a bunch of useful methods (see below)
+-  angr.factory.AngrObjectFactory.entry_state  # specify where to start
+-  angr.factory.AngrObjectFactory.path_group  # lets you explore the binary
 -  angr.path_group.PathGroup.explore  # check out the 'find' parameter
 -  simuvex.s_state.SimState.posix.dumps(0)  # seems to solve for user_input
 -
-- Thanks,
-- Kelly
-- Security Team Manager
-- Skynet Software
+- Thank me later,
+- Jeff
 
-*Sigh*
+Odd.
 
-You figure you might as well get started. You don't really want to deal with the
-binaries by hand, so you might as well try this 'symbolic execution' thing.
-
-
+Jeff doesn't usually offer any help, ever. Maybe he's changing? Unlikely. He's
+probably just trying to get you to waste time so they'll hire him instead of you
+at the end of the internship. Well, at the rate everything is going, it's not
+like you're going to want a job anyway. You figure you might as well get started. 
+You don't really want to deal with the binaries by hand, so you might as well try 
+this 'symbolic execution' thing. Doesn't hurt.
