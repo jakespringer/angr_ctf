@@ -66,3 +66,8 @@ His email is pretty long. He must have typed it out before our conversation.
 - # Reads a bitvector at an offset from the stack pointer. You may want to look
 - # at more documentation elsewhere.
 - simuvex.s_state.SimState.stack_read
+-
+- # Similar to the 'any_int' function, but solves for a string instead.
+- simuvex.plugins.solver.SimSolver.any_str(bitvector)
+-
+- Jeff

@@ -1,0 +1,66 @@
+You stand up from your chair and stretch, having located the backdoor in Jeff's
+binaries.
+
+Where is he getting them, anyway? And why can't he solve them himself?
+
+You're glad for the challenge he gave you. You signed up for this internship to
+learn, but until Jeff informed you of Angr, you spent your days searching thr-
+ough the same binaries--or at least, they all seemed the same. They blur toget-
+her after a while. You loved it at first, but once the novelty wore off, the
+challenge lessened, and you found yourself growing tired of it.
+
+There's a feeling you get, that everyone gets, when they find their true pas-
+sion. One minute, you are somewhat idly working, fulfilling the requirement
+of the task at hand, but no more. The next, something clicks, and you become
+completely immersed in your work. You feel energized and your senses heighten,
+but you are fully disconnected from the outside world. You do not hear your co-
+worker call your name, twice. Your brain ignores the signal from your left shou-
+lder as they walk by and tap it, but then think the better of disrupting you, 
+and walk away. All you feel is a monogamous intimacy with the task at hand,
+without regard to external sight, smell, sound, touch, or even time. Psycho-
+logists call this 'flow'. You are pretty sure you just experienced it.
+
+You glance at the time at the top-right corner of your screen, and see it's al-
+ready almost 1:30pm. Time for lunch. Your rumbling stomach confirms.
+
+Something is still wrong. People are unnaturally tense, anxious. On the way to
+the microwave, you run into Kelly. You might as well ask her about it.
+
+-- What's going on here?
+
+-- What do you mean?
+
+-- Why does everyone look so anxious today?
+
+-- Oh. Haven't you heard?
+
+   Someone leaked a backdoor in our software to Eve Elle Software. We aren't
+   sure who, exactly, but our binaries are only accessable from our systems here
+   onsite. The cybersecurity response team has been up all night working. They
+   think they've patched most of the holes, but we can never really be sure.
+
+-- Do you think someone from Eve Elle remotely hacked the system?
+
+-- No, it had to have been an inside job. It could be anyone, possibly even
+   someone in this building right now. We have IT working on it, searching thr-
+   ough logs on everyone's computer to try and determine who leaked the binaries
+   or the backdoor. Do you know anyone who might be involved? Anyone with access
+   to suspicious binaries? Did anyone ask you anything about finding backdoors?
+   After all, you are likely one of the most knowledgeable people around here on
+   that subject.
+
+You are silent for a moment.
+
+-- I can't think of anyone.
+
+-- Alright, enjoy your lunch. When you're done, check your email. We need you to
+   test a new backdoor one of our engineers built to determine if it's secure
+   enough to use.
+
+She walks away.
+
+When you finish your lunch and return to your desk, you open your email.
+
+-
+-
+-

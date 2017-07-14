@@ -1,0 +1,46 @@
+When you arrive at work on Monday, the office appears to be in a frantic hurry,
+despite being only 8am. You've never witnessed this before in your entire four
+months at the company. Normally, at this hour, everyone is quiet, minding their
+own sleep-deprived business. By nine or so, after everyone has arrived and man-
+aged to stumble over the coffee machine, the office tends to wake up. But today,
+something is wrong.
+
+-- Hey.
+
+-- Hey Jeff, how was your weekend?
+
+-- Good. Uh... Hey, thanks for solving those binaries for me.
+
+-- No problem.
+
+-- Uh... I have another few that need to be solved, would you mind working thr-
+   ough them?
+
+You hesitate. You don't really want to do anything else for Jeff. He isn't your
+manager. You aren't really supposed to be working for him anyway. But, on the
+other hand, you don't want to involve yourself in whatever is happening around
+you.
+
+-- Yeah, sure. Send them over.
+
+As anticipated, the email comes within seconds.
+
+- Hey,
+-
+- These binaries should be pretty similar to the last few. I've identified that
+- at some point, the program calls 'scanf("%8s %8s %8s %8s", ...)', but that's
+- all I know.
+- 
+- You might need:
+-
+- # Stores a bitvector at the given location in memory. Remember, endianness
+- # counts if you're dealing with numbers. By default, Angr uses a big-endian
+- # representation. To specify little-endianness, use the parameter
+- # endness='Iend_LE' with this function.
+- simuvex.s_state.SimState.memory.store(addr, bitvector)
+-
+- # Loads a bitvector at the given location in memory. The length is specified
+- # in bytes, rather than bits. The same as above is true about endianness.
+- simuvex.s_state.SimState.memory.load(addr, length)
+-
+- Jeff
