@@ -1,0 +1,50 @@
+According to your phone, it's 9:11am.
+
+Jeff is now eleven minutes late. You are starting to regret agreeing to meet him
+here. 
+
+At that moment, he and a woman you do not recognize walked through the door. You
+feel worse than when he wasn't here. Both he and the woman are dressed in formal
+business attire; no one at the Skynet office would have worn any clothes even
+remotely close to as formal as they looked. T-shirt and non-gym shorts would
+serve as perfectly acceptable clothes for a summer day such as today.
+
+They walked over sat down next to you, motioning to the barista. He nodded back
+and began preparing two drinks.
+
+They come here often.
+
+-- Hello, I'm Claire, from Eve Elle Software.
+
+She stuck out her hand. You hesitate before shaking it. She continues talking.
+
+-- We are here in order to offer you a job.
+
+-- I don't understand. I didn't apply there... I can't think of anyone works
+   there.
+
+-- Except me.
+
+Jeff smiles at you in a conceited 'I know more than you' kind of way. Claire
+continues.
+
+-- We are very impressed with your ability to find the backdoors and exploit bi-
+   naries. You have been of great help to us. We would like to continue a rel-
+   ationship with you, and compensate you for your services. We are offering you
+   a job. A full-time, real job. Not an internship. Of course, we know you are 
+   pursuing a graduate degree, and will support you in whatever way we can while 
+   you complete it.
+
+-- I've helped you?
+
+-- Of course. You have been finding the backdoors in the software. This helps us
+   build more sophisticated backdoors. In fact, recently, you have convinced us
+   that including a backdoor in software at all is a poor idea. It's insecure,
+   allowing attackers such as yourself to break in.
+
+   Jeff tells me that you will not likely be hired by Skynet when your intern-
+   ship concludes. Is that a fair judgement?
+
+You remain silent.
+
+-- Consider our offer. If you accept,

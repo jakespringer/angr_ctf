@@ -1,0 +1,84 @@
+-- Hey, can I pull you aside?
+
+-- What do you want, Jeff?
+
+-- I know what's going on, and I can explain.
+
+-- You're ruining my career, what more could you possibly want from me?
+
+-- Look, I know you snooped through my computer. I know you gained access to the
+   Eve Elle server. I can get you out of this mess, but I need you to trust me. 
+   I promise this is the last time I'll ever ask anything of you. This one last
+   thing, and I'll clear your record with Kelly. And if you feel like you can
+   no longer do that, I'll find you a job--a real job, not an internship--else-
+   where.
+
+-- I can't trust you, you know that. I'm going to get back to work.
+
+-- Just one thing. I promise. It'll be simple. I'm trying to help you.
+
+-- What is it?
+
+-- I need you to crack a binary for me.
+
+You begin to lose your calm.
+
+-- You want me to crack a binary?
+
+   And get in more trouble than I already am in? What the hell do you want? Me
+   fired?--
+
+-- I just need you to--
+
+-- No! I will do nothing for you. I owe you nothing. Get out of my cubicle, and
+   leave. You want to help me? Leave this office. Quit, and never come back, as
+   long as I'm around.
+
+At that moment, Kelly walks over, smiles at Jeff, and then turns to you, drop-
+ping her smile.
+
+-- Check your email. And get back to work.
+
+You do just that.
+
+- Binaries attached. 
+- Kelly
+
+Not even her usual friendly 'hello.'
+
+Each file is large. The libraries have been linked statically. This might cause
+some problems.
+
+Jeff walks back over.
+
+-- Let me help you with that.
+
+-- Get the hell out of my cubicle.
+
+-- No, let me help you. I'll send you an email.
+
+Fine, might as well look.
+
+- Hey,
+-
+- These binaries have been linked statically. You're going to have some problems
+- with Angr because of that, but they are easy to get around. You will want to
+- bind any complex function you use to the corresponding pre-written
+- SimProcedure included with Angr. Take a look at the GitHub repository to see
+- which of them are implemented. You can access them either by referencing the
+- class directly, or with a dict they provide. For example, libc's 'rand' func-
+- tion can be accessed with the following code:
+- simuvex.SimProcedures['libc.so.6']['rand']
+- 
+- Also, you might need to add the add_options={"BYPASS_UNSUPPORTED_SYSCALL"}
+- parameter to the factory function that initializes the initial SimState. It
+- tells Angr to ignore any syscall it doesn't recognize. In some cases, this can
+- cause weird behavior, but if there are syscalls that don't have any effect on
+- the part of the program you are trying to analyze, you can safely bypass them
+- to avoid errors.
+-
+- Also, we should talk tomorrow. Meet me for coffee at 9am at the bakery down
+- the street?
+-
+- Jeff
+
