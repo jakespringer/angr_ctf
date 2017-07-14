@@ -1,0 +1,46 @@
+You curse under your breadth. It's much past midnight. Enough that, while the
+sun is still not visible, it's lighter outside than it was an hour ago. 
+
+It's a Saturday, no one will show up. You have time.
+
+The binary you had found an hour ago was outdated. It hadn't been removed from
+the server, possibly because a sysadmin overlooked it when updating the produc-
+tion server. More likely, they just didn't care enough to bother removing it. It
+didn't harm anything. And clearly, it didn't help you gain any more access to
+their server; the backdoor simply didn't work on the running service.
+
+It isn't worth getting upset over. Time to try a different set of binaries. You
+find a few that might work. They are fairly similar to the previous one. This
+time, however, there are so many calls to scanf that you wouldn't think of man-
+ually hooking each one. Perhaps you could hook the scanf function itself; ins-
+tead of hooking the address where it is called, you hook the address in the PLT
+table that jumps to the shared library where scanf is defined.
+
+Some research later, you find that this is actually fairly easy to dowith some-
+thing called a 'SimProcedure'. They are able to simulate a function that would
+be too difficult for Angr to handle by replacing it with Python code that edits
+the state manually.
+
+The documentation states:
+
+- Imagine a function in C:
+- // Imagine that it is located at address 0x4000000
+- int add(int a, int b) {
+-   return a + b;
+- }
+- 
+- This could be simulated in Angr with the following:
+- class SimAdd(SimProcedure):
+-   def run(self, a, b):
+-     return a + b
+-
+- Additionally, anything deriving the SimProcedure class can use:
+- self.state
+- in order to use the current state of the system as of when the SimProcedure is
+- called.
+-
+- There are multiple ways to hook the SimProcedure:
+- If the binary is not stripped of its symbols:
+- project.hook_symbol('add', Hook(SimAdd))
+- otherwise:
+- project.hook(0x4000000, Hook(SimAdd))

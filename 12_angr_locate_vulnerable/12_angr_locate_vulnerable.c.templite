@@ -95,7 +95,7 @@ int main(int argc, char* argv[]) {
   hit_statement = """
   if (strncmp(unsafe, USERDEF, 8)) {
     printf(\"Try again.\\n\");
-    printf(\"%8s\\n\", unsafe);
+    //printf(\"%8s\\n\", unsafe);
   } else {
     printf(\"Success.\\n\");
   }

@@ -1,0 +1,67 @@
+Tuesday afternoon. Jeff is out sick.
+
+A notification pops up on your screen. An email. From Jeff.
+
+- Hey,
+- 
+- I was just thinking. Remember how I told you a while back that
+- simuvex.s_state.SimState.posix.dumps(0) would solve for any user input? I told
+- you back then that I wasn't really sure how it worked. Well, I figured out how
+- it works. On Unix based systems, stdin (which happens to be represented with
+- the number 0) is a file, just like any other file your hard drive might store,
+- or a file that you would use to read from the network.
+-
+- I found that you can use Angr to simulate files symbolically. This is great, be-
+- cause it means you can inject symbols for many different types of communication,
+- including reading a file from a hard drive, reading from the network, reading
+- from stdin, or another communication stream.
+-
+- Here are a few useful pieces of information I found on the documentation page:
+- 
+- # Symbolic memory that can be used as a backing for the simulated file-system.
+- # You do not need to pass it any parameters.
+- simuvex.SimSymbolicMemory
+-
+- # Associates the SimSymbolicMemory with a given SimState. Call this on the
+- # starting state.
+- simuvex.SimSymbolicMemory.set_state(state)
+- 
+- # Stores a bitvector in the SimSymbolicMemory. Works just like the previous
+- # 'store' method you have seen. In fact, it's the same method!
+- simuvex.SimSymbolicMemory.store
+-
+- # Instantiates a simulated file. The permissions parameter should be some
+- # combination of 'r' 'w' and 'x'. For example, if you want to create a file
+- # that can be read and executed, but not written to, use 'rx'. Pass a 
+- # SimSymbolicMemory instance to the content parameter. Size, as you would
+- # expect, represents the size of the file, in bytes.
+- simuvex.SimFile(name, permissions, content=content, size=size)
+-
+- # A dictionary object that stores filenames mapped to SimFiles. If this is
+- # overwritten with a new dictionary object, attempts to open a file will
+- # read from this virtual filesystem, rather than your physical hard drive.
+- simuvex.s_state.SimState.posix.fs
+-
+- Just wanted to let you know!
+- Jeff
+
+Isn't he sick? Why is he working?
+
+In any case, another email pops up, from Kelly.
+
+- Hello,
+-
+- We got access to another binary from Eve Elle Software. Could you try to solve
+- it? I had Jeff take a look at it. He told me that he was quite busy, but that
+- you would be an excellent person to ask. He said to look for the 'fopen' call
+- to determine the filename, and that from there, you would know what to do.
+-
+- I'm still having to deal with the security breach from the other day. Let me
+- know if you happen to see anything.
+-
+- Thanks,
+- Kelly
+- Security Team Manager
+- Skynet Software
+
+Huh.

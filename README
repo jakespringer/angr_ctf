@@ -9,3 +9,30 @@ Ideas:
 - loading from a shared/static library
 - loading from a core dump
 
+Storyline:
+- 09: Kelly accuses you of leaking secrets to Eve Elle Software, you decide to do some snooping and come across some binaries
+- 10: From the previous snooping, you found Jeff's name in the filenames of a few encrypted documents, you decide to snoop
+      around on his computer, and discover he's logged into a development server related to Eve Elle Software, with some
+      binaries on it that you can use to discover how to exploit the production server.
+- 11: From the production server, you find documents with your name, picture, address, and other private information. You
+      do some more digging on the development server that Jeff is logged into, and find more binaries.
+- 12: Jeff comes in, and almost catches you. It's late at night and you ask why he's in the office, he asks the same. You both
+      leave, clearly suspicious of each other. You go home, and realize you need a more aggressive approach. You look at one
+      piece of software made by Eve Elle Software. You want to see if you can exploit it to gain access, but in this one, there 
+      isn't a backdoor. Buffer overflow.
+- 13: You find information about a company overhaul in Eve Elle Software. You see plans to lay off more than half of their employees. 
+      There are some email chains about various tasks related to that. One is called "Project Sniper," and it has your name. You don't
+      even work for them, so you are confused. You find out more by exploiting more of their binaries.
+- 17: It's now Monday, so you have to go back to work. You see Jeff, but avoid eye contact. Kelly is still suspicious of you, and hands
+      you something to keep you busy. She has some excuse, but clearly the puzzle was designed to make you spend a lot of time on it.
+- 18: Jeff pulls you aside, you don't really want to talk to him, but he tells you he knows what's up and to trust him. You reluctantly
+      agree on the basis that nothing else can go wrong at this point. He informs you that he needs you to break just one more binary for
+      him. You snap, you don't want to do it, you're already accused of leaking secrets and you tell him that you know that he leaked the
+      secrets. At that moment, Kelly comes in with another busywork task.
+- 19: Jeff pulls you aside again, telling you that he will explain everything, and to come with him to go to a restaurant for lunch. He
+      will pay. There, a woman named Claire tells you that Eve Elle Software is impressed with your work helping them secure their system.
+      You ask them what is going on. They say, you've figured out how to break into our system, allowing our engineers to fix all of the
+      problems. Jeff reports back to us every day with info on your work. They have info that you are about to be fired from Skynet Software,
+      and urge you to resign and take up a full time (non-internship) job with them. You accept. When you get there, you engage in the onboarding
+      process, but the key was corrupted. 
+

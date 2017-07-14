@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
 
 void detectTrace(void) __attribute__((constructor));
 void detectTrace(void) { 
-    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-        exit(1);
-    }; 
+  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
+    exit(1);
+  }; 
 };

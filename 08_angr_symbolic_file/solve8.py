@@ -14,7 +14,7 @@ def main():
   content.set_state(ss)
   content.store(0, password)
 
-  password_file = simuvex.SimFile(filename, 'rw', content=content, size=bytes_len*8)
+  password_file = simuvex.SimFile(filename, 'rw', content=content, size=bytes_len)
 
   fs = {
     filename: password_file
