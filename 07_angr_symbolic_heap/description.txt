@@ -61,6 +61,44 @@ She walks away.
 
 When you finish your lunch and return to your desk, you open your email.
 
+- Hello,
 -
+- I'm copying and pasting what the engineer wrote in regards to these binaries:
 -
--
+- The binary uses 'scanf("%8s %8s %8s %8s, ...)' to read four strings, and then
+- stores them on the heap. This is the main line of security we have. We figure
+- it will be harder for a hacker to determine the correct strings to input if we
+- hide them away in an arbitrary memory location.
+- 
+- Thanks,
+- Kelly
+- Security Team Manager
+- Skynet Software
+
+-- Hey, Jeff...?
+
+-- Yeah?
+
+-- Do you know anything about injecting symbols into the heap?
+
+-- Yeah, there are a couple ways. Do you have a pointer to the location of the 
+   memory on the heap?
+
+-- I haven't actually looked at the binaries yet, but I would imagine that I do.
+
+-- Well, you can read the pointer and write to that address, just like you would
+   with a constant address. The only difference is that this time, you will use
+   a variable address that you loaded from memory or a register...Wait a second,
+   are you calling 'malloc' in order to allocate the memory on the heap?
+
+-- I don't know yet.
+
+-- Well, if you are, be careful. Angr has a lot of trouble handling 'malloc'.
+   Instead, you might want to skip the 'malloc' function and overwrite the poin-
+   ter to your own arbitrary address. That way, the program thinks it's reading
+   from the heap, but really, you can specify where it's reading from and place
+   a symbolic value there.
+
+-- Thanks!
+
+-- No problem. Before you go, remember to account for endianness!
