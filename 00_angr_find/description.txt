@@ -56,32 +56,28 @@ proudly displays on his desk, as if it's some accomplishment that he's addicted.
 - 20.   print "Hello normal user!"
 - ...
 -
-- If you didn't know to type in "P4$$W0RD", it would take forever to try and
+- If you didn't know to type in "P4$$W0RD", it would take a long time to try and
 - guess it. If you were to instead execute it symbolically, user_input would
-- be a symbol, meaning that it could be anything, much like the 'x' from high
+- be made a symbol. Symbols act much like the 'x' from high
 - school algebra. Just like with algebra, while 'x' alone could be anything,
-- when we insert it into an equation, such as 4x + 2 = 10, it constrains it so
+- when we insert it into an equation, such as 4x + 2 = 10, we constrain it so
 - that it can only be equal to a particular value (or set of values.) In this
-- example, x = 2. We can do the same thing with a program! Instead of specifying
-- an equation, we might want to search for a particular address to reach. For the
-- code above, we might want to reach line 18. When a symbolc execution engine exe-
-- cutes this code, when it reaches the if statement on line 16, it will 'branch'
-- and execute both the code that would be run had the statement been true (line
-- 17 and on) and the code had the statement been false (line 20 and on) simul-
+- example, x would be equal to 2. The same approach can 'solve' programs. 
+- Instead of directly specifying an equation, we might want to search for a particular address to reach. For the
+- code above, we decide to try for line 18. When a symbolc execution engine steps
+- through this code, it reaches the if statement on line 16 and 'branches' to
+- execute both the code that would be run if the statement is true (line
+- 17 and on) and the code that would run if the statement is false (line 20 and on) simul-
 - taniously. Eventually, when one of the branches reaches our target (line 18,)
-- it will recall the conditions it needed to satisfy in order to get there. In
-- this example, since it branched only once at the if statement on line 16, the
-- only condition would be that user_input has to be equal to "P4$$W0RD". In a
-- more sophisicated example, there could be hundreds or thousands of conditions.
-- At this point, it's a simple algebraic expression (user_input = "P4$$W0RD")
+- the engine will recall the conditions it needs to satisfy in order to get there. In
+- this example, since the engine branched only once at the if statement on line 16, the
+- only condition necessary to arrive at our target would be that user_input = "P4$$W0RD". In a
+- more sophisicated example, there could be hundreds or thousands of conditions, 
+- but the same principle holds.
+- At this point, the engine can construct a simple algebraic expression (user_input = "P4$$W0RD")
 - that leads to the answer.
 -
-- You might be wondering how "user_input" became a symbol. I am too. I'm not
-- entirely sure how to create symbols yet, but it seems that Angr automatically
-- makes user input symbolic, so you don't have to worry about that.
--
-- I didn't spend too much time reading about it, but here are a few functions
-- and classes I saw that looked helpful:
+- Here are a few functions and classes I saw that looked helpful:
 -  angr.Project  # this looks like the way to load the binary
 -  angr.Project.factory  # object with a bunch of useful methods (see below)
 -  angr.factory.AngrObjectFactory.entry_state  # specify where to start
@@ -94,9 +90,6 @@ proudly displays on his desk, as if it's some accomplishment that he's addicted.
 
 Odd.
 
-Jeff doesn't usually offer any help, ever. Maybe he's changing? Unlikely. He's
-probably just trying to get you to waste time so they'll hire him instead of you
-at the end of the internship. Well, at the rate everything is going, it's not
-like you're going to want a job anyway. You figure you might as well get started. 
-You don't really want to deal with the binaries by hand, so you might as well try 
-this 'symbolic execution' thing. Doesn't hurt.
+Jeff doesn't usually offer any help, ever. Regardless, you aren't excited about
+dissecting the binaries by hand, so you figure you might as well get started
+with symbolic execution.
