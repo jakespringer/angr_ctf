@@ -6,7 +6,7 @@ from templite import Templite
 
 description = ''
 with open('description.txt', 'r') as desc_file:
-  description = desc_file.read().encode('string_escape')
+  description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
 userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
