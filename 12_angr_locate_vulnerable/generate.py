@@ -13,7 +13,6 @@ userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 template = open('12_angr_locate_vulnerable.c.templite', 'r').read()
 c_code = Templite(template).render(description=description, userdef=userdef)
 print userdef
-print c_code
 with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
   temp.write(c_code)
   temp.seek(0)

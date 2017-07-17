@@ -1,27 +1,5 @@
-// TODO: Make this challenge much less complex! This is absurd. Have fun reading it :)
-
 ${
 import random
-
-def recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth):
-  if depth == 0:
-    write(end_target_statement if on_target else end_miss_statement)
-  else:
-    if_true = random.choice([True, False])
-    if (if_true):
-      write('if (CHECK_BIT(%s, %d - 1) && CHECK_BIT(%s, %d + 8 - 1) && CHECK_BIT(%s, %d + 16 - 1) && CHECK_BIT(%s, %d + 24 - 1)) {' 
-        % (variable, depth, variable, depth, variable, depth, variable, depth))
-      recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth - 1)
-      write('} else {')
-      recursive_if_else(variable, False, end_miss_statement, end_target_statement, depth - 1)
-      write('}')
-    else:
-      write('if (CHECK_BIT(%s, %d - 1) && CHECK_BIT(%s, %d + 8 - 1) && CHECK_BIT(%s, %d + 16 - 1) && CHECK_BIT(%s, %d + 24 - 1)) {' 
-        % (variable, depth, variable, depth, variable, depth, variable, depth))
-      recursive_if_else(variable, False, end_miss_statement, end_target_statement, depth - 1)
-      write('} else {')
-      recursive_if_else(variable, on_target, end_miss_statement, end_target_statement, depth - 1)
-      write('}')
 
 def generate_str_int():
   userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
@@ -29,10 +7,6 @@ def generate_str_int():
   for i, c in enumerate([random.choice(userdef_charset) for _ in xrange(4)]):
     result |= ord(c) << (i * 8)
   return result
-}$
-
-${
-import random
 
 def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
   target = random.choice(samples)
@@ -47,15 +21,21 @@ def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <signal.h>
 #include <sys/ptrace.h>
 
-#define CHECK_BIT(integer, bit) ((integer & (1 << bit)) || 0)
 #define USERDEF "${ userdef }$"
 
 char msg[] = "${ description }$";
+char strcpy_buffer[8 + 4];
 
 void print_msg() {
   printf("%s", msg);
+}
+
+void segv_handler(int sig) {
+  printf("Success.\n");
+  exit(0);
 }
 
 int main(int argc, char* argv[]) {
@@ -64,17 +44,16 @@ int main(int argc, char* argv[]) {
   char padding1[${ write(random.randint(0, 256)) }$];
   char program_buffer[33];
   char padding2[${ write(random.randint(0, 256)) }$];
-  char strcpy_buffer[17];
-  char* unsafe = &strcpy_buffer[8];
   uint32_t key;
+
+  signal(SIGSEGV, segv_handler);
 
   print_msg();
 
   memset(program_buffer, 0, 33);
   memset(user_buffer, 0, 33);
   memset(strcpy_buffer, 0, 17);
-  strcpy(program_buffer, "THEPASS");
-  strcpy(unsafe, "7HEPASS");
+  *((char**) &strcpy_buffer[8]) = "Try again.\n";
 
   printf("Enter the password: ");
   scanf("%u %32s", &key, user_buffer);
@@ -91,18 +70,6 @@ int main(int argc, char* argv[]) {
   expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**31), random.randint(16, 100)))
   }$
 
-  ${
-  hit_statement = """
-  if (strncmp(unsafe, USERDEF, 8)) {
-    printf(\"Try again.\\n\");
-    //printf(\"%8s\\n\", unsafe);
-  } else {
-    printf(\"Success.\\n\");
-  }
-  """
-  miss_statement = 'printf(\"Try again.\\n\"); printf(\"%u\\n\", ((uint32_t*) program_buffer)[0]);'
-  expanded_switch_statement('((uint32_t*) program_buffer)[0]', miss_statement, hit_statement, list(set(generate_str_int() for _ in xrange(0, 16))))
-  }$
-
+  printf("%s", *((char**) &strcpy_buffer[8]));
   return 0;
 }

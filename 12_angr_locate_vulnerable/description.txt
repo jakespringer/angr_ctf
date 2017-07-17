@@ -7,7 +7,7 @@ Footsteps.
 You frantically close all of the windows on Jeff's computer, turn off the moni-
 tor, and stand up to meet whoever has arrived.
 
-It's Jeff. I confront him.
+It's Jeff.
 
 -- What are you doing here?
 
@@ -33,10 +33,37 @@ but that was before you began playing around with Angr. It is time to revisit
 them.
 
 You have an idea:
-You might be able to find a buffer overflow. The program calls strcmp.
+You might be able to find a buffer overflow. The program calls strcmp, a known
+vulnerable function in libc. Perhaps you could identify an input that would call
+strcmp on input from the user. You can then enter more bytes than the buffer in
+hopes that it would cause a segfault, causing the program to crash.
+to jot down an outline of your exploit.
 1. Handle scanf. It appears to input an unsigned integer and a string of length
    32, in that order.
-2. Search for the function strcmp. There are many ways to do this.
-3. Check to determine if 
-.. todo: finish later, the binary needs to be made more simple before I write
-         a description of how to solve it, since it will change.
+2. Search for the function strcmp. 
+3. Check to determine if strcmp takes input from the user.
+4. Solve for the input string that will overwrite more characters than the buf-
+   fer length.
+5. Check to see that the program segfaults and crashes.
+
+The Internet reveals documentation for some useful functions:
+
+- # Determines if there exists solutions to the symbolic values given the state 
+- # and the expressions.
+- simuvex.s_state.SimState.satisfiable(extra_constraints=(expression0, expression1, ...))
+- 
+- # Determines if the bitvector parameter is symbolic.
+- claripy.SolverEngine.symbolic(bitvector)
+-
+- # The current instruction pointer as a concrete value.
+- simuvex.s_state.SimState.ip.args[0]
+-
+- # Manually step each path in the pathgroup. This function, in combination with 
+- # some sort of check function to determine when to stop can be used to create 
+- # a fully customizable version of 'explore'.
+- angr.path_group.PathGroup.step()
+-
+- # An array containing all of the active paths. A check function to be combined 
+- # with the function to create a customizable 'explore' might iterate through
+- # this list.
+- angr.path_gorup.PathGroup.active
