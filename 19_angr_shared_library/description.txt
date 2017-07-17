@@ -3,7 +3,7 @@ According to your phone, it's 9:11am.
 Jeff is now eleven minutes late. You are starting to regret agreeing to meet him
 here. 
 
-At that moment, he and a woman you do not recognize walked through the door. You
+At that moment, he and a woman you do not recognize walk through the door. You
 feel worse than when he wasn't here. Both he and the woman are dressed in formal
 business attire; no one at the Skynet office would have worn any clothes even
 remotely close to as formal as they looked. T-shirt and non-gym shorts would
@@ -47,4 +47,87 @@ continues.
 
 You remain silent.
 
--- Consider our offer. If you accept,
+-- Consider our offer. Check your personal email when you get home for the de-
+tails.
+
+-- How do you have my--?
+
+-- Thank you for your time.
+
+You continue to speak, but both Claire and Jeff stand up and walk towards the
+door, clearly not listening to you.
+
+When you arrive at work, the office is quiet except for the coffee machine,
+grumbling away in the break room.
+
+Kelly walks over.
+
+-- Check your email, I have a few more binaries for you to look at.
+
+She has a slight smirk as she says this. More busywork. She still doesn't trust
+you. Surely, she is waiting for the day you either leave, or her supervisers
+grant her permission to let you go.
+
+-- Actually, I don't think I will.
+
+-- Excuse me?
+
+-- I quit.
+
+She opens her mouth, as if to yell, but then closes it and smiles before speak-
+ing.
+
+-- Of course. I'll see that you get your final paycheck as soon as possible.
+
+...
+
+When you arrive home, two emails are waiting. One from Claire and the second
+from Jeff.
+
+- Hello,
+-
+- We are glad your are considering our offer. We can give you a salary above the
+- market standard, which can be discussed once you perform the following step:
+-
+- If you would like to join as an employee, please run the attached binary with
+- the activation code below.
+-
+- Employee activation code: aQz99ckL
+-
+- Best regards,
+- Claire Liu
+- Hiring Manager
+- Eve Elle Software
+
+- Hey,
+-
+- The server that generates the employee activation codes has been having some
+- problems lately. It might give you an incorrect code. If so, you know what to
+- do.
+-
+- A few pieces of information related to Angr that I learned about today:
+-
+- There are quite a few types of binaries Angr supports, not just executables.
+- You can load shared libraries in the same way you would load an executable,
+- you will just need to specify the address at which to start executing.
+-
+- One interesting way to specify an entry state is with the
+- project.factory.call_state(address, *bitvector_params)
+- function. This will initialize the starting state as if the computer called
+- that function with the parameters you specify. If you want to specify an ad-
+- dress to jump to after the function returns, use the named ret_addr parameter.
+- 
+- Additionally, watch out for the fact that shared libraries typically use pos-
+- ition-independent code, meaning that the addresses specified in the binary
+- will actually be an offset from some other position when loaded in to an exe-
+- cutable. In order to deal with this when the library is not being loaded by
+- an executable (because we are loading it directly with Angr,) we have to spec-
+- ify a base address when creating the project. For example, to specify an ad-
+- dress of 0x3000000:
+-
+- base = 0x3000000
+- cle_options = { 'custom_base_addr' : base }
+- project = angr.Project(binary, load_options={ 'main_opts' : cle_options })
+-
+- Thought I should let you know!
+- Jeff

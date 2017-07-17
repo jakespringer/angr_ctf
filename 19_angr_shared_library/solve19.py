@@ -6,9 +6,9 @@ import sys
 import os
 
 def main():
-  proj = angr.Project(sys.argv[1])
+  base = 0x3000000
+  proj = angr.Project(sys.argv[1], load_options={ 'main_opts' : { 'custom_base_addr' : base } })
 
-  base = 0x400000
   str_addr = 0x6000006
   str_len = 8
   initial_state = proj.factory.call_state(base + 0x6c7, claripy.BVV(str_addr, 32), claripy.BVV(str_len, 32))
