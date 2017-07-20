@@ -46,3 +46,19 @@ test_solution [challenge] [solve_script]:
   call generate.py to generate a set of executables for given challenge
   call test_solution.py on each generated executable with given solve_script
   send the output
+
+
+
+
+
+
+
+
+level 02
+  printf is called no matter what, get to that point while avoiding the fail
+
+
+
+
+
+
