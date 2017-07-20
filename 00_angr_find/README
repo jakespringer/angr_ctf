@@ -1,0 +1,6 @@
+explain notation of everything (???, !, etc)
+explain scaffold00
+explain "Success." vs "Try again." -> change to "Good Job."
+explain that backdoor_address can be a hex number (not a string)
+add decision tree (CHECK_BIT) as an example to the slides <- Ch3_06_Conditionals (AsmConditionals in malware) before we introduce it
+
