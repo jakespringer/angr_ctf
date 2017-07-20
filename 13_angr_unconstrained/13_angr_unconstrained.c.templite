@@ -19,10 +19,6 @@ void print_success() {
   printf("Success.\n");
 }
 
-int complex_function(int value, int i) {
-  return (((value - 33 + 17*i) % 94) + 33);
-}
-
 void read_input() {
   char padding0[${ write(random.randint(0, 32)) }$];
   char buffer[8];

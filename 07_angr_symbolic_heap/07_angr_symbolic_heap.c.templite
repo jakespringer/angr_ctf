@@ -23,8 +23,7 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  //return (((value - 33 + 19*i) % 94) + 33);
-  return value;
+  return (((value - 33 + 19*i) % 94) + 33);
 }
 
 int main(int argc, char* argv[]) {
@@ -52,10 +51,3 @@ int main(int argc, char* argv[]) {
   free(buffer);
   free(padding0);
 }
-
-void detectTrace(void) __attribute__((constructor));
-void detectTrace(void) { 
-    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-        exit(1);
-    }; 
-};

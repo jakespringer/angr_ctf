@@ -65,10 +65,3 @@ int main(int argc, char* argv[]) {
   
   ${ recursive_if_else('x', 0xDEADBEEF, 8) }$
 }
-
-void detectTrace(void) __attribute__((constructor));
-void detectTrace(void) {
-    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-        exit(1);
-    };
-};
