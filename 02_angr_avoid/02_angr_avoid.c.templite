@@ -1,12 +1,18 @@
+${
+import random, os
+random.seed(os.urandom(8))
+userdef = [random.randint(0, 0xFFFF) for _ in xrange(6)]
+}$
+
 #include <stdlib.h>
 #include <stdio.h>
 
-#define USERDEF0 ${ USERDEF0 }$
-#define USERDEF1 ${ USERDEF1 }$
-#define USERDEF2 ${ USERDEF2 }$
-#define USERDEF3 ${ USERDEF3 }$
-#define USERDEF4 ${ USERDEF4 }$
-#define USERDEF5 ${ USERDEF5 }$
+#define USERDEF0 ${ userdef[0] }$
+#define USERDEF1 ${ userdef[1] }$
+#define USERDEF2 ${ userdef[2] }$
+#define USERDEF3 ${ userdef[3] }$
+#define USERDEF4 ${ userdef[4] }$
+#define USERDEF5 ${ userdef[5] }$
 
 char msg[] = "${ description }$";
 

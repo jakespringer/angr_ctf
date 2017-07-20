@@ -1,6 +1,8 @@
 ${
-import random
-  
+import random, os
+random.seed(os.urandom(16))
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef = [''.join(random.choice(userdef_charset) for _ in range(8)) for _ in range(4)] 
 def generate_true_statement(variable, value):
   random_int = random.randint(0, 0xFFFFFFFF)
   value_xor_int = value ^ random_int
@@ -31,10 +33,10 @@ def recursive_if_else(variable, value, end_statement, depth):
 #include <stdint.h>
 #include <sys/ptrace.h>
 
-#define USERDEF0 "${ userdef0 }$"
-#define USERDEF1 "${ userdef1 }$"
-#define USERDEF2 "${ userdef2 }$"
-#define USERDEF3 "${ userdef3 }$"
+#define USERDEF0 "${ userdef[0] }$"
+#define USERDEF1 "${ userdef[1] }$"
+#define USERDEF2 "${ userdef[2] }$"
+#define USERDEF3 "${ userdef[3] }$"
 #define LEN_USERDEF 8
 
 char msg[] = "${ description }$";
@@ -73,7 +75,6 @@ int main(int argc, char* argv[]) {
     }
   }
 
-
   printf("Enter the password: ");
 
   ${
@@ -91,11 +92,3 @@ int main(int argc, char* argv[]) {
     printf("Success.\n");
   }
 }
-
-void detectTrace(void) __attribute__((constructor));
-void detectTrace(void) { 
-  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-    exit(1);
-  }; 
-};
-
