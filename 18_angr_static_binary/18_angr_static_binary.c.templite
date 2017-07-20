@@ -1,6 +1,8 @@
 ${
 import random, os
 random.seed(os.urandom(8))
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 }$
 
 #include <stdio.h>

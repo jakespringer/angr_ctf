@@ -55,6 +55,10 @@ int main(int argc, char* argv[]) {
   fclose(fp);
   unlink(USERDEF1);
 
+  for (int i=0; i<8; ++i) {
+    buffer[i] = complex_function(buffer[i], -i);
+  }
+
   if (strncmp(buffer, USERDEF0, 8)) {
     printf("Try again.\n");
     exit(1);
@@ -63,10 +67,3 @@ int main(int argc, char* argv[]) {
     exit(0);
   }
 }
-
-void detectTrace(void) __attribute__((constructor));
-void detectTrace(void) { 
-  if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-    exit(1);
-  }; 
-};
