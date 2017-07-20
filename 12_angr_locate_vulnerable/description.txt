@@ -45,25 +45,3 @@ to jot down an outline of your exploit.
 4. Solve for the input string that will overwrite more characters than the buf-
    fer length.
 5. Check to see that the program segfaults and crashes.
-
-The Internet reveals documentation for some useful functions:
-
-- # Determines if there exists solutions to the symbolic values given the state 
-- # and the expressions.
-- simuvex.s_state.SimState.satisfiable(extra_constraints=(expression0, expression1, ...))
-- 
-- # Determines if the bitvector parameter is symbolic.
-- claripy.SolverEngine.symbolic(bitvector)
--
-- # The current instruction pointer as a concrete value.
-- simuvex.s_state.SimState.ip.args[0]
--
-- # Manually step each path in the pathgroup. This function, in combination with 
-- # some sort of check function to determine when to stop can be used to create 
-- # a fully customizable version of 'explore'.
-- angr.path_group.PathGroup.step()
--
-- # An array containing all of the active paths. A check function to be combined 
-- # with the function to create a customizable 'explore' might iterate through
-- # this list.
-- angr.path_gorup.PathGroup.active

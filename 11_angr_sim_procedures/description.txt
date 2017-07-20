@@ -20,27 +20,3 @@ Some research later, you find that this is actually fairly easy to dowith some-
 thing called a 'SimProcedure'. They are able to simulate a function that would
 be too difficult for Angr to handle by replacing it with Python code that edits
 the state manually.
-
-The documentation states:
-
-- Imagine a function in C:
-- // Imagine that it is located at address 0x4000000
-- int add(int a, int b) {
--   return a + b;
-- }
-- 
-- This could be simulated in Angr with the following:
-- class SimAdd(SimProcedure):
--   def run(self, a, b):
--     return a + b
--
-- Additionally, anything deriving the SimProcedure class can use:
-- self.state
-- in order to use the current state of the system as of when the SimProcedure is
-- called.
--
-- There are multiple ways to hook the SimProcedure:
-- If the binary is not stripped of its symbols:
-- project.hook_symbol('add', Hook(SimAdd))
-- otherwise:
-- project.hook(0x4000000, Hook(SimAdd))
