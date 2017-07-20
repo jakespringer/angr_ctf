@@ -9,7 +9,7 @@ def main():
   pg = proj.factory.path_group(initial_state)
   pg.explore(find=0x8048698, avoid=0x80484bb)
   print pg
-  print repr(pg.found[0].state.posix.dumps(0))
+  print pg.found[0].state.posix.dumps(0)
 
 if __name__ == '__main__':
   main()

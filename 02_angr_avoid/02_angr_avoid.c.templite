@@ -1,95 +1,59 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef = [random.randint(0, 0xFFFF) for _ in xrange(6)]
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 }$
 
-#include <stdlib.h>
+#define _GNU_SOURCE
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/syscall.h>
 
-#define USERDEF0 ${ userdef[0] }$
-#define USERDEF1 ${ userdef[1] }$
-#define USERDEF2 ${ userdef[2] }$
-#define USERDEF3 ${ userdef[3] }$
-#define USERDEF4 ${ userdef[4] }$
-#define USERDEF5 ${ userdef[5] }$
+#define USERDEF "${ userdef }$"
+#define LEN_USERDEF ${ write(len(userdef)) }$
 
-char msg[] = "${ description }$";
+char msg[] =
+  "${ description }$";
 
-char success[] = "Success.\n";
-char false_success[] = "Success... Just kidding! Try again.\n";
-char failure[] = "Try again.\n";
-char* to_print = &failure[0];
-
-void path0(int value1, int value0, int value3, int value4, int value2, int value5);
-void path1(int value4, int value2, int value3, int value1, int value5);
-void path2(int value5, int value4, int value3, int value2);
-void path3(int value4, int value5, int value3);
-void path4(int value5, int value4);
-void path5(int value5);
-
-void fail(int value) {
-  to_print = &false_success[0];
+void print_msg() {
+  printf("%s", msg);
 }
 
-void path0(int value1, int value0, int value3, int value4, int value2, int value5) {
-  if (value0 == USERDEF0) {
-    path1(value4, value2, value3, value1, value5);
-  } else {
-    fail(value0);
-  }
-}
-
-void path1(int value4, int value2, int value3, int value1, int value5) {
-  if (value1 == USERDEF1) {
-    path2(value5, value4, value3, value2);
-  } else {
-    fail(value1);
-  }
-}
-
-void path2(int value5, int value4, int value3, int value2) {
-  if (value2 == USERDEF2) {
-    path3(value4, value5, value3);
-  } else {
-    fail(value2);
-  }
-}
-
-void path3(int value4, int value5, int value3) {
-  if (value3 == USERDEF3) {
-    path4(value5, value4);
-  } else {
-    fail(value3);
-  }
-}
-
-void path4(int value5, int value4) {
-  if (value4 == USERDEF4) {
-    path5(value5);
-  } else {
-    fail(value4);
-  }
-}
-
-void path5(int value5) {
-  if (value5 == USERDEF5) {
-    to_print = &success[0];
-  } else {
-    fail(value5);
-  }
+int complex_function(int value, int i) {
+  return (((value - 33 + 3*i) % 94) + 33);
 }
 
 int main(int argc, char* argv[]) {
-  printf("%sEnter password: ", msg);
+  char buffer[20];
+  char password[20];
 
-  int user_input[6];
-  for (int i=0; i<6; ++i) {
-    scanf("%4x", &user_input[i]);
+  print_msg();
+
+  for (int i=0; i < 20; ++i) {
+    password[i] = 0;
+  }
+  
+  strncpy(password, USERDEF, LEN_USERDEF);
+
+  password[0] ^= password[1];
+  password[1] ^= password[0];
+  password[0] ^= password[1];
+
+  printf("Enter the password: ");
+  scanf("%8s", buffer);
+
+  for (int i=0; i<LEN_USERDEF; ++i) {
+    buffer[i] = complex_function(buffer[i], i);
   }
 
-  path0(user_input[1], user_input[0], user_input[3], user_input[4], user_input[2], user_input[5]);
-  printf("%s", to_print);
-
-  return 0;
+  if (!strcmp(buffer, password)) {
+    printf("Success.\n");
+  } else {
+    asm("mov $64, %eax\n\t"
+        "int $0x80");
+    printf("Try again.\n");
+  }
 }

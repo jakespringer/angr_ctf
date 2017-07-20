@@ -1,6 +1,14 @@
 #include <stdio.h>
 #include <string.h>
-#include <19_angr_shared_library_so.h>
+//#include <19_angr_shared_library_so.h>
+
+#ifndef __19_ANGR_SHARED_LIBRARY
+#define __19_ANGR_SHARED_LIBRARY
+
+extern void print_msg(void);
+extern int validate(char*, int);
+
+#endif
 
 int main(int argc, char* argv[]) {
   char buffer[16];
