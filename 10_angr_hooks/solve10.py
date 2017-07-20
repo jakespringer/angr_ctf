@@ -9,8 +9,7 @@ def compose(*functions):
 
 def main():
   proj = angr.Project(sys.argv[1])
-  ss = proj.factory.entry_state()
-
+  ss = proj.factory.entry_state()`
 
   @Hook.wrap(length=5)
   def skip_scanf(state):

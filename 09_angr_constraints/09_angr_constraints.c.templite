@@ -21,7 +21,7 @@ uint32_t f, e, d, c, b, a;
 uint32_t f0, e0, d0, c0, b0, a0;
 
 void print_msg() {
-  printf("%s", msg);
+  printf("%s\nOctal numbers:\n0%s\n0%s\n0%s\n0%s\n0%s\n0%s\n", msg, USERDEF0, USERDEF1, USERDEF2, USERDEF3, USERDEF4, USERDEF5);
 }
 
 int octcmp(uint32_t input, const char *buffer) {
