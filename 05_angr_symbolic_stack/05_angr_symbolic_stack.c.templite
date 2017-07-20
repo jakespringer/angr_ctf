@@ -8,8 +8,10 @@ import random
 #include <stdint.h>
 #include <string.h>
 
-#define USERDEF0 "${ userdef0 }$"
+#define USERDEF0 ${ userdef0 }$
 #define USERDEF1 ${ userdef1 }$
+#define USERDEF2 ${ userdef2 }$
+#define USERDEF3 ${ userdef3 }$
 
 char msg[] = "${ description }$";
 
@@ -17,34 +19,37 @@ void print_msg() {
   printf("%s", msg);
 }
 
-uint32_t complex_function0(uint32_t value, uint32_t salt) {
-  if (value < 33 || value > 126) {
-    exit(1);
-  }
-  value = (((value - 33 + 17*salt) % 94) + 33);
+uint32_t complex_function0(uint32_t value) {
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
   return value;
 }
 
 uint32_t complex_function1(uint32_t value) {
-  value ^= ${ write(random.randint(0, 0xFFFFFFFF)) }$;
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
+  return value;
+}
+
+uint32_t complex_function2(uint32_t value) {
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
+  return value;
+}
+
+uint32_t complex_function3(uint32_t value) {
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
   return value;
 }
 
 void handle_user() {
-  uint32_t user_int;
-  char user_str[16];
-  scanf("%u %8s", &user_int, user_str);
-  user_str[0] = complex_function0(user_str[0], 0);
-  user_str[1] = complex_function0(user_str[1], 1);
-  user_str[2] = complex_function0(user_str[2], 1);
-  user_str[3] = complex_function0(user_str[3], 1);
-  user_str[4] = complex_function0(user_str[4], 1);
-  user_str[5] = complex_function0(user_str[5], 1);
-  user_str[6] = complex_function0(user_str[6], 1);
-  user_str[7] = complex_function0(user_str[7], 1);
-  user_str[8] = '\0';
-  user_int = complex_function1(user_int);
-  if ((user_int ^ USERDEF1) || strncmp(user_str, USERDEF0, 8)) {
+  uint32_t user_int0;
+  uint32_t user_int1;
+  uint32_t user_int2;
+  uint32_t user_int3;
+  scanf("%u %u %u %u", &user_int1, &user_int0, &user_int2, &user_int3);
+  user_int0 = complex_function0(user_int0);
+  user_int1 = complex_function1(user_int1);
+  user_int2 = complex_function2(user_int2);
+  user_int3 = complex_function3(user_int3);
+  if ((user_int0 ^ USERDEF0) || (user_int1 ^ USERDEF1) || (user_int2 ^ USERDEF2) || (user_int3 ^ USERDEF3)) {
     printf("Try again.\n");
   } else {
     printf("Success.\n");

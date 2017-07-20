@@ -35,11 +35,14 @@ def main():
   while len(pg.active) > 0 and len(pg.found) == 0 and not found:
     pg.step()
     for path in pg.active:
-      if path.state.ip.args[0] == 0x08048460:
-        found = check_strcpy(path.state)
-        if found:
-          exploit_path = path
-          break
+      #if path.state.ip.args[0] == 0x8048789:
+      block = proj.factory.block(path.addr) 
+      for insn in block.capstone.insns:
+        if insn.insn.address == 0x8048789:
+          print insn.insn.mnemonic
+          print insn.insn.operands[0].type, insn.insn.operands[0].value.reg
+          print insn.insn.operands[1].type, hex(insn.insn.operands[1].value.mem.disp)
+          print insn.insn.reg_name(19)
 
   print pg
   print exploit_path.state.se.any_int(exploit_path.state.memory.load(0x4000000, 4, endness='Iend_LE')), 'aaaaaaaaaaaa'

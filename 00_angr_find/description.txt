@@ -77,14 +77,6 @@ proudly displays on his desk, as if it's some accomplishment that he's addicted.
 - At this point, the engine can construct a simple algebraic expression (user_input = "P4$$W0RD")
 - that leads to the answer.
 -
-- Here are a few functions and classes I saw that looked helpful:
--  angr.Project  # this looks like the way to load the binary
--  angr.Project.factory  # object with a bunch of useful methods (see below)
--  angr.factory.AngrObjectFactory.entry_state  # specify where to start
--  angr.factory.AngrObjectFactory.path_group  # lets you explore the binary
--  angr.path_group.PathGroup.explore  # check out the 'find' parameter
--  simuvex.s_state.SimState.posix.dumps(0)  # seems to solve for user_input
--
 - Thank me later,
 - Jeff
 
