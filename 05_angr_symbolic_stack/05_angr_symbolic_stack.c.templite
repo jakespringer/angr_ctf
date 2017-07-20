@@ -1,5 +1,7 @@
 ${
-import random
+import random, os
+random.seed(os.urandom(8))
+userdef = [random.randint(0, 0xFFFFFFFF) for i in xrange(4)]
 }$
 
 #include <stdio.h>
@@ -8,10 +10,10 @@ import random
 #include <stdint.h>
 #include <string.h>
 
-#define USERDEF0 ${ userdef0 }$
-#define USERDEF1 ${ userdef1 }$
-#define USERDEF2 ${ userdef2 }$
-#define USERDEF3 ${ userdef3 }$
+#define USERDEF0 ${ userdef[0] }$
+#define USERDEF1 ${ userdef[1] }$
+#define USERDEF2 ${ userdef[2] }$
+#define USERDEF3 ${ userdef[3] }$
 
 char msg[] = "${ description }$";
 

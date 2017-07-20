@@ -1,8 +1,16 @@
 #!/usr/bin/env python
 
 import sys, random, os, tempfile
-sys.path.append('/home/jake/templite')
 from templite import Templite
+
+if len(sys.argv) != 3:
+  print 'Usage: pypy generate.py [seed] [output_file]'
+  sys.exit()
+
+seed = sys.argv[1]
+output_file = sys.argv[2]
+
+random.seed(seed)
 
 description = ''
 with open('description.txt', 'r') as desc_file:
@@ -17,4 +25,4 @@ print '\n'.join([str(int(userdef[i], 8)) for i in range(6)])
 with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
   temp.write(c_code)
   temp.seek(0)
-  os.system('gcc -m32 -o 09_angr_constraints ' + temp.name)
+  os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)

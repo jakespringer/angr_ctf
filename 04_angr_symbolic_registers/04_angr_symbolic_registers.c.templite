@@ -1,5 +1,6 @@
 ${
-import random
+import random, os
+random.seed(os.urandom(8))
 
 def randomly_modify(var):
   operator = random.choice(['+=', '^='])

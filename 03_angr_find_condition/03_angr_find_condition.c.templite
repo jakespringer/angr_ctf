@@ -1,6 +1,10 @@
 ${
-import random
-  
+import random, os
+random.seed(os.urandom(8))
+
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
+
 def generate_true_statement(variable, value):
   random_int = random.randint(0, 0xFFFFFFFF)
   value_xor_int = value ^ random_int
@@ -30,8 +34,8 @@ def recursive_if_else(variable, value, depth):
 #include <string.h>
 #include <sys/ptrace.h>
 
-#define USERDEF "${ USERDEF }$"
-#define LEN_USERDEF ${ write(len(USERDEF)) }$
+#define USERDEF "${ userdef }$"
+#define LEN_USERDEF ${ write(len(userdef)) }$
 
 char msg[] = "${ description }$";
 

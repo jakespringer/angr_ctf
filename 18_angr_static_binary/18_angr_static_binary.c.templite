@@ -1,10 +1,15 @@
+${
+import random, os
+random.seed(os.urandom(8))
+}$
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ptrace.h>
 
-#define USERDEF "${ USERDEF }$"
-#define LEN_USERDEF ${ write(len(USERDEF)) }$
+#define USERDEF "${ userdef }$"
+#define LEN_USERDEF ${ write(len(userdef)) }$
 
 char msg[] =
   "${ description }$";
@@ -46,10 +51,3 @@ int main(int argc, char* argv[]) {
     printf("Success.\n");
   }
 }
-
-void detectTrace(void) __attribute__((constructor));
-void detectTrace(void) { 
-    if (ptrace(PTRACE_TRACEME, 0, 1, 0) < 0) {
-        exit(1);
-    }; 
-};
