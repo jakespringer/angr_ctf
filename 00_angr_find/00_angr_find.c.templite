@@ -20,6 +20,10 @@ void print_msg() {
   printf("%s", msg);
 }
 
+int complex_function(int value, int i) {
+  return (((value - 33 + 31*i) % 94) + 33);
+}
+
 int main(int argc, char* argv[]) {
   char buffer[20];
   char password[20];
@@ -38,6 +42,10 @@ int main(int argc, char* argv[]) {
 
   printf("Enter the password: ");
   scanf("%8s", buffer);
+
+  for (int i=0; i<LEN_USERDEF; ++i) {
+    buffer[i] = complex_function(buffer[i], i + 17);
+  }
 
   if (strcmp(buffer, password)) {
     printf("Try again.\n");

@@ -25,6 +25,7 @@ def main():
   pg = proj.factory.path_group(ss)
   #pg.explore(find=lambda p: 'Success.' in p.state.posix.dumps(1), avoid=0x8048520)
   pg.explore(find=0x8048987, avoid=0x80485a0)
+  pg.explore(find=0x
   print pg
 
   for e in pg.errored:
