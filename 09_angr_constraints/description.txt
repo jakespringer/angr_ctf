@@ -58,31 +58,3 @@ screen, there is a terminal window. It appears to be logged in to some sort of
 development server. He seems to have been working on writing an Angr script to
 find the backdoor in a few binaries. The script had a number of comments, but no
 substantial code.
-
-- # Note to self:
-- # 
-- # The binary seems to convert the six unsigned integers that the user inputs
-- # into a string of its octal representation, which it compares with six hard-
-- # coded octal strings. Of course, it applies some complex function on the user
-- # inputs before it converts them to an octal string, so manually converting
-- # the hardcoded octal strings to integers and inputting that will not work. 
-- # Angr won't be able to handle the octal string compare function, so I'll have 
-- # to work around that. I have an idea:
-- # 1. Deal with scanf and inject a symbolic value in each of the six outputs
-- # 2. Use objdump or some other tool to figure out the hardcoded octal strings
-- #    and the order in which they are compared
-- # 3. Stop the code before it gets to the octal string compare
-- # 4. Constrain the output of the complex functions such that they equals the
-- #    numeric values of the hardcoded octal strings
-- #
-- # It seems that I can use
-- # simuvex.s_state.SimState.add_constraints(expression)
-- # to add constraints to bitvectors. The expression parameter seems to accept
-- # algebraic and logical operations on bitvectors. For example:
-- # ...
-- # bitvector = claripy.BVS('variable', 32)
-- # state.add_constraints(2 * bitvector + 7 == 13)
-- # print state.se.any_int(bitvector)
-- # ...
-- # seems to print '3', which would satisfy the equation 
-- # '2 * bitvector + 7 == 13'

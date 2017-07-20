@@ -24,18 +24,4 @@ unsigned integers. You can't skip this scanf, as the comparison that checks if a
 password is valid appears to run alongside the scanf in the loop. After some rea-
 search, you find that you may need to use 'hooks', functionality in Angr that
 tells the symbolic execution engine to halt, run some of your own code, and then
-continue when it hits a certain address. You found an example online, with some
-useful information.
-
-# Before you hook an address, you have to specify the behavior of the hook. This
-# is the code that will be called at the hook address. In this case, the length
-# parameter tells the computer the number of bytes to skip before returning to
-# executing the binary. This is useful if you want to replace a certain instruc-
-# tion with some Python code, but do not want the original instruction to run.
-@Hook.wrap(length=2)
-def mov_edx_into_eax_instead_of_ebx(state):
-  state.regs.eax = state.regs.edx
-
-# 0x8048740 is the address of a 'mov edx, ebx' instruction that needs to be re-
-# placed.
-project.hook(0x8048740, mov_edx_into_eax_instead_of_ebx)
+continue when it hits a certain address.

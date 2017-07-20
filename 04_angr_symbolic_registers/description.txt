@@ -75,34 +75,7 @@ You get back to your desk to find the forwarded email waiting for you. You open
 it up, and click on the documentation, to find a list of functions with some
 comments about each one.
 
-- # Take a look at the 'addr' parameter.
-- angr.factory.AngrObjectFactory.blank_state
--
-- # Seems to instantiate a symbolic value of a given size (in a bitvector
-- # object.)
-- claripy.BVS
--
-- # If you replace [register_name] with an actual register, such as eax or ebp,
-- # you get a reference to a bitvector object that stores the value of the reg-
-- # ister. The value might be symbolic. Additionally, you can set it equal to a
-- # bitvector of your choice, which will allow you overwrite the value with your
-- # own.
-- # Example: simuvex.s_state.SimState.regs.eax = claripy.BVS('sym_eax', 32)
-- # would replace eax with a symbolic value that would propogate through the
-- # program.
-- simuvex.s_state.SimState.regs.[register_name]
--
-- # This is an instance of simuvex.plugins.solver.SimSolver for a given state.
-- simuvex.s_state.SimState.se
--
-- # What integer could the argument bitvector be in order to arrive at the state
-- # that owns this SimSolver? If there is no possible value the bitvector could
-- # be that would reach this state, this function fails.
-- simuvex.plugins.solver.SimSolver.any_int(bitvector)
-
-Everything else seems unnecessary. Possibly useful in the future. For now, you
-plan to stick to this to see if you can solve the new binaries. If only you
-had them.
+This would be perfect, but Kelly hasn't sent the binaries yet.
 
 Just at that moment, you recieve an email from Kelly with an awfully convenient
 attachment... Perfect timing.
