@@ -10,9 +10,8 @@ def main(argv):
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  scanf_calls_count_address = ???
-  scanf_calls_count_size_bytes = ???
-  scanf_set_aside_base_address = ???
+  global_symbols_key = ???
+
   instruction_to_skip_length = ???
 
   # Define a class that inherits simuvex.SimProcedure in order to take advantage
@@ -28,9 +27,9 @@ def main(argv):
     #
     # int add_if_positive(int a, int b) {
     #   if (a >= 0 && b >= 0) return a + b;
-    #   else return 0; 
+    #   else return 0;
     # }
-    # 
+    #
     # could be simulated with...
     #
     # class ReplacementAddIfPositive(simuvex.SimProcedure):
@@ -53,33 +52,17 @@ def main(argv):
       state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      scanf_calls_count = state.memory.load(
-        scanf_calls_count_address, 
-        scanf_calls_count_size,
-        endness=project.arch.memory_endness
-      )
-
-      stride = ???
-      set_aside_address = scanf_set_aside_base_address + (scanf_calls_count * stride)
-
-      state.memory.store(set_aside_address + ???, scanf0, endness=project.arch.memory_endness)
-      ...
-
-      state.memory.store(???, scanf_calls_count + 1, endness=project.arch.memory_endness)
+      if not global_symbols_key in state.procedure_data.global_variables:
+        state.procedure_data.global_variables[global_symbols_key] = []
+      state.procedure_data.global_variables[global_symbols_key].append(???)
 
   # Hook the scanf symbol. Angr automatically looks up the address associated
   # with the symbol. Alternatively, you can use 'hook' instead of 'hook_symbol'
-  # and specify the address of the function. To find the correct symbol, 
+  # and specify the address of the function. To find the correct symbol,
   # disassemble the binary.
   # (!)
   scanf_symbol = ???
-  project.hook_symbol(scanf_symbol, Hook(ReplacementScanf)) 
- 
-  state.memory.store(
-    scanf_calls_count_address, 
-    claripy.BVV(0, scanf_calls_count_size_bytes * 8), 
-    endness=project.arch.memory_endness
-  )
+  project.hook_symbol(scanf_symbol, Hook(ReplacementScanf))
 
   path_group = project.factory.path_group(initial_state)
 
@@ -96,21 +79,8 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
-    scanf_calls_count = good_path.state.se.exactly_int(good_path.state.memory.load(
-      scanf_calls_count_address,
-      scanf_calls_count_size,
-      endness=project.arch.memory_endness
-    ))
-
     solutions = []
-    for i in xrange(scanf_calls_count):
-      stride = ???
-      set_aside_address = scanf_set_aside_base_address + (i * stride)
-      password = state.memory.load(
-        set_aside_address + ???, 
-        ???, 
-        endness=project.arch.memory_endness
-      )
+    for password in ???:
       solution = good_path.state.se.any_int(password)
       solutions.append(solution)
 
