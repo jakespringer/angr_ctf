@@ -1,5 +1,5 @@
 You have access to a server at Eve Elle Software. One that clearly contains very
-sensitive, private information. 
+sensitive, private information.
 
 Your heart races as you download a PDF labeled 'future plans -- private.'
 
@@ -8,14 +8,14 @@ ing.
 
 The fifth slide, however, has more text. Your eyes widen with disbelief as you
 read the first few words: 'step 1: terminate and replace the 10,000 lowest per-
-forming employees.' That's half of their staff. 
+forming employees.' That's half of their staff.
 
 Suddenly, something catches your eye. In the background, the terminal that is
 currently logged into their server displays the results of a 'find' search to
 locate files with 'private' in their filename. At the bottom of the list, you
 see, in small white letters, your name, ending with a .pdf.
 
-You away. Perhaps you are hallucinating. After all, you haven't gotten much
+You look away. Perhaps you are hallucinating. After all, you haven't gotten much
 sleep in the past few days. Your gaze returns to the monitor. Your name shines
 back at you, in a staring contest that you cannot win. Slowly, you type the
 command to copy the file off of the server and download it to your local mach-
@@ -31,7 +31,7 @@ don't work for the company. You can only think of one person who works there,
 a classmate from when you were an undergrad. You haven't spoken to him since
 you graduated. It isn't him.
 
-Jeff.
+It's Jeff.
 
 You want to dig more. Luckily, you find a few binaries that might give you a
 way to access a different server, one that might have the encryption key, and
@@ -51,24 +51,12 @@ The internet reveals some interesting information:
 - gle instruction. If Angr determines that there are not a few, but rather, an
 - infinite (within the bounds of a computer) number of paths that the engine
 - can take, it classifies the state as an 'unconstrained' state. That is, there
-- is no constraint restricting its next action; it can jump anywhere. Typically, 
-- this arises from bugs, either in Angr, in your Angr script, or in the program 
+- is no constraint restricting its next action; it can jump anywhere. Typically,
+- this arises from bugs, either in Angr, in your Angr script, or in the program
 - you are analyzing. In the case where the instruction pointer, eip on a 32 bit
-- architecture, becomes symbolic and able to take on any value, the state will 
+- architecture, becomes symbolic and able to take on any value, the state will
 - have an infinite number of branches it can take. If this is the case, eip can
 - be controlled by the user, and may be able to be exploited to jump to an arbit-
 - rary location.
--
-- Normally, Angr throws away unconstrained states, as there is no clear way to
-- determine what to do next when in an unconstrained state. When constructing
-- a PathGroup, use the parameter 'save_unconstrained=True' to tell Angr to save
-- unconstrained states. When they are encountered, they will be moved to the 
-- list 'path_group.unconstrained'.
--
-- A simple attack on a binary is to search for unconstrained states, check if
-- eip is symbolic, and then determine if it can be set to the address of a piece 
-- of code the attacker wishes to execute. If it is, constrain eip to point to
-- that address, and then solve for the user input. Otherwise, throw away the
-- useless unconstrained path.
 
 You feel good about this. It just might work.

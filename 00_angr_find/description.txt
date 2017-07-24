@@ -1,26 +1,26 @@
 9:15am.
 
 You stare blankly at your 2012 Macbook Air and instinctively reach for your cof-
-fee. You pull the mug up to your lips to take a sip, but, much to your dispair,
+fee. You pull the mug up to your lips to take a sip, but, much to your despair,
 it's completely empty.
 
 It's going to be a long day.
 
-A notification pops up on the screen. It's an email from Kelly, your manager. 
+A notification pops up on the screen. It's an email from Kelly, your manager.
 It has been three months into your internship at one of the most well-known
 software companies in the world, and you have been tasked to find security vul-
-nerabilities in their primary competitor's software. It sounded exciting when 
+nerabilities in their primary competitor's software. It sounded exciting when
 you signed up, but you're quite tired of pouring over hundreds of binaries by
 hand, manually reverse engineering the software trying to find a stray buffer
-overflow or hidden password. 
+overflow or hidden password.
 
 Reluctantly, you open the email.
 
 - Hello,
 - Good morning!
-- 
-- We got ahold of a few more binaries from Eve Elle Software that seem to be inc-
-- luded in the next release of their software. They seem to have a backdoor into
+-
+- We got ahold of a few more binaries from Eve Elle Software that seem to be in-
+- cluded in the next release of their software. They seem to have a backdoor into
 - their system if you type in the correct password, but the password seems to be
 - encrypted with a complex algorithm before it is compared with what you type in,
 - so it won't be easy to retrieve.
@@ -36,46 +36,13 @@ Reluctantly, you open the email.
 
 Another notification. This time it's an email from Jeff. He's sitting right ac-
 ross from you, through the cubicle wall and about a hundred cans of Red Bull he
-proudly displays on his desk, as if it's some accomplishment that he's addicted.
+proudly displays on his desk, as if his addiction is some accomplishment.
 
 - Hey,
-- 
+-
 - I heard you were getting bored of reverse engineering these by hand. I
 - read about something called "symbolic execution" that might make your job a
 - little easier. You should check it out! http://angr.io
--
-- It looks like you can have the symbolic execution engine search for the back-
-- door and then try and solve for the input that would reach it. Imagine the
-- following pseudo-code:
--
-- ...
-- 16. if user_input == "P4$$W0RD":
-- 17.   print "Hello admin!"
-- 18.   enter_backdoor()
-- 19. else:
-- 20.   print "Hello normal user!"
-- ...
--
-- If you didn't know to type in "P4$$W0RD", it would take a long time to try and
-- guess it. If you were to instead execute it symbolically, user_input would
-- be made a symbol. Symbols act much like the 'x' from high
-- school algebra. Just like with algebra, while 'x' alone could be anything,
-- when we insert it into an equation, such as 4x + 2 = 10, we constrain it so
-- that it can only be equal to a particular value (or set of values.) In this
-- example, x would be equal to 2. The same approach can 'solve' programs. 
-- Instead of directly specifying an equation, we might want to search for a particular address to reach. For the
-- code above, we decide to try for line 18. When a symbolc execution engine steps
-- through this code, it reaches the if statement on line 16 and 'branches' to
-- execute both the code that would be run if the statement is true (line
-- 17 and on) and the code that would run if the statement is false (line 20 and on) simul-
-- taniously. Eventually, when one of the branches reaches our target (line 18,)
-- the engine will recall the conditions it needs to satisfy in order to get there. In
-- this example, since the engine branched only once at the if statement on line 16, the
-- only condition necessary to arrive at our target would be that user_input = "P4$$W0RD". In a
-- more sophisicated example, there could be hundreds or thousands of conditions, 
-- but the same principle holds.
-- At this point, the engine can construct a simple algebraic expression (user_input = "P4$$W0RD")
-- that leads to the answer.
 -
 - Thank me later,
 - Jeff
