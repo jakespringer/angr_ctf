@@ -30,10 +30,10 @@ int complex_function(int value, int i) {
 void write_string_to_file(char* buffer, int length) {
   char buffer_break_angr[length];
   int i;
-  
+
   memset(buffer_break_angr, 0, length);
   unlink(USERDEF1);
-  FILE* file = fopen(USERDEF1, "a+b"); 
+  FILE* file = fopen(USERDEF1, "a+b");
   fwrite(buffer, 1, length, file);
   fseek(file, 0, SEEK_SET);
   fscanf(file, "%64s", buffer_break_angr);
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     printf("Try again.\n");
     exit(1);
   } else {
-    printf("Success.\n");
+    printf("Good Job.\n");
     exit(0);
   }
 }

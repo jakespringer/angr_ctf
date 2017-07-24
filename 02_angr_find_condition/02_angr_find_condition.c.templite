@@ -12,7 +12,7 @@ def generate_true_statement(variable, value):
 
 def recursive_if_else(variable, value, depth):
   if depth == 0:
-    write('if (strcmp(buffer, password)) { printf(\"Try again.\\n\"); } else { printf(\"Success.\\n\"); }')
+    write('if (strcmp(buffer, password)) { printf(\"Try again.\\n\"); } else { printf(\"Good Job.\\n\"); }')
   else:
     if_true = random.choice([True, False])
     if (if_true):
@@ -62,6 +62,6 @@ int main(int argc, char* argv[]) {
 
   printf("Enter the password: ");
   scanf("%8s", buffer);
-  
+
   ${ recursive_if_else('x', 0xDEADBEEF, 8) }$
 }

@@ -54,7 +54,7 @@ void handle_user() {
   if ((user_int0 ^ USERDEF0) || (user_int1 ^ USERDEF1) || (user_int2 ^ USERDEF2) || (user_int3 ^ USERDEF3)) {
     printf("Try again.\n");
   } else {
-    printf("Success.\n");
+    printf("Good Job.\n");
   }
 }
 
@@ -62,4 +62,4 @@ int main(int argc, char* argv[]) {
   print_msg();
   printf("Enter the password: ");
   handle_user();
-}   
+}
