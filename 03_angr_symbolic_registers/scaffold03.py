@@ -7,7 +7,7 @@ def main(argv):
   project = angr.Project(path_to_binary)
 
   # Sometimes, you want to specify where the program should start. The variable
-  # start_address will specify where the symbolic execution engine should begin. 
+  # start_address will specify where the symbolic execution engine should begin.
   # Note that we are using blank_state, not entry_state.
   # (!)
   start_address = ???
@@ -50,10 +50,21 @@ def main(argv):
 
   if path_group.found:
     good_path = path_group.found[0]
-    print good_path.state.posix.dumps(sys.stdin.fileno())
+
+    # Solve for the symbolic values. If there are multiple solutions, we only
+    # care about one, so we can use any_int, which returns any (but only one)
+    # solution. Pass any_int the bitvector you want to solve for.
+    # (!)
+    solution0 = good_path.state.se.any_int(password0)
+    ...
+
+    # Aggregate and format the solutions you computed above, and then print
+    # the full string. Pay attention to the order of the integers, and the
+    # expected base (decimal, octal, hexadecimal, etc).
+    solution = ???
+    print solution
   else:
     raise Exception('Could not find the solution')
 
 if __name__ == '__main__':
   main(sys.argv)
-

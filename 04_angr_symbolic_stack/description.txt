@@ -33,7 +33,7 @@ Seconds later, you feel your pocket vibrate.
 - Again, thank you.
 -
 - The binary is fairly simple. It prompts the user for input with:
-- scanf("%u %8s", ...);
+- scanf("%u %u", ...);
 - and then places the integer and the string on the stack. With the right input,
 - it opens the backdoor.
 -

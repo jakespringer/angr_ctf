@@ -44,6 +44,10 @@ proudly displays on his desk, as if his addiction is some accomplishment.
 - read about something called "symbolic execution" that might make your job a
 - little easier. You should check it out! http://angr.io
 -
+- Take a look at scaffold00.py. It's attached to this email. It has a lot more
+- information about how to use Angr, and also some information I gathered about
+- the binaries you are trying to crack.
+-
 - Thank me later,
 - Jeff
 

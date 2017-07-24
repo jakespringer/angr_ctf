@@ -34,7 +34,7 @@ def main(argv):
     complex_function_output0_address = ???
     complex_function_output0_size_bytes = ???
     complex_function_output0 = good_path.state.load(
-      complex_function_output0_address, 
+      complex_function_output0_address,
       complex_function_output0_size_bytes,
       endness=project.arch.memory_endness
     )
@@ -49,7 +49,7 @@ def main(argv):
     solution0 = good_path.state.se.any_int(password0)
     ...
 
-    solution = ... + ' ' + str(solution0) + ' ' + ...
+    solution = ???
 
     print solution
   else:

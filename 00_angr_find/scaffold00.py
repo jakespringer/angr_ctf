@@ -1,3 +1,27 @@
+# Before you begin, here are a few notes about these capture-the-flag
+# challenges.
+#
+# Each binary, when run, will ask for a password, which can be entered via stdin
+# (typing it into the console.) Many of the levels will accept many different
+# passwords. Your goal is to find a single password that works for each binary.
+#
+# If you enter an incorrect password, the program will print "Try again." If you
+# enter a correct password, the program will print "Good Job."
+#
+# Each challenge will be accompanied by a file like this one, named
+# "scaffoldXX.py". It will offer guidance as well as the skeleton of a possible
+# solution. You will have to edit each file. In some cases, you will have to
+# edit it significantly. While use of these files is recommended, you can write
+# a solution without them, if you find that they are too restrictive.
+#
+# Places in the scaffoldXX.py that require a simple substitution will be marked
+# with three question marks (???). Places that require more code will be marked
+# with an ellipsis (...). Comments will document any new concepts, but will be
+# omitted for concepts that have already been covered (you will need to use
+# previous scaffoldXX.py files as a reference to solve the challenges.) If a
+# comment documents a part of the code that needs to be changed, it will be
+# marked with an exclamation point at the end, on a separate line (!).
+
 import angr
 import sys
 
@@ -6,7 +30,7 @@ def main(argv):
   # If you want to be able to point to the binary from the command line, you can
   # use argv[1] as the parameter. Then, you can run the script from the command
   # line as follows:
-  # ./solve00 [binary]
+  # ./scaffold00 [binary]
   # (!)
   path_to_binary = ???
   project = angr.Project(path_to_binary)
@@ -36,7 +60,7 @@ def main(argv):
     # The explore method stops after it finds a single path that arrives at the
     # target address.
     good_path = path_group.found[0]
-    
+
     # Print the string that Angr wrote to stdin to follow good_path. This is
     # our solution.
     print good_path.state.posix.dumps(sys.stdin.fileno())

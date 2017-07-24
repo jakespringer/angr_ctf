@@ -14,8 +14,11 @@ def main(argv):
   # make sure we correct for this.
   initial_state.regs.ebp = initial_state.regs.esp
 
-  # scanf("%u %u %u %u") needs to be replaced by injecting four bitvectors. You
-  # can either copy and paste the line below or use a Python list.
+  # scanf("%u %u %u %u") needs to be replaced by injecting four bitvectors. The
+  # reason for this is that Angr does not (currently) automatically inject
+  # symbols if scanf has more than one input parameter. This means Angr can
+  # handle 'scanf("%x")', but not 'scanf("%x %x")'.
+  # You can either copy and paste the line below or use a Python list.
   # (!)
   password0 = claripy.BVS('password0', ???)
   ...
@@ -52,18 +55,10 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
-    # Solve for the symbolic values. If there are multiple solutions, we only
-    # care about one, so we can use any_int, which returns any (but only one)
-    # solution. Pass any_int the bitvector you want to solve for.
-    # (!)
     solution0 = good_path.state.se.any_int(password0)
     ...
-    
-    # Pay attention to the order in which the integers need to be presented as
-    # arguments. Look at the binary's dissasembly to determine this. 
-    # (!)
-    solution = ... + ' ' + str(solution0) + ' ' + ...
 
+    solution = ???
     print solution
   else:
     raise Exception('Could not find the solution')

@@ -49,7 +49,7 @@ def main(argv):
 
     solution0 = good_path.state.se.any_str(password0)
     ...
-    solution = ... + ' ' + solution0 + ' ' + ...
+    solution = ???
 
     print solution
   else:
