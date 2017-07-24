@@ -12,7 +12,7 @@ def main(argv):
     # Dump whatever has been printed out by the binary so far into a string.
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
 
-    # Return whether 'Success.' has been printed yet.
+    # Return whether 'Good Job.' has been printed yet.
     # (!)
     return ???
 
