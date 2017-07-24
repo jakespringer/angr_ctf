@@ -1,13 +1,13 @@
 -- Did it work?
 
-It's 8am, you glance back at Jeff, not sure what he's asking in your non-
-caffeinated state.
+It's 8am. You glance back at Jeff. There isn't enough caffeine flowing through
+your brain to understand his gibberish.
 
 -- Did what work?
 
 -- The 'avoid' parameter to the 'explore' function...
 
--- Oh! Yeah, it worked. Thanks. I really appreciate your help.
+-- Oh! Yeah, it worked. Thanks.
 
 He smiled, nodded, and walked off, probably to get a Red Bull from the vending
 machine.
@@ -17,7 +17,7 @@ machine.
 Another email.
 
 - Hello,
-- 
+-
 - Good news! The passwords you found worked perfectly. In fact, with them, we
 - could get full access to their system, including all of their plans for the
 - new platform they plan to release, which would give us a huge leg up from a
@@ -26,7 +26,7 @@ Another email.
 - Bad news: Someone seems to have leaked that information to Eve Elle Software.
 - We are still trying to figure out who the spy could possibly be. Legal is pre-
 - paring for the worse, in case Eve Elle Software wants to try and sue us. Eve
-- Elle also pushed changes to their software, adding an even more sophisicated
+- Elle also pushed changes to their software, adding an even more sophisticated
 - backdoor. My source tells me that in this version, the location of the code
 - that invokes the backdoor changes with every binary.
 -
@@ -40,7 +40,7 @@ Another email.
 -- Jeff!
 
 At this point, you're considering asking to trade cubicles with Sam. She works
-directly across from Jeff, so there would no longer be a physical barrior bet-
+directly across from Jeff, so there would no longer be a physical barrier bet-
 ween you and him.
 
 -- Sorry, I'm busy at the moment. Can it wait 'till tomorrow?

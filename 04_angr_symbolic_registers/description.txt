@@ -2,8 +2,8 @@ Scrawled on a sticky note, the words "URGENT, SEE ME IN MY OFFICE. -Kelly" had
 been plastered to your monitor.
 
 You had just arrived fifteen minutes late, due to unusually bad traffic. Perhaps
-everyone had woken up late and were scrambling to get to work, all at the same
-time. It was Monday, after all. The worst day of the week.
+everyone had woken up late and scrambled to get to work, all at the same time.
+It was Monday, after all. The worst day of the week.
 
 You grab the sticky note and crumple it up as you walk. You toss it in the
 trash can at the entrance to her office.
@@ -12,7 +12,7 @@ trash can at the entrance to her office.
 
 -- You're fifteen minutes late.
 
-Kelly is clearly not in the mood for small talk. 
+Kelly is clearly not in the mood for small talk.
 
 -- Sorry about that, the traffic--
 
@@ -35,34 +35,28 @@ but you don't mention that.
 She continues.
 
 -- According to my source, they figured out that we have the passwords. My sour-
-   ce said something else about how they know that you're angry. I think the 
-   exact words they used were that they know you 'have been using anger' or
-   something like that. Anyway, if there's something you need to tell me about 
-   that, you should know that you can always talk to me about it. 
+   ce said something else about how they know that you're angry. If there's
+   something you need to tell me about that, you should know that you can always
+   talk to me about it.
 
-   But back to the issue at hand. My source informed me that the new security
+You stare blankly.
+
+-- Back to the issue at hand. My source informed me that the new security
    they use to defend their backdoor. Take a look at this, it's from my source.
 
 She shows you part of an email, with some text highlighted.
 
 - The new binary asks the user to input three hexadecimal numbers. Each of these
-- numbers is then encrypted with a complex function. I'm pretty sure angr cannot
+- numbers is then encrypted with a complex function. I'm pretty sure Angr cannot
 - handle the way the binary inputs the three numbers. You'll have to do it man-
 - ually. After the binary inputs the numbers, it places them in three different
-- registers, though I'm not sure which ones. The following is an outline of how
-- you might accomplish breaking it:
-- 1. Skip the user input function, start executing after it. Trying to get angr
--    to handle scanf correctly isn't worth the trouble right now.
-- 2. Figure out which registers would have the three numbers, had you executed
--    the code that gets the user input, and initialize them with symbolic val-
--    ues.
-- 3. From there, find a path to the backdoor and solve for the symbolic values.
+- registers, though I'm not sure which ones.
 
 The email continues with links to various pieces of documentation.
 
-Kelly smiles and speaks, mostly to herself.
+Kelly mutters to herself.
 
--- I wonder why she keeps misspelling anger.
+-- I wonder why she keeps misspelling anger...
 
 -- Can you forward that to me, Kelly?
 
@@ -77,5 +71,5 @@ comments about each one.
 
 This would be perfect, but Kelly hasn't sent the binaries yet.
 
-Just at that moment, you recieve an email from Kelly with an awfully convenient
+Just at that moment, you receive an email from Kelly with an awfully convenient
 attachment... Perfect timing.

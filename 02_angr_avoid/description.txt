@@ -12,13 +12,13 @@ inbox. It's lunch now. You decide to look at it after you've eaten your burrito.
 ...
 
 - Hello,
-- 
+-
 - Thanks for the great work with those last few binaries.
 -
 - Unfortunately, it seems Eve Elle Software has decided not to put them in their
 - upcoming release. Instead, they have a new backdoor system. My source tells me
 - the binary tries to trick you by triggering a trap if you execute a certain
-- part of the program. I have no idea what that means, but you'll need to figure 
+- part of the program. I have no idea what that means, but you'll need to figure
 - out a way to avoid it.
 -
 - Could you have these done by the end of the day today?
@@ -41,10 +41,6 @@ After reading this, you walk over to Jeff's cubicle.
 -- Weird... Usually you only avoid areas of the code you know don't lead anywhere
    useful. Angr has some functionality that allows you to stop running any branch
    that happens to reach some address or condition that leads you to believe there
-   isn't a solution past that point. Remember the explore method I told you about
-   earlier? I told you to use the 'find' parameter to tell Angr to stop when you
-   reach a certain address. There's another similar parameter, called 'avoid',
-   that tells Angr to throw away any branches that reach that point. Go ahead and
-   see if that's what you need.
+   isn't a solution past that point. Take a look at that. Let me know how it goes!
 
 -- Thanks, I'll let you know.

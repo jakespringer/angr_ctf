@@ -31,7 +31,7 @@ She breaks eye contact, but continues talking.
 You feel completely overwhelmed with confusion, which soon turns to fright as
 you consider the possibility that someone had been impersonating you. This
 emotion quickly turns to anger as you realize that Jeff had set you up to this.
-The binaries he asked you to solve--they weren't as innocuous as you had
+The binaries he asked you to solve--they weren't as innocuous as you had first
 thought.
 
 -- I did not leak the secrets. I can explain. It was Jeff that--
@@ -44,6 +44,14 @@ thought.
 She clearly doesn't want to hear it. You pack up and begin to leave.
 
 He won't win. Not without a fight.
+
+-- I'll be back.
+
+You mutter this under your breath.
+
+-- What was that?
+
+-- Nothing. I'll be going.
 
 ...
 

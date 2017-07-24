@@ -3,13 +3,6 @@ Tuesday afternoon. Jeff is out sick.
 A notification pops up on your screen. An email. From Jeff.
 
 - Hey,
-- 
-- I was just thinking. Remember how I told you a while back that
-- simuvex.s_state.SimState.posix.dumps(0) would solve for any user input? I told
-- you back then that I wasn't really sure how it worked. Well, I figured out how
-- it works. On Unix based systems, stdin (which happens to be represented with
-- the number 0) is a file, just like any other file your hard drive might store,
-- or a file that you would use to read from the network.
 -
 - I found that you can use Angr to simulate files symbolically. This is great, be-
 - cause it means you can inject symbols for many different types of communication,

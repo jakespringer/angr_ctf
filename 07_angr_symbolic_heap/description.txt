@@ -15,7 +15,7 @@ of the task at hand, but no more. The next, something clicks, and you become
 completely immersed in your work. You feel energized and your senses heighten,
 but you are fully disconnected from the outside world. You do not hear your co-
 worker call your name, twice. Your brain ignores the signal from your left shou-
-lder as they walk by and tap it, but then think the better of disrupting you, 
+lder as they walk by and tap it, but then think the better of disrupting you,
 and walk away. All you feel is a monogamous intimacy with the task at hand,
 without regard to external sight, smell, sound, touch, or even time. Psycho-
 logists call this 'flow'. You are pretty sure you just experienced it.
@@ -35,7 +35,7 @@ the microwave, you run into Kelly. You might as well ask her about it.
 -- Oh. Haven't you heard?
 
    Someone leaked a backdoor in our software to Eve Elle Software. We aren't
-   sure who, exactly, but our binaries are only accessable from our systems here
+   sure who, exactly, but our binaries are only accessible from our systems here
    onsite. The cybersecurity response team has been up all night working. They
    think they've patched most of the holes, but we can never really be sure.
 
@@ -69,7 +69,7 @@ When you finish your lunch and return to your desk, you open your email.
 - stores them on the heap. This is the main line of security we have. We figure
 - it will be harder for a hacker to determine the correct strings to input if we
 - hide them away in an arbitrary memory location.
-- 
+-
 - Thanks,
 - Kelly
 - Security Team Manager
@@ -81,7 +81,7 @@ When you finish your lunch and return to your desk, you open your email.
 
 -- Do you know anything about injecting symbols into the heap?
 
--- Yeah, there are a couple ways. Do you have a pointer to the location of the 
+-- Yeah, there are a couple ways. Do you have a pointer to the location of the
    memory on the heap?
 
 -- I haven't actually looked at the binaries yet, but I would imagine that I do.
@@ -101,4 +101,4 @@ When you finish your lunch and return to your desk, you open your email.
 
 -- Thanks!
 
--- No problem. Before you go, remember to account for endianness!
+-- No problem. Remember to account for endianness!

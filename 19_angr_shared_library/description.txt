@@ -1,7 +1,7 @@
 According to your phone, it's 9:11am.
 
 Jeff is now eleven minutes late. You are starting to regret agreeing to meet him
-here. 
+here.
 
 At that moment, he and a woman you do not recognize walk through the door. You
 feel worse than when he wasn't here. Both he and the woman are dressed in formal
@@ -31,8 +31,8 @@ continues.
 -- We are very impressed with your ability to find the backdoors and exploit bi-
    naries. You have been of great help to us. We would like to continue a rel-
    ationship with you, and compensate you for your services. We are offering you
-   a job. A full-time, real job. Not an internship. Of course, we know you are 
-   pursuing a graduate degree, and will support you in whatever way we can while 
+   a job. A full-time, real job. Not an internship. Of course, we know you are
+   pursuing a graduate degree, and will support you in whatever way we can while
    you complete it.
 
 -- I've helped you?
@@ -65,7 +65,7 @@ Kelly walks over.
 -- Check your email, I have a few more binaries for you to look at.
 
 She has a slight smirk as she says this. More busywork. She still doesn't trust
-you. Surely, she is waiting for the day you either leave, or her supervisers
+you. Surely, she is waiting for the day you either leave, or her supervisors
 grant her permission to let you go.
 
 -- Actually, I don't think I will.
@@ -84,6 +84,8 @@ ing.
 When you arrive home, two emails are waiting. One from Claire and the second
 from Jeff.
 
+The first one:
+
 - Hello,
 -
 - We are glad your are considering our offer. We can give you a salary above the
@@ -98,6 +100,8 @@ from Jeff.
 - Claire Liu
 - Hiring Manager
 - Eve Elle Software
+
+The second:
 
 - Hey,
 -
@@ -116,7 +120,7 @@ from Jeff.
 - function. This will initialize the starting state as if the computer called
 - that function with the parameters you specify. If you want to specify an ad-
 - dress to jump to after the function returns, use the named ret_addr parameter.
-- 
+-
 - Additionally, watch out for the fact that shared libraries typically use pos-
 - ition-independent code, meaning that the addresses specified in the binary
 - will actually be an offset from some other position when loaded in to an exe-

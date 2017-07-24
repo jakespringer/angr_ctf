@@ -1,6 +1,7 @@
-Wait a second. The public IP of the Jeff's development server is part of a well-
-known subnet owned by Eve Elle Software. Everything is beginning to click tog-
-ether.
+Wait a second.
+
+The public IP of the Jeff's development server is part of a well known subnet
+owned by Eve Elle Software. Everything is beginning to click together.
 
 It's late at night by now. You hear the occasional siren of police performing
 their duty at the most dangerous time of their collective daily routine.
@@ -16,12 +17,4 @@ bers of their company. Just not you.
 The Linux user under which the program you exploited doesn't have access to many
 interesting files. You do, however, come across a read-only version of a binary
 that appears to run one of the companies primary services. It would certainly be
-run under an account with more interesting information.
-
-This time, you look at the binary yourself. You find that the code appears to be
-calling scanf in a loop, reading in two integers at a time for a total of eight
-unsigned integers. You can't skip this scanf, as the comparison that checks if a
-password is valid appears to run alongside the scanf in the loop. After some rea-
-search, you find that you may need to use 'hooks', functionality in Angr that
-tells the symbolic execution engine to halt, run some of your own code, and then
-continue when it hits a certain address.
+run under an account with access to more interesting information.

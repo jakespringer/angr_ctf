@@ -1,5 +1,5 @@
 You curse under your breadth. It's much past midnight. Enough that, while the
-sun is still not visible, it's lighter outside than it was an hour ago. 
+sun is still not visible, it's lighter outside than it was an hour ago.
 
 It's a Saturday, no one will show up. You have time.
 
@@ -15,8 +15,3 @@ time, however, there are so many calls to scanf that you wouldn't think of man-
 ually hooking each one. Perhaps you could hook the scanf function itself; ins-
 tead of hooking the address where it is called, you hook the address in the PLT
 table that jumps to the shared library where scanf is defined.
-
-Some research later, you find that this is actually fairly easy to dowith some-
-thing called a 'SimProcedure'. They are able to simulate a function that would
-be too difficult for Angr to handle by replacing it with Python code that edits
-the state manually.
