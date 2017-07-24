@@ -33,10 +33,10 @@ int main(int argc, char* argv[]) {
   }
 
   if (counter == ${ write(random.randint(8, 56)) }$) {
-    printf("Success.\n");
+    printf("Good Job.\n");
   } else {
     printf("Try again.\n");
   }
-  
+
   return 0;
 }

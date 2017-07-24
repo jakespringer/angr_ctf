@@ -35,7 +35,7 @@ int main(int argc, char* argv[]) {
   for (int i=0; i < 20; ++i) {
     password[i] = 0;
   }
-  
+
   strncpy(password, USERDEF, LEN_USERDEF);
 
   password[0] ^= password[1];
@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
   }
 
   if (!strcmp(buffer, password)) {
-    printf("Success.\n");
+    printf("Good Job.\n");
   } else {
     asm("mov $64, %eax\n\t"
         "int $0x80");

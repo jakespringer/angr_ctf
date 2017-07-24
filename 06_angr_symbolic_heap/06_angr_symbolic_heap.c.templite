@@ -38,13 +38,13 @@ int main(int argc, char* argv[]) {
   scanf("%8s %8s %8s %8s", buffer, &buffer[8], &buffer[16], &buffer[24]);
 
   for (int i=0; i<32; ++i) {
-    buffer[i] = complex_function(buffer[i], i); 
+    buffer[i] = complex_function(buffer[i], i);
   }
 
   if (strncmp(buffer, USERDEF, 32)) {
     printf("Try again.\n");
   } else {
-    printf("Success.\n");
+    printf("Good Job.\n");
   }
 
   free(padding1);

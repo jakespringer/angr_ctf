@@ -68,8 +68,8 @@ int main(int argc, char* argv[]) {
   if (non_eax || non_ebx || non_edx) {
     printf("Try again.\n");
   } else {
-    printf("Success.\n");
+    printf("Good Job.\n");
   }
-   
+
   return 0;
 }

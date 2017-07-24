@@ -33,7 +33,7 @@ int octcmp(uint32_t input, const char *buffer) {
     if (oct_string[i] < '0' || oct_string[i] > '9') {
       oct_string[i] = '0';
     }
-  }  
+  }
 
   printf("%s\n", oct_string);
 
@@ -51,15 +51,15 @@ int main(int argc, char* argv[]) {
   e0 = e + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
   d0 = d + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
   c0 = c + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  b0 = b + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$; 
+  b0 = b + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
   a0 = a + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
 
-  int result = octcmp(a0, USERDEF0) | octcmp(b0, USERDEF1) | octcmp(c0, USERDEF2) | 
+  int result = octcmp(a0, USERDEF0) | octcmp(b0, USERDEF1) | octcmp(c0, USERDEF2) |
     octcmp(d0, USERDEF3) | octcmp(e0, USERDEF4) | octcmp(f0, USERDEF5);
 
   if (result) {
     printf("Try again.\n");
   } else {
-    printf("Success.\n");
+    printf("Good Job.\n");
   }
 }

@@ -33,7 +33,7 @@ void print_msg() {
 }
 
 void segv_handler(int sig) {
-  printf("Success.\n");
+  printf("Good Job.\n");
   exit(0);
 }
 
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]) {
 
   printf("Enter the password: ");
   scanf("%u %32s", &key, user_buffer);
-  
+
   ${
   hit_statement = """
   strcpy(strcpy_buffer, user_buffer);
