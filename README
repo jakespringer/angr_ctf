@@ -24,14 +24,14 @@ let package.py =
   generates a zip file containing all files that should be distributed for a given
   challenge
   args: file_path
-  args[0] is the file_path to where the zip should be created and written 
+  args[0] is the file_path to where the zip should be created and written
 
 let solve.py =
   solves a given executable. this will be defined by the user for each challenge.
   args: file_path
   args[0] is the file_path to the executable it should solve
 
-let test_solution.py = 
+let test_solution.py =
   runs an uploaded solve.py on a set of executables for a given challenge, generated
   with generate.py. solve.py should be sandboxed when run. prints results to stdout.
   args: file_path, file_path
@@ -59,6 +59,8 @@ level 02
   ? hit an error condition after "try again"
 
 
-
-
-
+  explain notation of everything (???, !, etc)
+  explain scaffold00
+  explain "Success." vs "Try again." -> change to "Good Job."
+  explain that backdoor_address can be a hex number (not a string)
+  add decision tree (CHECK_BIT) as an example to the slides <- Ch3_06_Conditionals (AsmConditionals in malware) before we introduce it
