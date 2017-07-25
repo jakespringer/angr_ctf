@@ -2,7 +2,7 @@ import angr
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
   initial_state = project.factory.entry_state()
   path_group = project.factory.path_group(initial_state)
@@ -14,12 +14,12 @@ def main(argv):
 
     # Return whether 'Good Job.' has been printed yet.
     # (!)
-    return ???
+    return ???  # :boolean
 
   # Same as above, but this time check if the path should abort.
   def should_abort(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return ???  # :boolean
 
   # Tell Angr to explore the binary and find any path that is_successful identfies
   # as a successful state by returning True.

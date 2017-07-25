@@ -3,14 +3,14 @@ import claripy
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   # Sometimes, you want to specify where the program should start. The variable
   # start_address will specify where the symbolic execution engine should begin.
   # Note that we are using blank_state, not entry_state.
   # (!)
-  start_address = ???
+  start_address = ???  # :integer (probably hexadecimal)
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
@@ -19,7 +19,7 @@ def main(argv):
   # You will have to construct multiple bitvectors. Copy the two lines below
   # and change the variable names.
   # (!)
-  password0_size_in_bits = ???
+  password0_size_in_bits = ???  # :integer
   password0 = claripy.BVS('password0', password0_size_in_bits)
   ...
 
@@ -61,7 +61,7 @@ def main(argv):
     # Aggregate and format the solutions you computed above, and then print
     # the full string. Pay attention to the order of the integers, and the
     # expected base (decimal, octal, hexadecimal, etc).
-    solution = ???
+    solution = ???  # :string
     print solution
   else:
     raise Exception('Could not find the solution')

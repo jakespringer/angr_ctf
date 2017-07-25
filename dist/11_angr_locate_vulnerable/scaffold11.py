@@ -4,7 +4,7 @@ import simuvex
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   start_address = ???
@@ -29,7 +29,7 @@ def main(argv):
       ...
       state.procedure_data.global_variables[global_symbols_key].append(???)
 
-  scanf_symbol = ???
+  scanf_symbol = ???  # :string
   project.hook_symbol(scanf_symbol, Hook(ReplacementScanf))
 
   # Check if strcpy might be vulnerable by checking if the source is symbolic
