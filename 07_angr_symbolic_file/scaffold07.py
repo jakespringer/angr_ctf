@@ -4,20 +4,20 @@ import simuvex
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  # Specify some information needed to construct a symbolic file. For this 
+  # Specify some information needed to construct a symbolic file. For this
   # challenge, the symbolic filename can be hardcoded, but in theory, it could
-  # be symbolic. Note: to read from the file, the binary calls 
+  # be symbolic. Note: to read from the file, the binary calls
   # 'fscanf(file, "%64s")'.
   # (!)
   filename = ???
   symbolic_file_size_bytes = ???
-  
+
   # Construct the symbolic memory from and to which the file will read and
   # write. Also, associate the memory with the initial_state.
   symbolic_file_backing_memory = simuvex.SimSymbolicMemory()
@@ -25,7 +25,7 @@ def main(argv):
 
   # Construct a bitvector for the password and then store it in the file's
   # backing memory. The store method works exactly the same as the store method
-  # you have already used. In fact, it's the exact same method! 
+  # you have already used. In fact, it's the exact same method!
   # Hint: the binary reads the password starting from the beginning of the file.
   # (!)
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)

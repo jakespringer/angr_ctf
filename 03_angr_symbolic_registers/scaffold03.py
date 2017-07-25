@@ -3,7 +3,7 @@ import claripy
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   # Sometimes, you want to specify where the program should start. The variable
