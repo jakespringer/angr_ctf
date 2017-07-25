@@ -32,7 +32,7 @@ def main(argv):
   # line as follows:
   # ./scaffold00 [binary]
   # (!)
-  path_to_binary = ???
+  path_to_binary = ???  # :string
   project = angr.Project(path_to_binary)
 
   # Tell Angr where to start executing (should it start from the main()
@@ -49,7 +49,7 @@ def main(argv):
   # executing until it either finds a solution or it has explored every possible
   # path in the executable.
   # (!)
-  backdoor_address = ???
+  backdoor_address = ???  # :integer (probably in hexadecimal)
   path_group.explore(find=backdoor_address)
 
   # Check that we have found a solution. The path_group.explore() method will

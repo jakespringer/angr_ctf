@@ -4,7 +4,7 @@ import simuvex
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   start_address = ???
@@ -13,7 +13,7 @@ def main(argv):
   # We will collect a list of all of the symbolic variables accumulated by the
   # scanf function in a dictionary stored with the state. This will make more
   # sense when you see it used.
-  global_symbols_key = ??? # :string
+  global_symbols_key = ???  # :string
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
@@ -48,7 +48,7 @@ def main(argv):
   # (!)
   scanf_called_address = ???
   project.hook(scanf_called_address, skip_scanf)
-  
+
   path_group = project.factory.path_group(initial_state)
 
   def is_successful(path):

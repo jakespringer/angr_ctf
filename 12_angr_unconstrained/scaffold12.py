@@ -4,7 +4,7 @@ import simuvex
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   start_address = ???
@@ -12,10 +12,10 @@ def main(argv):
 
   # An under-constrained (unconstrained) state occurs when there are too many
   # possible branches from a single instruction. This occurs, among other ways,
-  # when the instruction pointer (on x86, eip) is completely symbolic, meaning 
+  # when the instruction pointer (on x86, eip) is completely symbolic, meaning
   # that user input can control the address of code the computer executes.
   # For example, imagine the following pseudo assembly:
-  # 
+  #
   # mov user_input, eax
   # jmp eax
   #
@@ -46,12 +46,12 @@ def main(argv):
   # that serves the same purpose.
   has_found_solution = len(path_group.found) > 0
 
-  # Check if there are still unconstrained paths left to check. Once we 
+  # Check if there are still unconstrained paths left to check. Once we
   # determine a given unconstrained state is not exploitable, we can throw it
   # out. Use the path_group.unconstrained list.
   # (!)
   has_unconstrained_to_check = ???
-  
+
   # The list path_group.active is a list of all paths that can be explored
   # further.
   # (!)
@@ -67,7 +67,7 @@ def main(argv):
         # the solution. The way the loops is currently set up, you should move
         # the exploitable unconstrained state to the 'found' stash.
         # A 'stash' should be a string that corresponds to a list that stores
-        # all the paths that the path group keeps. Values include: 
+        # all the paths that the path group keeps. Values include:
         #  'active' = paths that can be stepped
         #  'deadended' = paths that have exited the program
         #  'errored' = paths that encountered an error with Angr
@@ -76,7 +76,7 @@ def main(argv):
         #  anything else = whatever you want, perhaps you want a 'not_needed',
         #                  you can call it whatever you want
 
-        # Moves anything in the stash 'from_stash' to the 'to_stash' if the 
+        # Moves anything in the stash 'from_stash' to the 'to_stash' if the
         # function should_move evaluates to true.
         # Reimplement this entire block of code.
         # (!)
@@ -99,13 +99,13 @@ def main(argv):
         pass
 
     path_group.step()
-        
+
 
   if path_group.found:
     good_path = path_group.found[0]
 
     # Constrain the instruction pointer to target the print_good function and
-    # then solve for the user input (recall that this is 
+    # then solve for the user input (recall that this is
     # 'good_path.state.posix.dumps(sys.stdin.fileno())')
     # (!)
     ...
