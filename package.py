@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import os, sys, shutil
+import datetime, os, sys, shutil
 
 def level_generate_module(level_name):
   return __import__(level_name + '.generate')
@@ -9,7 +9,7 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
   generate_module = level_generate_module(level_name)
   output_directory = os.path.join(output_base_directory, level_name)
   binary_file_output_prefix = os.path.join(output_directory, level_name)
-  suffix_format_str = '{:0' + str(len(str(num_binaries - 1))) + '}'
+  suffix_format_str = '{:0' + str(len(str(num_binaries - 1))) + '}' if (num_binaries - 1 > 0) else ''
 
   if not os.path.exists(output_directory):
     os.mkdir(output_directory)
@@ -25,22 +25,24 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
     shutil.copyfile(extra_file_abs, extra_file_target)
 
 def package_all(root_folder):
-  package_level('00_angr_find', root_folder, 8, 'jake', '2017', ['scaffold00.py'])
-  package_level('01_angr_avoid', root_folder, 8, 'jake', '2017', ['scaffold01.py'])
-  package_level('02_angr_find_condition', root_folder, 8, 'jake', '2017', ['scaffold02.py'])
-  package_level('03_angr_symbolic_registers', root_folder, 8, 'jake', '2017', ['scaffold03.py'])
-  package_level('04_angr_symbolic_stack', root_folder, 8, 'jake', '2017', ['scaffold04.py'])
-  package_level('05_angr_symbolic_memory', root_folder, 8, 'jake', '2017', ['scaffold05.py'])
-  package_level('06_angr_symbolic_heap', root_folder, 8, 'jake', '2017', ['scaffold06.py'])
-  package_level('07_angr_symbolic_file', root_folder, 8, 'jake', '2017', ['scaffold07.py'])
-  package_level('08_angr_constraints', root_folder, 8, 'jake', '2017', ['scaffold08.py'])
-  package_level('09_angr_hooks', root_folder, 8, 'jake', '2017', ['scaffold09.py'])
-  package_level('10_angr_sim_procedures', root_folder, 8, 'jake', '2017', ['scaffold10.py'])
-  package_level('11_angr_locate_vulnerable', root_folder, 8, 'jake', '2017', ['scaffold11.py'])
-  package_level('12_angr_unconstrained', root_folder, 8, 'jake', '2017', ['scaffold12.py'])
-  package_level('13_angr_veritesting', root_folder, 8, 'jake', '2017', ['scaffold13.py'])
-  package_level('14_angr_static_binary', root_folder, 8, 'jake', '2017', ['scaffold14.py'])
-  package_level('15_angr_shared_library', root_folder, 8, 'jake', '2017', ['scaffold15.py'])
+  num_binaries = 1
+  year = str(datetime.datetime.now().year)
+  package_level('00_angr_find', root_folder, num_binaries, root_folder, year, ['scaffold00.py'])
+  package_level('01_angr_avoid', root_folder, num_binaries, root_folder, year, ['scaffold01.py'])
+  package_level('02_angr_find_condition', root_folder, num_binaries, root_folder, year, ['scaffold02.py'])
+  package_level('03_angr_symbolic_registers', root_folder, num_binaries, root_folder, year, ['scaffold03.py'])
+  package_level('04_angr_symbolic_stack', root_folder, num_binaries, root_folder, year, ['scaffold04.py'])
+  package_level('05_angr_symbolic_memory', root_folder, num_binaries, root_folder, year, ['scaffold05.py'])
+  package_level('06_angr_symbolic_heap', root_folder, num_binaries, root_folder, year, ['scaffold06.py'])
+  package_level('07_angr_symbolic_file', root_folder, num_binaries, root_folder, year, ['scaffold07.py'])
+  package_level('08_angr_constraints', root_folder, num_binaries, root_folder, year, ['scaffold08.py'])
+  package_level('09_angr_hooks', root_folder, num_binaries, root_folder, year, ['scaffold09.py'])
+  package_level('10_angr_sim_procedures', root_folder, num_binaries, root_folder, year, ['scaffold10.py'])
+  package_level('11_angr_locate_vulnerable', root_folder, num_binaries, root_folder, year, ['scaffold11.py'])
+  package_level('12_angr_unconstrained', root_folder, num_binaries, root_folder, year, ['scaffold12.py'])
+  package_level('13_angr_veritesting', root_folder, num_binaries, root_folder, year, ['scaffold13.py'])
+  package_level('14_angr_static_binary', root_folder, num_binaries, root_folder, year, ['scaffold14.py'])
+  package_level('15_angr_shared_library', root_folder, num_binaries, root_folder, year, ['scaffold15.py'])
 
 if __name__ == '__main__':
   if len(sys.argv) != 2:
