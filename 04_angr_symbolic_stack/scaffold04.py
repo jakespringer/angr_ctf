@@ -26,7 +26,7 @@ def main(argv):
   # The four variables above are not the only elements on the stack! Determine
   # how many bytes should be on the stack before the scanf variables. Subtract
   # this number of bytes from esp to 'push' this padding to the stack.
-  padding_length_in_bytes = ???
+  padding_length_in_bytes = ???  # :integer
   initial_state.regs.esp -= padding_length_in_bytes
 
   # Push the variables to the stack. Make sure to push them in the right order!
@@ -37,7 +37,7 @@ def main(argv):
   # This will push the bitvector on the stack, and increment esp the correct
   # amount. You will need to push multiple bitvectors on the stack.
   # (!)
-  initial_state.stack_push(???)
+  initial_state.stack_push(???)  # :bitvector (claripy.BVS, claripy.BVV, claripy.BV)
   ...
 
   path_group = project.factory.path_group(initial_state)
