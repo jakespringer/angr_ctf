@@ -1,5 +1,5 @@
-#!/usr/bin/env pypy
-import os, shutil
+#!/usr/bin/env python
+import os, sys, shutil
 
 def level_generate_module(level_name):
   return __import__(level_name + '.generate')
@@ -24,23 +24,29 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
     extra_file_target = os.path.join(output_base_directory, level_name, extra_file)
     shutil.copyfile(extra_file_abs, extra_file_target)
 
-def package_all():
-  package_level('00_angr_find', 'dist', 8, 'jake', '2017', ['scaffold00.py'])
-  package_level('01_angr_avoid', 'dist', 8, 'jake', '2017', ['scaffold01.py'])
-  package_level('02_angr_find_condition', 'dist', 8, 'jake', '2017', ['scaffold02.py'])
-  package_level('03_angr_symbolic_registers', 'dist', 8, 'jake', '2017', ['scaffold03.py'])
-  package_level('04_angr_symbolic_stack', 'dist', 8, 'jake', '2017', ['scaffold04.py'])
-  package_level('05_angr_symbolic_memory', 'dist', 8, 'jake', '2017', ['scaffold05.py'])
-  package_level('06_angr_symbolic_heap', 'dist', 8, 'jake', '2017', ['scaffold06.py'])
-  package_level('07_angr_symbolic_file', 'dist', 8, 'jake', '2017', ['scaffold07.py'])
-  package_level('08_angr_constraints', 'dist', 8, 'jake', '2017', ['scaffold08.py'])
-  package_level('09_angr_hooks', 'dist', 8, 'jake', '2017', ['scaffold09.py'])
-  package_level('10_angr_sim_procedures', 'dist', 8, 'jake', '2017', ['scaffold10.py'])
-  package_level('11_angr_locate_vulnerable', 'dist', 8, 'jake', '2017', ['scaffold11.py'])
-  package_level('12_angr_unconstrained', 'dist', 8, 'jake', '2017', ['scaffold12.py'])
-  package_level('13_angr_veritesting', 'dist', 8, 'jake', '2017', ['scaffold13.py'])
-  package_level('14_angr_static_binary', 'dist', 8, 'jake', '2017', ['scaffold14.py'])
-  package_level('15_angr_shared_library', 'dist', 8, 'jake', '2017', ['scaffold15.py'])
+def package_all(root_folder):
+  package_level('00_angr_find', root_folder, 8, 'jake', '2017', ['scaffold00.py'])
+  package_level('01_angr_avoid', root_folder, 8, 'jake', '2017', ['scaffold01.py'])
+  package_level('02_angr_find_condition', root_folder, 8, 'jake', '2017', ['scaffold02.py'])
+  package_level('03_angr_symbolic_registers', root_folder, 8, 'jake', '2017', ['scaffold03.py'])
+  package_level('04_angr_symbolic_stack', root_folder, 8, 'jake', '2017', ['scaffold04.py'])
+  package_level('05_angr_symbolic_memory', root_folder, 8, 'jake', '2017', ['scaffold05.py'])
+  package_level('06_angr_symbolic_heap', root_folder, 8, 'jake', '2017', ['scaffold06.py'])
+  package_level('07_angr_symbolic_file', root_folder, 8, 'jake', '2017', ['scaffold07.py'])
+  package_level('08_angr_constraints', root_folder, 8, 'jake', '2017', ['scaffold08.py'])
+  package_level('09_angr_hooks', root_folder, 8, 'jake', '2017', ['scaffold09.py'])
+  package_level('10_angr_sim_procedures', root_folder, 8, 'jake', '2017', ['scaffold10.py'])
+  package_level('11_angr_locate_vulnerable', root_folder, 8, 'jake', '2017', ['scaffold11.py'])
+  package_level('12_angr_unconstrained', root_folder, 8, 'jake', '2017', ['scaffold12.py'])
+  package_level('13_angr_veritesting', root_folder, 8, 'jake', '2017', ['scaffold13.py'])
+  package_level('14_angr_static_binary', root_folder, 8, 'jake', '2017', ['scaffold14.py'])
+  package_level('15_angr_shared_library', root_folder, 8, 'jake', '2017', ['scaffold15.py'])
 
 if __name__ == '__main__':
-  package_all()
+  if len(sys.argv) != 2:
+    print('Usage: python package.py [base_directory]')
+    sys.exit()
+
+  if not os.path.exists(sys.argv[1]):
+    os.mkdir(sys.argv[1])
+  package_all(sys.argv[1])
