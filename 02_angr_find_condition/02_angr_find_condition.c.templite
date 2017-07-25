@@ -2,7 +2,7 @@ ${
 import random, os
 random.seed(os.urandom(8))
 
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 
 def generate_true_statement(variable, value):
@@ -32,7 +32,6 @@ def recursive_if_else(variable, value, depth):
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ptrace.h>
 
 #define USERDEF "${ userdef }$"
 #define LEN_USERDEF ${ write(len(userdef)) }$
@@ -41,6 +40,15 @@ char msg[] = "${ description }$";
 
 void print_msg() {
   printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+#define LAMBDA 31
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
+  }
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 int main(int argc, char* argv[]) {
@@ -56,12 +64,12 @@ int main(int argc, char* argv[]) {
 
   strncpy(password, USERDEF, LEN_USERDEF);
 
-  password[0] ^= password[1];
-  password[1] ^= password[0];
-  password[0] ^= password[1];
-
   printf("Enter the password: ");
   scanf("%8s", buffer);
+
+  for (int i=0; i<LEN_USERDEF; ++i) {
+    buffer[i] = complex_function(buffer[i], i+8);
+  }
 
   ${ recursive_if_else('x', 0xDEADBEEF, 8) }$
 }

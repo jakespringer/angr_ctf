@@ -6,7 +6,6 @@ import random, os
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <sys/ptrace.h>
 
 #define USERDEF0 "${ userdef0 }$"
 #define USERDEF1 "${ userdef1 }$"

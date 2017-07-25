@@ -17,7 +17,7 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   userdef1 = ''.join(random.choice(userdef_charset) for _ in range(8))
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '07_angr_symbolic_file.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description, userdef1=userdef1)

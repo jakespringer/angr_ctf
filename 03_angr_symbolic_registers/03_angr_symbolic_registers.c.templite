@@ -10,7 +10,6 @@ def randomly_modify(var):
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/ptrace.h>
 
 register int eax asm("eax");
 register int ebx asm("ebx");

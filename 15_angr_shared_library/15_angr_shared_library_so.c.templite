@@ -1,14 +1,13 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 }$
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ptrace.h>
 
 #define USERDEF "${ userdef }$"
 #define LEN_USERDEF ${ write(len(userdef)) }$
@@ -20,10 +19,12 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 41
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 17*i) % 94) + 33);
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 int validate(char* buffer, int length) {
@@ -40,12 +41,8 @@ int validate(char* buffer, int length) {
   strncpy(password, USERDEF, LEN_USERDEF);
 
   for (int i=0; i<8; ++i) {
-    password[i] = complex_function(password[i], i);
+    buffer[i] = complex_function(buffer[i], i);
   }
-
-  password[0] ^= password[1];
-  password[1] ^= password[0];
-  password[0] ^= password[1];
 
   return !strcmp(buffer, password);
 }

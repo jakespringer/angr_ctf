@@ -17,7 +17,7 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  padding2 = random.randint(0, 2**26)
+  padding = random.randint(0, 2**26)
 
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '06_angr_symbolic_heap.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description, padding2=padding2)

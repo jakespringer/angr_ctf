@@ -1,7 +1,7 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 userdef0 = ''.join(random.choice(userdef_charset) for _ in range(8))
 }$
 
@@ -9,7 +9,6 @@ userdef0 = ''.join(random.choice(userdef_charset) for _ in range(8))
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ptrace.h>
 #define USERDEF0 "${ userdef0 }$"
 #define USERDEF1 "${ userdef1 }$.txt"
 #define FILESIZE 64
@@ -24,10 +23,12 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 17
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 23*i) % 94) + 33);
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 void write_string_to_file(char* buffer, int length) {
