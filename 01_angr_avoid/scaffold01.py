@@ -9,7 +9,9 @@ def main(argv):
 
   # Explore the binary, but this time, instead of only looking for a path that
   # eventually reaches the backdoor_address, also find a path that does not
-  # cross will_not_succeed_address.
+  # cross will_not_succeed_address. The binary is pretty large, to save you
+  # some time, everything you will need to look at is near the beginning of the
+  # address space.
   # (!)
   backdoor_address = ???
   will_not_succeed_address = ???
