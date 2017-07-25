@@ -4,7 +4,7 @@ import simuvex
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
   start_address = ???
@@ -48,7 +48,7 @@ def main(argv):
   # (!)
   scanf_called_address = ???
   project.hook(scanf_called_address, skip_scanf)
-  
+
   path_group = project.factory.path_group(initial_state)
 
   def is_successful(path):

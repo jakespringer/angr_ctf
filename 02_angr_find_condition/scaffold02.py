@@ -2,7 +2,7 @@ import angr
 import sys
 
 def main(argv):
-  path_to_binary = ???
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
   initial_state = project.factory.entry_state()
   path_group = project.factory.path_group(initial_state)
