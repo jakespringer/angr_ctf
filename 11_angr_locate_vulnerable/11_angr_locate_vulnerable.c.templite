@@ -3,7 +3,7 @@ import random, os
 random.seed(os.urandom(16))
 
 def generate_str_int():
-  userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   result = 0
   for i, c in enumerate([random.choice(userdef_charset) for _ in xrange(4)]):
     result |= ord(c) << (i * 8)
@@ -23,7 +23,6 @@ def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
 #include <string.h>
 #include <stdint.h>
 #include <signal.h>
-#include <sys/ptrace.h>
 
 char msg[] = "${ description }$";
 char strcpy_buffer[8 + 4];
@@ -56,6 +55,8 @@ int main(int argc, char* argv[]) {
 
   printf("Enter the password: ");
   scanf("%u %32s", &key, user_buffer);
+
+  /* todo: add complex function */
 
   ${
   hit_statement = """

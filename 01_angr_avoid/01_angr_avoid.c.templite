@@ -1,7 +1,7 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 
 def check_string_recursive(array0, array1, random_list, bit):
@@ -28,7 +28,6 @@ def check_string_recursive(array0, array1, random_list, bit):
 #include <string.h>
 #include <unistd.h>
 #include <stdint.h>
-#include <sys/syscall.h>
 
 #define USERDEF "${ userdef }$"
 #define LEN_USERDEF ${ write(len(userdef)) }$
@@ -46,10 +45,12 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 5
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 3*i) % 94) + 33);
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 void avoid_me() {

@@ -1,20 +1,26 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef_charset = [chr(i) for i in range(33, 127)]
-userdef = repr(''.join(random.choice(userdef_charset) for _ in range(32)))[1:-1].replace('\"', '\\\"')
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+userdef0 = ''.join([random.choice(userdef_charset) for _ in range(8)])
+userdef1 = ''.join([random.choice(userdef_charset) for _ in range(8)])
+userdef2 = ''.join([random.choice(userdef_charset) for _ in range(8)])
+userdef3 = ''.join([random.choice(userdef_charset) for _ in range(8)])
 }$
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/ptrace.h>
-#define USERDEF "${ userdef }$"
+#define USERDEF0 "${ userdef0 }$"
+#define USERDEF1 "${ userdef1 }$"
+#define USERDEF2 "${ userdef2 }$"
+#define USERDEF3 "${ userdef3 }$"
 
-char padding2[${ padding2 }$];
-char* padding0;
-char* buffer;
-char* padding1;
+char padding2[${ padding }$];
+char* buffer0;
+char* buffer1;
+char* buffer2;
+char* buffer3;
 
 char msg[] = "${ description }$";
 
@@ -23,34 +29,44 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 13
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 19*i) % 94) + 33);
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 int main(int argc, char* argv[]) {
-  padding0 = malloc(${ write(random.randint(0, 2**26)) }$);
-  buffer = malloc(33);
-  padding1 = malloc(${ write(random.randint(0, 2**26)) }$);
+  buffer0 = malloc(9);
+  buffer1 = malloc(9);
+  buffer2 = malloc(9);
+  buffer3 = malloc(9);
 
-  memset(buffer, 0, 33);
+  memset(buffer0, 0, 9);
+  memset(buffer1, 0, 9);
+  memset(buffer2, 0, 9);
+  memset(buffer3, 0, 9);
 
   print_msg();
   printf("Enter the password: ");
-  scanf("%8s %8s %8s %8s", buffer, &buffer[8], &buffer[16], &buffer[24]);
+  scanf("%8s %8s %8s %8s", buffer0, buffer1, buffer2, buffer3);
 
   for (int i=0; i<32; ++i) {
     buffer[i] = complex_function(buffer[i], i);
   }
 
-  if (strncmp(buffer, USERDEF, 32)) {
+  if (strncmp(buffer0, USERDEF0, 8)
+   || strncmp(buffer1, USERDEF1, 8)
+   || strncmp(buffer2, USERDEF2, 8)
+   || strncmp(buffer3, USERDEF3, 8)) {
     printf("Try again.\n");
   } else {
     printf("Good Job.\n");
   }
 
-  free(padding1);
-  free(buffer);
-  free(padding0);
+  free(buffer0);
+  free(buffer1);
+  free(buffer2);
+  free(buffer3);
 }

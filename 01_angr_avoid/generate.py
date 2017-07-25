@@ -1,5 +1,4 @@
 #!/usr/bin/env pypy
-
 import sys, random, os, tempfile
 from templite import Templite
 

@@ -1,7 +1,7 @@
 ${
 import random, os
 random.seed(os.urandom(16))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 userdef = [''.join(random.choice(userdef_charset) for _ in range(8)) for _ in range(4)]
 def generate_true_statement(variable, value):
   random_int = random.randint(0, 0xFFFFFFFF)
@@ -31,7 +31,6 @@ def recursive_if_else(variable, value, end_statement, depth):
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
-#include <sys/ptrace.h>
 
 #define USERDEF0 "${ userdef[0] }$"
 #define USERDEF1 "${ userdef[1] }$"
@@ -52,10 +51,12 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 29
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 7*i) % 94) + 33);
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 int main(int argc, char* argv[]) {
