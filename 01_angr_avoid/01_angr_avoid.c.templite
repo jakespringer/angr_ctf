@@ -3,11 +3,10 @@ import random, os
 random.seed(os.urandom(8))
 userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
 userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
-print userdef
 
 def check_string_recursive(array0, array1, random_list, bit):
   if bit < 0:
-    write('maybe_good();')
+    write('maybe_good(%s, %s);' % (array0, array1))
   else:
     if random_list[0]:
       write('if (CHECK_BIT(%s, %d) == CHECK_BIT(%s, %d)) {' % (array0, bit, array1, bit))
@@ -54,8 +53,8 @@ void avoid_me() {
   should_succeed = 0;
 }
 
-void maybe_good() {
-  if (should_succeed) {
+void maybe_good(char* compare0, char* compare1) {
+  if (should_succeed && !strncmp(compare0, compare1, 8)) {
     printf("Good Job.\n");
   } else {
     printf("Try again.\n");
@@ -77,9 +76,9 @@ int main(int argc, char* argv[]) {
   printf("Enter the password: ");
   scanf("%8s", buffer);
 
-  ${ check_string_recursive('buffer', 'password', random_list, 63) }$
-
-  /*for (int i=0; i<LEN_USERDEF; ++i) {
+  for (int i=0; i<LEN_USERDEF; ++i) {
     buffer[i] = (char) complex_function(buffer[i], i);
-  }*/
+  }
+
+  ${ check_string_recursive('buffer', 'password', random_list, 12) }$
 }

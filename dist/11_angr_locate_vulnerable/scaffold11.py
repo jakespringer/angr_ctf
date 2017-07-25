@@ -10,9 +10,8 @@ def main(argv):
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  scanf_calls_count_address = ???
-  scanf_calls_count_size_bytes = ???
-  scanf_set_aside_base_address = ???
+  global_symbols_key = ???
+
   instruction_to_skip_length = ???
 
   class ReplacementScanf(simuvex.SimProcedure):
@@ -25,28 +24,13 @@ def main(argv):
       state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      scanf_calls_count = state.memory.load(
-        scanf_calls_count_address, 
-        scanf_calls_count_size,
-        endness=project.arch.memory_endness
-      )
-
-      stride = ???
-      set_aside_address = scanf_set_aside_base_address + (scanf_calls_count * stride)
-
-      state.memory.store(set_aside_address + ???, scanf0, endness=project.arch.memory_endness)
+      if not global_symbols_key in state.procedure_data.global_variables:
+        state.procedure_data.global_variables[global_symbols_key] = []
       ...
-
-      state.memory.store(???, scanf_calls_count + 1, endness=project.arch.memory_endness)
+      state.procedure_data.global_variables[global_symbols_key].append(???)
 
   scanf_symbol = ???
-  project.hook_symbol(scanf_symbol, Hook(ReplacementScanf)) 
- 
-  state.memory.store(
-    scanf_calls_count_address, 
-    claripy.BVV(0, scanf_calls_count_size_bytes * 8), 
-    endness=project.arch.memory_endness
-  )
+  project.hook_symbol(scanf_symbol, Hook(ReplacementScanf))
 
   # Check if strcpy might be vulnerable by checking if the source is symbolic
   # (and therefore might be directly controlled by the user.)
@@ -58,13 +42,13 @@ def main(argv):
       # The stack, registers, memory, etc should be set up as if the x86 call
       # instruction was just invoked (but, of course, the function hasn't copied
       # the buffers yet.)
-   
+
       # Get the bitvector of the src and dest parameter of strcpy. How big should
       # the buffer you load be for each?
       # (!)
       src = ???
       dest = ???
-    
+
       # Check if a the bitvector can take on more than one value. While this does
       # not necessary tell us we have found an exploitable path, it is a strong
       # indication that the bitvector we checked may be controllable by the user.
@@ -77,7 +61,7 @@ def main(argv):
         # a pointer to a string the binary prints later.
         # (!)
         potential_vulnerable_bytes = ???
- 
+
         # We want to use a buffer overflow attack to overwrite the vulnerable
         # bytes. We will use Angr to determine if there is some user input that
         # will overwrite them with the desired value.
@@ -101,7 +85,7 @@ def main(argv):
   path_group = project.factory.path_group(initial_state)
 
   # (!)
-  path_group.explore(find=check_strcpy_vulnerable, avoid=???)  
+  path_group.explore(find=check_strcpy_vulnerable, avoid=???)
 
   if path_group.found:
     good_path = path_group.found[0]
@@ -114,24 +98,8 @@ def main(argv):
     vulnerable = ???
     good_path.state.add_constraints(vulnerable)
 
-    scanf_calls_count = good_path.state.se.exactly_int(good_path.state.memory.load(
-      scanf_calls_count_address,
-      scanf_calls_count_size,
-      endness=project.arch.memory_endness
-    ))
-
     solutions = []
-    for i in xrange(scanf_calls_count):
-      # The following lines have changed since the previous level.
-      # (!)
-      stride = ???
-      set_aside_address = scanf_set_aside_base_address + (i * stride)
-      password = state.memory.load(
-        set_aside_address + ???, 
-        ???, 
-        endness=project.arch.memory_endness
-      )
-      ...
+    for password in ???:
       solution = ???
       solutions.append(solution)
 
