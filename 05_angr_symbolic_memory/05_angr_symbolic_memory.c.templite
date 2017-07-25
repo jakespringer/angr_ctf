@@ -12,7 +12,7 @@ userdef = repr(''.join(random.choice(userdef_charset) for _ in range(32)))[1:-1]
 #define USERDEF "${ userdef }$"
 
 char padding0[ ${ padding0 }$ ];
-char user_input[32+4];
+char user_input[32+1];
 char padding1[ ${ padding1 }$ ];
 
 char msg[] = "${ description }$";

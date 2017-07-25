@@ -53,7 +53,10 @@ int main(int argc, char* argv[]) {
   scanf("%8s %8s %8s %8s", buffer0, buffer1, buffer2, buffer3);
 
   for (int i=0; i<32; ++i) {
-    buffer[i] = complex_function(buffer[i], i);
+    buffer0[i] = complex_function(buffer0[i], i);
+    buffer1[i] = complex_function(buffer1[i], i+32);
+    buffer2[i] = complex_function(buffer2[i], i+64);
+    buffer3[i] = complex_function(buffer3[i], i+96);
   }
 
   if (strncmp(buffer0, USERDEF0, 8)
