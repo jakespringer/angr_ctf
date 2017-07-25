@@ -15,7 +15,7 @@ def main(argv):
   # be symbolic. Note: to read from the file, the binary calls
   # 'fscanf(file, "%64s")'.
   # (!)
-  filename = ???
+  filename = ???  # :string
   symbolic_file_size_bytes = ???
 
   # Construct the symbolic memory from and to which the file will read and

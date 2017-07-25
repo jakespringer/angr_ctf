@@ -14,12 +14,12 @@ def main(argv):
 
     # Return whether 'Good Job.' has been printed yet.
     # (!)
-    return ???
+    return ???  # :boolean
 
   # Same as above, but this time check if the path should abort.
   def should_abort(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return ???  # :boolean
 
   # Tell Angr to explore the binary and find any path that is_successful identfies
   # as a successful state by returning True.

@@ -13,7 +13,7 @@ def main(argv):
   # We will collect a list of all of the symbolic variables accumulated by the
   # scanf function in a dictionary stored with the state. This will make more
   # sense when you see it used.
-  global_symbols_key = ??? # :string
+  global_symbols_key = ???  # :string
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
