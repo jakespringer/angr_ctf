@@ -21,6 +21,9 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
+  if (!(33 < value && value < (33+94))) {
+    printf("Try again.\n"); exit(1);
+  }
   return (((value - 33 + 31*i) % 94) + 33);
 }
 
