@@ -17,8 +17,10 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
+  random_list = [random.choice([True, False]) for _ in xrange(64)]
+
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '01_angr_avoid.c.templite'), 'r').read()
-  c_code = Templite(template).render(description=description)
+  c_code = Templite(template).render(description=description, random_list=random_list)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
     temp.write(c_code)
