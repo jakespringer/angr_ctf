@@ -21,10 +21,34 @@ void print_msg() {
 }
 
 int complex_function(int value, int i) {
-  if (!(33 < value && value < (33+94))) {
-    printf("Try again.\n"); exit(1);
+#define LAMBDA 31
+
+  // base64 = [48, 57] union [65, 90] union [97, 122]
+  if (48 <= value && value <= 57) {
+    value = value - 48;
+  } else if (65 <= value && value <= 90) {
+    value = (58-48) + value - 65;
+  } else if (97 <= value && value <= 122) {
+    value = (58-48) + (91-65) + value - 97;
+  } else {
+    printf("Try again.\n");
+    exit(1);
   }
-  return (((value - 33 + 31*i) % 94) + 33);
+
+  value = (value + LAMBDA * i) % ((58-48) + (91-65) + (123 - 97))
+
+  if (0 <= value && value < (58-48)) {
+    value = value + 48;
+  } else if ((58-48) <= value && value < (58-48) + (91-65)) {
+    value = value - (58-48) + 65;
+  } else if ((58-48) + (91-65) <= value && value < (58-48) + (91-65) + (123 - 97)) {
+    value = value - (58-48) - (91-65) + 97;
+  } else {
+    printf("There was an error with complex_function. Contact the author to report this bug.");
+    exit(1);
+  }
+
+  return value;
 }
 
 int main(int argc, char* argv[]) {
