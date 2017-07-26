@@ -17,6 +17,29 @@ def main(argv):
 
   # For this challenge, we want to begin after the call to scanf. Note that this
   # is in the middle of a function.
+  # 
+  # This challenge requires dealing with the stack, so you have to pay extra
+  # careful attention to where you start, otherwise you will enter a condition
+  # where the stack is set up incorrectly. In order to determine where after
+  # scanf to start, we need to look at the dissassembly of the call and the
+  # instruction immediately following it:
+  #   lea    -0x18(%ebp),%eax
+  #   push   %eax
+  #   lea    -0x14(%ebp),%eax
+  #   push   %eax
+  #   lea    -0xc(%ebp),%eax
+  #   push   %eax
+  #   lea    -0x10(%ebp),%eax
+  #   push   %eax
+  #   push   $0x80489c3
+  #   call   8048370 <__isoc99_scanf@plt>
+  #   add    $0x20,%esp
+  # Now, the question is: do we start on the instruction immediately following
+  # scanf (add $0x20,%esp), or the instruction following that (not shown)?
+  # Consider what the 'add $0x20,%esp' is doing. Hint: it has to do with the
+  # scanf parameters that are pushed to the stack before calling the function.
+  # Given that we are not calling scanf in our Angr simulation, where should we
+  # start?
   # (!)
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
