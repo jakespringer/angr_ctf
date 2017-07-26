@@ -17,31 +17,8 @@ def main(argv):
 
   # For this challenge, we want to begin after the call to scanf. Note that this
   # is in the middle of a function.
-  # 
-  # This challenge requires dealing with the stack, so you have to pay extra
-  # careful attention to where you start, otherwise you will enter a condition
-  # where the stack is set up incorrectly. In order to determine where after
-  # scanf to start, we need to look at the dissassembly of the call and the
-  # instruction immediately following it:
-  #   lea    -0x18(%ebp),%eax
-  #   push   %eax
-  #   lea    -0x14(%ebp),%eax
-  #   push   %eax
-  #   lea    -0xc(%ebp),%eax
-  #   push   %eax
-  #   lea    -0x10(%ebp),%eax
-  #   push   %eax
-  #   push   $0x80489c3
-  #   call   8048370 <__isoc99_scanf@plt>
-  #   add    $0x20,%esp
-  # Now, the question is: do we start on the instruction immediately following
-  # scanf (add $0x20,%esp), or the instruction following that (not shown)?
-  # Consider what the 'add $0x20,%esp' is doing. Hint: it has to do with the
-  # scanf parameters that are pushed to the stack before calling the function.
-  # Given that we are not calling scanf in our Angr simulation, where should we
-  # start?
   # (!)
-  start_address = ???
+  start_address = 0x804886f
   initial_state = project.factory.blank_state(addr=start_address)
 
   # We are jumping into the middle of a function! Therefore, we need to account 
@@ -77,8 +54,10 @@ def main(argv):
   # handle 'scanf("%u")', but not 'scanf("%u %u %u %u")'.
   # You can either copy and paste the line below or use a Python list.
   # (!)
-  password0 = claripy.BVS('password0', ???)
-  ...
+  password0 = claripy.BVS('password0', 32)
+  password1 = claripy.BVS('password1', 32)
+  password2 = claripy.BVS('password2', 32)
+  password3 = claripy.BVS('password3', 32)
 
   # Here is the hard part. We need to figure out what the stack looks like, at
   # least well enough to inject our symbols where we want them. In order to do
@@ -101,7 +80,7 @@ def main(argv):
   # find that there is some space at the bottom of the stack (close to ebp) that
   # is unused. Figure out how much space there is and add padding to the stack
   # before you push the password bitvectors.
-  padding_length_in_bytes = ???  # :integer
+  padding_length_in_bytes = 8  # :integer
   initial_state.regs.esp -= padding_length_in_bytes
 
   # Push the variables to the stack. Make sure to push them in the right order!
@@ -112,18 +91,20 @@ def main(argv):
   # This will push the bitvector on the stack, and increment esp the correct
   # amount. You will need to push multiple bitvectors on the stack.
   # (!)
-  initial_state.stack_push(???)  # :bitvector (claripy.BVS, claripy.BVV, claripy.BV)
-  ...
+  initial_state.stack_push(password0)  # :bitvector (claripy.BVS, claripy.BVV, claripy.BV)
+  initial_state.stack_push(password1)
+  initial_state.stack_push(password2)
+  initial_state.stack_push(password3)
 
   path_group = project.factory.path_group(initial_state)
 
   def is_successful(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return 'Good Job.' in stdout_output
 
   def should_abort(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return 'Try again.' in stdout_output
 
   path_group.explore(find=is_successful, avoid=should_abort)
 
@@ -131,9 +112,11 @@ def main(argv):
     good_path = path_group.found[0]
 
     solution0 = good_path.state.se.any_int(password0)
-    ...
+    solution1 = good_path.state.se.any_int(password1)
+    solution2 = good_path.state.se.any_int(password2)
+    solution3 = good_path.state.se.any_int(password3)
 
-    solution = ???
+    solution = ' '.join(map(str, [solution1, solution0, solution2, solution3]))
     print solution
   else:
     raise Exception('Could not find the solution')
