@@ -86,7 +86,7 @@ def main(argv):
 
     print ' '.join(solutions)
   else:
-    raise Exception('Could not find the solutioni')
+    raise Exception('Could not find the solution')
 
 if __name__ == '__main__':
   main(sys.argv)
