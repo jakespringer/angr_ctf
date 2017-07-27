@@ -32,7 +32,7 @@ def main(argv):
   # Store our symbolic values at our fake_heap_address. Look at the binary to determine the offsets from the
   # fake_heap_address where scanf writes.
   # (!)
-  initial_state.memory.store(fake_heap_address0 + ???, password0)
+  initial_state.memory.store(fake_heap_address0, password0)
   ...
 
   path_group = project.factory.path_group(initial_state)
