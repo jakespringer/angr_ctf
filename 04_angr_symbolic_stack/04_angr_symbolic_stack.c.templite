@@ -1,7 +1,7 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef = [random.randint(0, 0xFFFFFFFF) for i in xrange(4)]
+userdef = [random.randint(0, 0xFFFFFFFF) for i in xrange(2)]
 }$
 
 #include <stdio.h>
@@ -11,8 +11,6 @@ userdef = [random.randint(0, 0xFFFFFFFF) for i in xrange(4)]
 
 #define USERDEF0 ${ userdef[0] }$
 #define USERDEF1 ${ userdef[1] }$
-#define USERDEF2 ${ userdef[2] }$
-#define USERDEF3 ${ userdef[3] }$
 
 char msg[] = "${ description }$";
 
@@ -30,27 +28,13 @@ uint32_t complex_function1(uint32_t value) {
   return value;
 }
 
-uint32_t complex_function2(uint32_t value) {
-  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
-  return value;
-}
-
-uint32_t complex_function3(uint32_t value) {
-  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
-  return value;
-}
-
 void handle_user() {
   uint32_t user_int0;
   uint32_t user_int1;
-  uint32_t user_int2;
-  uint32_t user_int3;
-  scanf("%u %u %u %u", &user_int1, &user_int0, &user_int2, &user_int3);
+  scanf("%u %u", &user_int0, &user_int1);
   user_int0 = complex_function0(user_int0);
   user_int1 = complex_function1(user_int1);
-  user_int2 = complex_function2(user_int2);
-  user_int3 = complex_function3(user_int3);
-  if ((user_int0 ^ USERDEF0) || (user_int1 ^ USERDEF1) || (user_int2 ^ USERDEF2) || (user_int3 ^ USERDEF3)) {
+  if ((user_int0 ^ USERDEF0) || (user_int1 ^ USERDEF1)) {
     printf("Try again.\n");
   } else {
     printf("Good Job.\n");

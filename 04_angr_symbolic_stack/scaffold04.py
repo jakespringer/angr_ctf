@@ -23,21 +23,17 @@ def main(argv):
   # where the stack is set up incorrectly. In order to determine where after
   # scanf to start, we need to look at the dissassembly of the call and the
   # instruction immediately following it:
-  #   sub    $0xc,%esp
-  #   lea    -0x18(%ebp),%eax
-  #   push   %eax
-  #   lea    -0x14(%ebp),%eax
+  #   sub    $0x4,%esp
+  #   lea    -0x10(%ebp),%eax
   #   push   %eax
   #   lea    -0xc(%ebp),%eax
   #   push   %eax
-  #   lea    -0x10(%ebp),%eax
-  #   push   %eax
   #   push   $0x80489c3
   #   call   8048370 <__isoc99_scanf@plt>
-  #   add    $0x20,%esp
+  #   add    $0x10,%esp
   # Now, the question is: do we start on the instruction immediately following
-  # scanf (add $0x20,%esp), or the instruction following that (not shown)?
-  # Consider what the 'add $0x20,%esp' is doing. Hint: it has to do with the
+  # scanf (add $0x10,%esp), or the instruction following that (not shown)?
+  # Consider what the 'add $0x10,%esp' is doing. Hint: it has to do with the
   # scanf parameters that are pushed to the stack before calling the function.
   # Given that we are not calling scanf in our Angr simulation, where should we
   # start?
@@ -71,10 +67,10 @@ def main(argv):
   # start by initializing ebp in the exact same way the program does.
   initial_state.regs.ebp = initial_state.regs.esp
 
-  # scanf("%u %u %u %u") needs to be replaced by injecting four bitvectors. The
+  # scanf("%u %u") needs to be replaced by injecting four bitvectors. The
   # reason for this is that Angr does not (currently) automatically inject
   # symbols if scanf has more than one input parameter. This means Angr can
-  # handle 'scanf("%u")', but not 'scanf("%u %u %u %u")'.
+  # handle 'scanf("%u")', but not 'scanf("%u %u")'.
   # You can either copy and paste the line below or use a Python list.
   # (!)
   password0 = claripy.BVS('password0', ???)
@@ -83,20 +79,17 @@ def main(argv):
   # Here is the hard part. We need to figure out what the stack looks like, at
   # least well enough to inject our symbols where we want them. In order to do
   # that, let's figure out what the parameters of scanf are:
-  #   sub    $0xc,%esp
-  #   lea    -0x18(%ebp),%eax
-  #   push   %eax
-  #   lea    -0x14(%ebp),%eax
+  #   sub    $0x4,%esp
+  #   lea    -0x10(%ebp),%eax
   #   push   %eax
   #   lea    -0xc(%ebp),%eax
   #   push   %eax
-  #   lea    -0x10(%ebp),%eax
-  #   push   %eax
   #   push   $0x80489c3
   #   call   8048370 <__isoc99_scanf@plt>
+  #   add    $0x10,%esp 
   # As you can see, the call to scanf looks like this:
-  # scanf(  0x80489c3,   ebp - 0x10,   ebp - 0xc,   ebp - 0x14,   ebp - 0x18  )
-  #      format_string    password0    password1     password2     password3
+  # scanf(  0x80489c3,   ebp - 0xc,   ebp - 0x10  )
+  #      format_string    password0    password1
   #  From this, we can construct our new, more accurate stack diagram:
   #
   #            /-------- The stack --------\
@@ -107,24 +100,16 @@ def main(argv):
   # ebp - 0x02 |     even more padding     |
   #            |---------------------------|
   #                        . . .               <- How much padding? Hint: how
-  #            |---------------------------|      many bytes is password1?
-  # ebp - 0x0b |   password1, second byte  |
+  #            |---------------------------|      many bytes is password0?
+  # ebp - 0x0b |   password0, second byte  |
   #            |---------------------------|
-  # ebp - 0x0c |   password1, first byte   |
+  # ebp - 0x0c |   password0, first byte   |
   #            |---------------------------|
-  # ebp - 0x0d |   password0, last byte    |
-  #            |---------------------------|
-  #                        . . .
-  #            |---------------------------|
-  # ebp - 0x10 |   password0, first byte   |
+  # ebp - 0x0d |   password1, last byte    |
   #            |---------------------------|
   #                        . . .
   #            |---------------------------|
-  # ebp - 0x14 |   password2, first byte   |
-  #            |---------------------------|
-  #                        . . .
-  #            |---------------------------|
-  # ebp - 0x18 |   password3, first byte   |
+  # ebp - 0x10 |   password1, first byte   |
   #            |---------------------------|
   #                        . . .
   #            |---------------------------|

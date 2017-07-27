@@ -3,10 +3,10 @@ import claripy
 import sys
 
 def main(argv):
-  path_to_binary = '05_angr_symbolic_stack'
+  path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x080488cf
+  start_address = 0x0804886f
   initial_state = project.factory.blank_state(addr=start_address)
 
   # We are jumping into the middle of a function! The first instruction of the
@@ -39,7 +39,7 @@ def main(argv):
 
   def is_successful(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return 'Success.' in stdout_output
+    return 'Good Job.' in stdout_output
 
   path_group.explore(find=is_successful, avoid=lambda p: 'Try again.' in p.state.posix.dumps(1))
 
