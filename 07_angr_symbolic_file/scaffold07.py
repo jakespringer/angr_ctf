@@ -31,10 +31,11 @@ def main(argv):
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)
   symbolic_file_backing_memory.store(???, password)
 
-  # Construct the symbolic file. The file_options parameter specifies how you
-  # want to open the file (read, read/write, binary, etc.) The content parameter
-  # specifies the memory from and to which the file should read and write.
-  file_options = 'rw'
+  # Construct the symbolic file. The file_options parameter specifies the Linux
+  # file permissions (read, read/write, binary, etc.) The content parameter
+  # specifies the memory from and to which the file should read, write, and
+  # execute.
+  file_options = 'r'
   password_file = simuvex.SimFile(filename, file_options, content=???, size=symbolic_file_size_bytes)
 
   # Specify the filesystem with which to replace the operating system's
