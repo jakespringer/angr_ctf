@@ -2,8 +2,8 @@ ${
 import random, os
 random.seed(os.urandom(8))
 userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-userdef0 = ''.join([random.choice(userdef_charset) for _ in range(7)])
-userdef1 = ''.join([random.choice(userdef_charset) for _ in range(7)])
+userdef0 = ''.join([random.choice(userdef_charset) for _ in range(8)])
+userdef1 = ''.join([random.choice(userdef_charset) for _ in range(8)])
 }$
 
 #include <stdio.h>
@@ -44,13 +44,13 @@ int main(int argc, char* argv[]) {
   printf("Enter the password: ");
   scanf("%8s %8s", buffer0, buffer1);
 
-  for (int i=0; i<32; ++i) {
+  for (int i=0; i<8; ++i) {
     buffer0[i] = complex_function(buffer0[i], i);
     buffer1[i] = complex_function(buffer1[i], i+32);
   }
 
-  if (strncmp(buffer0, USERDEF0, 7)
-   || strncmp(buffer1, USERDEF1, 7)) {
+  if (strncmp(buffer0, USERDEF0, 8)
+   || strncmp(buffer1, USERDEF1, 8)) {
     printf("Try again.\n");
   } else {
     printf("Good Job.\n");
