@@ -67,7 +67,7 @@ def main(argv):
 
     print solution
   else:
-    raise Exception('Could not find the solutioni')
+    raise Exception('Could not find the solution')
 
 if __name__ == '__main__':
   main(sys.argv)
