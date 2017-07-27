@@ -17,12 +17,13 @@ def main(argv):
 
   # For this challenge, we want to begin after the call to scanf. Note that this
   # is in the middle of a function.
-  # 
+  #
   # This challenge requires dealing with the stack, so you have to pay extra
   # careful attention to where you start, otherwise you will enter a condition
   # where the stack is set up incorrectly. In order to determine where after
   # scanf to start, we need to look at the dissassembly of the call and the
   # instruction immediately following it:
+  #   sub    $0xc,%esp
   #   lea    -0x18(%ebp),%eax
   #   push   %eax
   #   lea    -0x14(%ebp),%eax
@@ -44,22 +45,21 @@ def main(argv):
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  # We are jumping into the middle of a function! Therefore, we need to account 
-  # for how the function constructs the stack. The second instruction of the 
+  # We are jumping into the middle of a function! Therefore, we need to account
+  # for how the function constructs the stack. The second instruction of the
   # function is:
   #   mov    %esp,%ebp
   # At which point it allocates the part of the stack frame we plan to target:
   #   sub    $0x18,%esp
-  #   sub    $0xc,%esp
   # Note the value of esp relative to ebp. The space between them is (usually)
-  # the stack space. Since esp was decreased by 0x18 + 0xc = 0x20
+  # the stack space. Since esp was decreased by 0x18
   #
   #        /-------- The stack --------\
   # ebp -> |                           |
   #        |---------------------------|
   #        |                           |
   #        |---------------------------|
-  #         . . . (total of 0x20 bytes)
+  #         . . . (total of 0x18 bytes)
   #         . . . Somewhere in here is
   #         . . . the data that stores
   #         . . . the result of scanf.
@@ -83,6 +83,7 @@ def main(argv):
   # Here is the hard part. We need to figure out what the stack looks like, at
   # least well enough to inject our symbols where we want them. In order to do
   # that, let's figure out what the parameters of scanf are:
+  #   sub    $0xc,%esp
   #   lea    -0x18(%ebp),%eax
   #   push   %eax
   #   lea    -0x14(%ebp),%eax
@@ -96,11 +97,43 @@ def main(argv):
   # As you can see, the call to scanf looks like this:
   # scanf(  0x80489c3,   ebp - 0x10,   ebp - 0xc,   ebp - 0x14,   ebp - 0x18  )
   #      format_string    password0    password1     password2     password3
-  # Knowing that, you should know how to construct the stack. On a piece of
-  # paper, draw the stack and mark where each variable should go. You should
-  # find that there is some space at the bottom of the stack (close to ebp) that
-  # is unused. Figure out how much space there is and add padding to the stack
-  # before you push the password bitvectors.
+  #  From this, we can construct our new, more accurate stack diagram:
+  #
+  #            /-------- The stack --------\
+  # ebp ->     |          padding          |
+  #            |---------------------------|
+  # ebp - 0x01 |       more padding        |
+  #            |---------------------------|
+  # ebp - 0x02 |     even more padding     |
+  #            |---------------------------|
+  #                        . . .               <- How much padding? Hint: how
+  #            |---------------------------|      many bytes is password1?
+  # ebp - 0x0b |   password1, second byte  |
+  #            |---------------------------|
+  # ebp - 0x0c |   password1, first byte   |
+  #            |---------------------------|
+  # ebp - 0x0d |   password0, last byte    |
+  #            |---------------------------|
+  #                        . . .
+  #            |---------------------------|
+  # ebp - 0x10 |   password0, first byte   |
+  #            |---------------------------|
+  #                        . . .
+  #            |---------------------------|
+  # ebp - 0x14 |   password2, first byte   |
+  #            |---------------------------|
+  #                        . . .
+  #            |---------------------------|
+  # ebp - 0x18 |   password3, first byte   |
+  #            |---------------------------|
+  #                        . . .
+  #            |---------------------------|
+  # esp ->     |                           |
+  #            \---------------------------/
+  #
+  # Figure out how much space there is and allocate the necessary padding to
+  # the stack by decrementing esp before you push the passwords.
+  push the password bitvectors.
   padding_length_in_bytes = ???  # :integer
   initial_state.regs.esp -= padding_length_in_bytes
 
