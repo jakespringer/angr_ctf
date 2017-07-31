@@ -1,3 +1,9 @@
+# This challenge is similar to the previous one. It operates under the same
+# premise that you will have to replace the scanf. In this case, however, scanf
+# is called so many times that it wouldn't make sense to hook where each one was
+# called. Instead, use a SimProcedure to write your own scanf and then hook the
+# scanf symbol to replace all calls to scanf with a call to your SimProcedure.
+
 import angr
 import claripy
 import simuvex
@@ -52,9 +58,7 @@ def main(argv):
       state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      if not global_symbols_key in state.procedure_data.global_variables:
-        state.procedure_data.global_variables[global_symbols_key] = []
-      state.procedure_data.global_variables[global_symbols_key].append(???)
+      state.procedure_data.global_variables[global_symbols_key] = ???
 
   # Hook the scanf symbol. Angr automatically looks up the address associated
   # with the symbol. Alternatively, you can use 'hook' instead of 'hook_symbol'
@@ -79,12 +83,9 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
-    solutions = []
-    for password in ???:
-      solution = good_path.state.se.any_int(password)
-      solutions.append(solution)
+    solution = ???
 
-    print ' '.join(solutions)
+    print solution
   else:
     raise Exception('Could not find the solution')
 

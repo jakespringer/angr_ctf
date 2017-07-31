@@ -31,7 +31,7 @@ int complex_function(int value, int i) {
   return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
-void write_string_to_file(char* buffer, int length) {
+void ignore_me(char* buffer, int length) {
   char buffer_break_angr[length];
   int i;
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
   print_msg();
   printf("Enter the password: ");
   scanf("%64s", buffer);
-  write_string_to_file(buffer, FILESIZE);
+  ignore_me(buffer, FILESIZE);
   memset(buffer, 0, FILESIZE);
   fp = fopen(USERDEF1, "rb");
   fread(buffer, 1, FILESIZE, fp);

@@ -7,56 +7,51 @@ import random, os
 #include <string.h>
 #include <stdint.h>
 
-#define USERDEF0 "${ userdef0 }$"
-#define USERDEF1 "${ userdef1 }$"
-#define USERDEF2 "${ userdef2 }$"
-#define USERDEF3 "${ userdef3 }$"
-#define USERDEF4 "${ userdef4 }$"
-#define USERDEF5 "${ userdef5 }$"
+#define USERDEF "${ userdef }$"
 
 char msg[] = "${ description }$";
 
-uint32_t f, e, d, c, b, a;
-uint32_t f0, e0, d0, c0, b0, a0;
+char buffer[17];
+char password[16];
 
 void print_msg() {
-  printf("%s\nOctal numbers:\n0%s\n0%s\n0%s\n0%s\n0%s\n0%s\n", msg, USERDEF0, USERDEF1, USERDEF2, USERDEF3, USERDEF4, USERDEF5);
+  printf("%s", msg);
 }
 
-int octcmp(uint32_t input, const char *buffer) {
-  char* oct_string = malloc(12);
-  memset(oct_string, '0', 11);
-  oct_string[11] = '\0';
-  sprintf(oct_string, "%11o", input);
-  for (int i=0; i<11; ++i) {
-    if (oct_string[i] < '0' || oct_string[i] > '9') {
-      oct_string[i] = '0';
+int complex_function(int value, int i) {
+#define LAMBDA 53
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
+  }
+  return value;
+  //return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
+}
+
+int check_equals_${ userdef }$(char* to_check, size_t length) {
+  uint32_t num_correct = 0;
+  for (int i=0; i<length; ++i) {
+    if (to_check[i] == password[i]) {
+      num_correct += 1;
     }
   }
-
-  printf("%s\n", oct_string);
-
-  int res = strncmp(oct_string, buffer, 11);
-  free(oct_string);
-  return res;
+  return num_correct == length;
 }
 
 int main(int argc, char* argv[]) {
   print_msg();
 
+  memcpy(password, USERDEF, 16);
+  memset(buffer, 0, 17);
+
   printf("Enter the password: ");
-  scanf("%u %u %u %u %u %u", &a, &b, &c, &d, &e, &f);
-  f0 = f + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  e0 = e + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  d0 = d + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  c0 = c + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  b0 = b + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
-  a0 = a + ${ write(str(random.randint(0, 2**32 - 1)) + 'U') }$;
+  scanf("%16s", buffer);
 
-  int result = octcmp(a0, USERDEF0) | octcmp(b0, USERDEF1) | octcmp(c0, USERDEF2) |
-    octcmp(d0, USERDEF3) | octcmp(e0, USERDEF4) | octcmp(f0, USERDEF5);
+  for (int i=0; i<16; ++i) {
+    buffer[i] = complex_function(buffer[i], -i+15);
+  }
 
-  if (result) {
+  if (!check_equals_${ userdef }$(buffer, 16)) {
     printf("Try again.\n");
   } else {
     printf("Good Job.\n");

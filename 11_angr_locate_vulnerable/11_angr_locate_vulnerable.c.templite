@@ -56,8 +56,6 @@ int main(int argc, char* argv[]) {
   printf("Enter the password: ");
   scanf("%u %32s", &key, user_buffer);
 
-  /* todo: add complex function */
-
   ${
   hit_statement = """
   strcpy(strcpy_buffer, user_buffer);

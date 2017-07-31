@@ -30,7 +30,7 @@ def main(argv):
   # If you want to be able to point to the binary from the command line, you can
   # use argv[1] as the parameter. Then, you can run the script from the command
   # line as follows:
-  # ./scaffold00 [binary]
+  # python ./scaffold00.py [binary]
   # (!)
   path_to_binary = ???  # :string
   project = angr.Project(path_to_binary)

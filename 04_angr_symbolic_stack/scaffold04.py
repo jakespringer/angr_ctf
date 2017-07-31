@@ -117,8 +117,7 @@ def main(argv):
   #            \---------------------------/
   #
   # Figure out how much space there is and allocate the necessary padding to
-  # the stack by decrementing esp before you push the passwords.
-  push the password bitvectors.
+  # the stack by decrementing esp before you push the password bitvectors.
   padding_length_in_bytes = ???  # :integer
   initial_state.regs.esp -= padding_length_in_bytes
 

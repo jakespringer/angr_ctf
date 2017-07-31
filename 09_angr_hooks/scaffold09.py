@@ -1,3 +1,12 @@
+# This level performs complex computations necessary to evaluate user input
+# before scanf is called. This means we cannot start the program after scanf is
+# called to avoid handling it, as we would miss the initial computations in our
+# path. Instead, we need to 'hook' the call to scanf and replace it with our own
+# code that injects symbols correctly. This means we need to specify to Angr to
+# pause the execution when it arrives at the scanf instruction, run our Python
+# function, and then return to the execution with our modified state, skipping
+# the call to scanf.
+
 import angr
 import claripy
 import simuvex
@@ -10,9 +19,34 @@ def main(argv):
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  # We will collect a list of all of the symbolic variables accumulated by the
-  # scanf function in a dictionary stored with the state. This will make more
-  # sense when you see it used.
+  # We want to store a reference to the symbolic variables we inject when scanf
+  # is called. We will store them in a dictionary associated with the state that
+  # will be visible in any state that comes after the state where we added them.
+  # Why is this necessary? 
+  # Imagine the following source code: 
+  # 
+  #   if exp:
+  #     correct = True
+  #   else:
+  #     correct = False
+  #
+  #   scanf("%u %u", password0, password1)
+  #
+  #   if correct and accept_passwords(password0, password1):
+  #     print "Good Job."
+  #   else:
+  #     print "Try again."
+  #
+  # There are two possible paths that lead to scanf (if exp, if not exp),
+  # meaning that our hook function will be called twice. If we have a global
+  # Python variable that stores our symbolic values, it would be overwritten
+  # on the second call of our scanf replacement. Instead, we want to store the
+  # symbolic variables with the state in which they were injected. We can do
+  # that by adding it to a dictionary provided by the state to be used for this
+  # purpose.
+  #
+  # This variable is just the key we will be using. It can be any string except
+  # the empty string.
   global_symbols_key = ???  # :string
 
   # The length parameter in angr.Hook specifies how many bytes the execution
@@ -22,8 +56,7 @@ def main(argv):
   instruction_to_skip_length = ???
   @angr.Hook(length=instruction_to_skip_length)
   def skip_scanf(state):
-    # The binary calls scanf(%u %u%*[ ]) on each loop iteration. We need to
-    # inject two symbolic integers on each call of scanf.
+    # The binary calls scanf(%u %u). We need to inject two integers.
     # (!)
     scanf0 = claripy.BVS('scanf0', ???)
     ...
@@ -35,14 +68,11 @@ def main(argv):
     ...
 
     # Now, we want to 'set aside' references to our symbolic values in the
-    # procedure_data plugin included by default with a state. Add the symbol we
-    # created for the scanf call to the symbols_list. Why we do not simply store
-    # a global Python list of all of the symbolic values we create is left for
-    # the reader to figure out (an interesting experiment would be to try it!).
+    # procedure_data plugin included by default with a state. You will need to
+    # store multiple bitvectors. You can either use a list, tuple, or multiple
+    # keys to reference the different bitvectors.
     # (!)
-    if not global_symbols_key in state.procedure_data.global_variables:
-      state.procedure_data.global_variables[global_symbols_key] = []
-    state.procedure_data.global_variables[global_symbols_key].append(???)
+    state.procedure_data.global_variables[global_symbols_key] = ???
 
   # Hook the address of where scanf is called.
   # (!)
@@ -64,14 +94,10 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
-    # Recall where you set aside the symbols and iterate through them and solve
-    # them to find the integer solutions to this binary.
-    solutions = []
-    for password in ???:
-      solution = good_path.state.se.any_int(password)
-      solutions.append(solution)
+    # Recall where you set aside the symbols and solve for them.
+    solution = ???
 
-    print ' '.join(solutions)
+    print solution
   else:
     raise Exception('Could not find the solution')
 
