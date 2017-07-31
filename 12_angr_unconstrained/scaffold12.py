@@ -80,17 +80,20 @@ def main(argv):
         # function should_move evaluates to true.
         # Reimplement this entire block of code.
         # (!)
-        def should_move(path):
-          # Reimplement me if you decide to use me
-          return False
-        path_group.move(from_stash, to_stash, filter_func=should_move)
 
-        # For example, the following moves everything in 'active' to
-        # 'not_needed' except if the path is in keep_paths
-        keep_paths = [ ... ]
-        def should_move(path):
-          return path in keep_paths
-        path_group.move('active', 'not_needed', filter_func=should_move)
+        # def should_move(path):
+        #   # Reimplement me if you decide to use me
+        #   return False
+        # path_group.move(from_stash, to_stash, filter_func=should_move)
+
+        # # For example, the following moves everything in 'active' to
+        # # 'not_needed' except if the path is in keep_paths
+        # keep_paths = [ ... ]
+        # def should_move(path):
+        #   return path in keep_paths
+        # path_group.move('active', 'not_needed', filter_func=should_move)
+        pass
+
       else: # unconstrained state is not exploitable
         # Move the unconstrained_state that you tested that doesn't work to a
         # different stash, perhaps 'not_needed'.

@@ -1,3 +1,32 @@
+# The binary asks for a 16 character password to which is applies a complex
+# function and then compares with a reference string with the function
+# check_equals_[reference string]. (Decompile the binary and take a look at it!)
+# The source code for this function is provided here. However, the reference
+# string in your version will be different than AABBCCDDEEFFGGHH:
+#
+# char* password = "AABBCCDDEEFFGGHH";
+# int check_equals_AABBCCDDEEFFGGHH(char* to_check, size_t length) {
+#   uint32_t num_correct = 0;
+#   for (int i=0; i<length; ++i) {
+#     if (to_check[i] == password[i]) {
+#       num_correct += 1;
+#     }
+#   }
+#   return num_correct == length;
+# }
+#
+# This function checks if to_check == "AABBCCDDEEFFGGHH". Verify that yourself.
+# While you, as a human, can easily determine this, the computer cannot. Instead
+# the computer would need to branch every time the if statement in the loop was
+# called (16 times), resulting in 2^16 = 65,536 branches, which will take too
+# long of a time to evaluate for our needs.
+# In this puzzle, your goal will be to stop the program before this function is
+# called and manually constrain the to_check variable to be equal to the
+# password you identify by decompiling the binary. Since, you, as a human, know
+# that if the strings are equal, the program will print "Good Job.", you can
+# be assured that if the program can solve for an input that makes them equal,
+# the input will be the correct password.
+
 import angr
 import claripy
 import simuvex
@@ -20,7 +49,7 @@ def main(argv):
   path_group = project.factory.path_group(initial_state)
 
   # Angr will not be able to reach the point at which the binary prints out
-  # 'Success.'. We cannot use that as the target anymore.
+  # 'Good Job.'. We cannot use that as the target anymore.
   # (!)
   success_address = ???
   avoid_address = ???
@@ -29,26 +58,23 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
-    # We need to load the output of the complex function. Figure out where these
-    # are stored by looking at the disassembly of the binary.
-    complex_function_output0_address = ???
-    complex_function_output0_size_bytes = ???
-    complex_function_output0 = good_path.state.load(
-      complex_function_output0_address,
-      complex_function_output0_size_bytes,
-      endness=project.arch.memory_endness
+    # Recall that we need to constrain the to_check parameter of the 
+    # check_equals_ function. Determine the address that is being passed as the
+    # parameter and load it into a bitvector so that we can constrain it.
+    to_check_address = ???
+    to_check_size_bytes = ???
+    to_check_bitvector = good_path.state.load(
+      to_check_address,
+      to_check_size_bytes
     )
     ...
 
-    # Constrain the system to find an input given that the complex function
-    # outputs are equal to the desired outputs.
-    desired_complex_function_output0 = ???
-    good_path.state.add_constraints(complex_function_output0 == desired_complex_function_output0)
-    ...
+    # Constrain the system to find an input that will make to_check equal the
+    # desired value.
+    desired_value = ??? # :string
+    good_path.state.add_constraints(to_check_bitvector == desired_value)
 
-    solution0 = good_path.state.se.any_int(password0)
-    ...
-
+    # Solve for the to_check_bitvector.
     solution = ???
 
     print solution

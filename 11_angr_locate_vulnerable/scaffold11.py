@@ -24,10 +24,7 @@ def main(argv):
       state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      if not global_symbols_key in state.procedure_data.global_variables:
-        state.procedure_data.global_variables[global_symbols_key] = []
-      ...
-      state.procedure_data.global_variables[global_symbols_key].append(???)
+      state.procedure_data.global_variables[global_symbols_key] = ???
 
   scanf_symbol = ???  # :string
   project.hook_symbol(scanf_symbol, Hook(ReplacementScanf))
@@ -35,16 +32,17 @@ def main(argv):
   # Check if strcpy might be vulnerable by checking if the source is symbolic
   # (and therefore might be directly controlled by the user.)
   def check_strcpy_vulnerable(path):
-    # Check if we are at the beginning of strcpy.
+    # Check if we are at the beginning of strcpy. 
     strcpy_address = ???
     if path.addr == strcpy_address:
       # Treat the implementation of this function as if strcpy was just called.
       # The stack, registers, memory, etc should be set up as if the x86 call
       # instruction was just invoked (but, of course, the function hasn't copied
       # the buffers yet.)
-
       # Get the bitvector of the src and dest parameter of strcpy. How big should
-      # the buffer you load be for each?
+      # the buffer you load be for each? Hint: At this point, three elements have
+      # been pushed in this order: src, dest, return_address. Each are four bytes.
+      # Therefore, src is at esp + 8 and dest is at esp + 4.
       # (!)
       src = ???
       dest = ???
