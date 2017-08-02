@@ -18,29 +18,33 @@ def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
 #include <signal.h>
 
 char msg[] = "${ description }$";
-char* try_again = "Try again.\n"
-char* good_job = "Good Job.\n"
+char* try_again = "Try again.\n";
+char* good_job = "Good Job.\n";
 uint32_t key;
 
 void print_msg() {
   printf("%s", msg);
 }
 
-int main(int argc, char* argv[]) {
-  char* to_print = try_again;
+struct overflow_me {
   char buffer[16];
+  char* to_print;
+}; 
+
+int main(int argc, char* argv[]) {
+  struct overflow_me locals;
+  locals.to_print = try_again;
 
   print_msg();
 
   printf("Enter the password: ");
-  scanf("%u ", &key);
+  scanf("%u %20s", &key, locals.buffer);
 
   ${
-  hit_statement = 'scanf("%24s", buffer);'
-  miss_statement = 'scanf("%15s", buffer);'
-  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**32-1), 50))
+  hit_statement = 'printf("%s", locals.to_print);'
+  miss_statement = 'printf("%s", try_again);'
+  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**26-1), 2))
   }$
 
-  printf("%s", to_print);
   return 0;
 }
