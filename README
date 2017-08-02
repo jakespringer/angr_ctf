@@ -1,5 +1,8 @@
 Todo:
 
+- add gcc-32 to requirements
+- document package.py to explain how it works
+- add something that uses unicorn engine
 - redo or remove 07, pushing anything to the heap probably doesn't need to be taught
   perhaps rename to "use_memory" or something to teach that you can use arbitrary
   memory addresses

@@ -1,0 +1,46 @@
+${
+import random, os
+random.seed(os.urandom(16))
+
+def expanded_switch_statement(variable, miss_statement, hit_statement, samples):
+  target = random.choice(samples)
+
+  write('switch (%s) {' % (variable,))
+  for sample in samples:
+    write('case %d: %s; break;' % (sample, hit_statement if sample == target else miss_statement))
+  write('default: %s; break; }' % (miss_statement,))
+}$
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+#include <signal.h>
+
+char msg[] = "${ description }$";
+char* try_again = "Try again.\n"
+char* good_job = "Good Job.\n"
+uint32_t key;
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int main(int argc, char* argv[]) {
+  char* to_print = try_again;
+  char buffer[16];
+
+  print_msg();
+
+  printf("Enter the password: ");
+  scanf("%u ", &key);
+
+  ${
+  hit_statement = 'scanf("%24s", buffer);'
+  miss_statement = 'scanf("%15s", buffer);'
+  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**32-1), 50))
+  }$
+
+  printf("%s", to_print);
+  return 0;
+}
