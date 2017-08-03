@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
   locals.to_copy_to = unimportant_buffer;
 
   memset(locals.buffer, 0, 16);
-  memcpy(password_buffer, "PASSWORD", 12);
+  strncpy(password_buffer, "PASSWORD", 12);
 
   print_msg();
 
@@ -46,8 +46,8 @@ int main(int argc, char* argv[]) {
   scanf("%u %20s", &key, locals.buffer);
 
   ${
-  hit_statement = 'memcpy(locals.to_copy_to, locals.buffer, 16)'
-  miss_statement = 'memcpy(unimportant_buffer, locals.buffer, 16)'
+  hit_statement = 'strncpy(locals.to_copy_to, locals.buffer, 16)'
+  miss_statement = 'strncpy(unimportant_buffer, locals.buffer, 16)'
   expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**26-1), 2))
   }$
 
