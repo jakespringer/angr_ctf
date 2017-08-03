@@ -16,6 +16,8 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
+  # You may want to replace this with entry_state to start from the beginning.
+  # (!)
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
@@ -95,6 +97,7 @@ def main(argv):
     good_path = path_group.found[0]
 
     # Recall where you set aside the symbols and solve for them.
+    stored_solutions = good_path.state.procedure_data.global_variables[global_symbols_key]
     solution = ???
 
     print solution
