@@ -13,12 +13,12 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
+  # You may want to replace this with entry_state to start from the beginning!
+  # (!)
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
   global_symbols_key = ???
-
-  instruction_to_skip_length = ???
 
   # Define a class that inherits simuvex.SimProcedure in order to take advantage
   # of Angr's SimProcedures.
@@ -55,10 +55,10 @@ def main(argv):
 
       # Hint: scanf0_address is passed as a parameter, isn't it?
       scanf0_address = ???
-      state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
+      self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      state.procedure_data.global_variables[global_symbols_key] = ???
+      self.state.procedure_data.global_variables[global_symbols_key] = ???
 
   # Hook the scanf symbol. Angr automatically looks up the address associated
   # with the symbol. Alternatively, you can use 'hook' instead of 'hook_symbol'
@@ -83,6 +83,8 @@ def main(argv):
   if path_group.found:
     good_path = path_group.found[0]
 
+    # Grab whatever you set aside in the global_variables dict.
+    stored_solutions = good_path.state.procedure_data.global_variables[global_symbols_key]
     solution = ???
 
     print solution
