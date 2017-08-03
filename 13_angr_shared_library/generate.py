@@ -17,18 +17,18 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '15_angr_shared_library_so.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '13_angr_shared_library_so.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -I' + os.path.dirname(os.path.realpath(__file__))  + ' -fno-stack-protector -fpic -m32 -c -o 15_angr_shared_library.o ' + temp.name)
-    os.system('gcc -shared -m32 -o ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so') + ' 15_angr_shared_library.o')
-    os.system('rm 15_angr_shared_library.o')
+    os.system('gcc -I' + os.path.dirname(os.path.realpath(__file__))  + ' -fno-stack-protector -fpic -m32 -c -o 13_angr_shared_library.o ' + temp.name)
+    os.system('gcc -shared -m32 -o ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so') + ' 13_angr_shared_library.o')
+    os.system('rm 13_angr_shared_library.o')
     os.system('chmod -x ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so'))
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '15_angr_shared_library.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '13_angr_shared_library.c.templite'), 'r').read()
   c_code = Templite(template).render()
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
