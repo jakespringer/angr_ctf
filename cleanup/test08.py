@@ -20,6 +20,7 @@
 # the computer would need to branch every time the if statement in the loop was
 # called (16 times), resulting in 2^16 = 65,536 branches, which will take too
 # long of a time to evaluate for our needs.
+#
 # In this puzzle, your goal will be to stop the program before this function is
 # called and manually constrain the to_check variable to be equal to the
 # password you identify by decompiling the binary. Since, you, as a human, know
@@ -29,19 +30,17 @@
 
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = ???
+  start_address = 0x80485ff
   initial_state = project.factory.blank_state(addr=start_address)
 
-  password0 = claripy.BVS('password', ???)
-
-  password0_address = ???
+  password0 = claripy.BVS('password', 16*8)
+  password0_address = 0x804a050
   initial_state.memory.store(password0_address, password0)
 
   path_group = project.factory.path_group(initial_state)
@@ -49,29 +48,29 @@ def main(argv):
   # Angr will not be able to reach the point at which the binary prints out
   # 'Good Job.'. We cannot use that as the target anymore.
   # (!)
-  address_to_check_constraint = ???
-  path_group.explore(find=address_to_check_constraint)
+  success_address = 0x8048643
+  path_group.explore(find=success_address)
 
   if path_group.found:
     good_path = path_group.found[0]
 
-    # Recall that we need to constrain the to_check parameter (see top) of the 
+    # Recall that we need to constrain the to_check parameter of the 
     # check_equals_ function. Determine the address that is being passed as the
     # parameter and load it into a bitvector so that we can constrain it.
-    constrained_parameter_address = ???
-    constrained_parameter_size_bytes = ???
-    constrained_parameter_bitvector = good_path.state.memory.load(
-      constrained_parameter_address,
-      constrained_parameter_size_bytes
+    to_check_address = 0x804a050
+    to_check_size_bytes = 16
+    to_check_bitvector = good_path.state.memory.load(
+      to_check_address,
+      to_check_size_bytes
     )
 
-    # Constrain the system to find an input that will make
-    # constrained_parameter_bitvector equal the desired value.
-    constrained_parameter_desired_value = ??? # :string
-    good_path.state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
+    # Constrain the system to find an input that will make to_check equal the
+    # desired value.
+    desired_value = 'TKNJAHORXRSISGAU' # :string
+    good_path.state.add_constraints(to_check_bitvector == desired_value)
 
-    # Solve for the constrained_parameter_bitvector.
-    solution = ???
+    # Solve for the to_check_bitvector.
+    solution = good_path.state.se.any_str(password0)
 
     print solution
   else:

@@ -9,3 +9,5 @@ call complex function on password in level 8 in description (scaffold)
 - redo or remove 07, pushing anything to the heap probably doesn't need to be taught
   perhaps rename to "use_memory" or something to teach that you can use arbitrary
   memory addresses
+
+slideshow -> hooks -> change 16 bytes to 19 (double check this)

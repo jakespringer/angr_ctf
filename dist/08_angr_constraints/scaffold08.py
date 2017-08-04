@@ -40,41 +40,37 @@ def main(argv):
   initial_state = project.factory.blank_state(addr=start_address)
 
   password0 = claripy.BVS('password', ???)
-  ...
 
   password0_address = ???
-  initial_state.store(password0_address, password0)
-  ...
+  initial_state.memory.store(password0_address, password0)
 
   path_group = project.factory.path_group(initial_state)
 
   # Angr will not be able to reach the point at which the binary prints out
   # 'Good Job.'. We cannot use that as the target anymore.
   # (!)
-  success_address = ???
-  avoid_address = ???
-  path_group.explore(find=success_address, avoid=avoid_address)
+  address_to_check_constraint = ???
+  path_group.explore(find=address_to_check_constraint)
 
   if path_group.found:
     good_path = path_group.found[0]
 
-    # Recall that we need to constrain the to_check parameter of the 
+    # Recall that we need to constrain the to_check parameter (see top) of the 
     # check_equals_ function. Determine the address that is being passed as the
     # parameter and load it into a bitvector so that we can constrain it.
-    to_check_address = ???
-    to_check_size_bytes = ???
-    to_check_bitvector = good_path.state.load(
-      to_check_address,
-      to_check_size_bytes
+    constrained_parameter_address = ???
+    constrained_parameter_size_bytes = ???
+    constrained_parameter_bitvector = good_path.state.memory.load(
+      constrained_parameter_address,
+      constrained_parameter_size_bytes
     )
-    ...
 
-    # Constrain the system to find an input that will make to_check equal the
-    # desired value.
-    desired_value = ??? # :string
-    good_path.state.add_constraints(to_check_bitvector == desired_value)
+    # Constrain the system to find an input that will make
+    # constrained_parameter_bitvector equal the desired value.
+    constrained_parameter_desired_value = ??? # :string
+    good_path.state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
-    # Solve for the to_check_bitvector.
+    # Solve for the constrained_parameter_bitvector.
     solution = ???
 
     print solution

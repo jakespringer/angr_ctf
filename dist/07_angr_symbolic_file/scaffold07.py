@@ -59,15 +59,15 @@ def main(argv):
   # the beginning, as the Linux file will stream data from the beginning of the
   # file. For example, imagine a simple file, 'hello.txt':
   #
-  # Hello world, my name is ____.
+  # Hello world, my name is John.
   # ^                       ^
   # ^ address 0             ^ address 24 (count the number of characters)
   # In order to represent this in memory, we would want to write the string to
   # the beginning of the file:
   #
-  # hello_txt_backing_memory.store(0, claripy.BVV('Hello world, my name is ____.', 30*8))
+  # hello_txt_backing_memory.store(0, claripy.BVV('Hello world, my name is John.', 30*8))
   #
-  # Perhaps, then, we would want to replace the underscores (____) with a
+  # Perhaps, then, we would want to replace John with a
   # symbolic variable. We would call:
   #
   # hello_txt_backing_memory.store(24, claripy.BVS('symbolic_name', 4*8))
