@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
   unlink(USERDEF1);
 
   for (int i=0; i<8; ++i) {
-    buffer[i] = complex_function(buffer[i], -i);
+    buffer[i] = complex_function(buffer[i], i);
   }
 
   if (strncmp(buffer, USERDEF0, 8)) {

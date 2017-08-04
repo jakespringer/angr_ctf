@@ -22,14 +22,13 @@
 
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = ???
+  start_address = 0x80488ef
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Specify some information needed to construct a simulated file. For this
@@ -37,8 +36,8 @@ def main(argv):
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = ???  # :string
-  symbolic_file_size_bytes = ???
+  filename = 'TKNJAHOR.txt'  # :string
+  symbolic_file_size_bytes = 64
 
   # A file, in Linux, represents a stream of sequential data. This stream may
   # come from a physical file on your hard drive, the network, the output of
@@ -48,7 +47,7 @@ def main(argv):
   # supply the stream of data to the Linux file. Also, to communicate with 
   # Angr's constraint solving system, we need to associate the memory with the 
   # initial_state.
-  symbolic_file_backing_memory = simuvex.SimSymbolicMemory()
+  symbolic_file_backing_memory = angr.state_plugins.SimSymbolicMemory()
   symbolic_file_backing_memory.set_state(initial_state)
 
   # Construct a bitvector for the password and then store it in the file's
@@ -59,15 +58,15 @@ def main(argv):
   # the beginning, as the Linux file will stream data from the beginning of the
   # file. For example, imagine a simple file, 'hello.txt':
   #
-  # Hello world, my name is John.
+  # Hello world, my name is ____.
   # ^                       ^
   # ^ address 0             ^ address 24 (count the number of characters)
   # In order to represent this in memory, we would want to write the string to
   # the beginning of the file:
   #
-  # hello_txt_backing_memory.store(0, claripy.BVV('Hello world, my name is John.', 30*8))
+  # hello_txt_backing_memory.store(0, claripy.BVV('Hello world, my name is ____.', 30*8))
   #
-  # Perhaps, then, we would want to replace John with a
+  # Perhaps, then, we would want to replace the underscores (____) with a
   # symbolic variable. We would call:
   #
   # hello_txt_backing_memory.store(24, claripy.BVS('symbolic_name', 4*8))
@@ -78,7 +77,7 @@ def main(argv):
   # underscores.
   # (!)
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)
-  symbolic_file_backing_memory.store(???, password)
+  symbolic_file_backing_memory.store(0, password)
 
   # Construct the symbolic file. The file_options parameter specifies the Linux
   # file permissions (read, read/write, binary, etc.) The content parameter
@@ -87,7 +86,7 @@ def main(argv):
   # contain the contents (including any symbolic contents) of the memory,
   # beginning from address zero.
   file_options = 'r'
-  password_file = simuvex.SimFile(filename, file_options, content=???, size=symbolic_file_size_bytes)
+  password_file = angr.storage.SimFile(filename, file_options, content=symbolic_file_backing_memory, size=symbolic_file_size_bytes)
 
   # We have already created the file and the memory that stores the data that
   # the file will stream to the program, but we now need to tell Angr where the
@@ -108,14 +107,15 @@ def main(argv):
 
   def is_successful(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return "Good Job." in stdout_output
 
   def should_abort(path):
     stdout_output = path.state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return "Try again." in stdout_output
 
   path_group.explore(find=is_successful, avoid=should_abort)
 
+  print path_group
   if path_group.found:
     good_path = path_group.found[0]
 
