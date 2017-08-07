@@ -38,14 +38,14 @@ def package_all(root_folder):
   package_level('07_angr_symbolic_file', root_folder, num_binaries, root_folder, year, ['scaffold07.py'])
   package_level('08_angr_constraints', root_folder, num_binaries, root_folder, year, ['scaffold08.py'])
   package_level('09_angr_hooks', root_folder, num_binaries, root_folder, year, ['scaffold09.py'])
-  package_level('11_angr_simprocedures', root_folder, num_binaries, root_folder, year, ['scaffold10.py'])
+  package_level('10_angr_simprocedures', root_folder, num_binaries, root_folder, year, ['scaffold10.py'])
   package_level('11_angr_sim_scanf', root_folder, num_binaries, root_folder, year, ['scaffold11.py'])
-  package_level('11_angr_veritesting', root_folder, num_binaries, root_folder, year, ['scaffold11.py'])
-  package_level('12_angr_static_binary', root_folder, num_binaries, root_folder, year, ['scaffold12.py'])
-  package_level('13_angr_shared_library', root_folder, num_binaries, root_folder, year, ['scaffold13.py'])
-  package_level('14_angr_arbitrary_read', root_folder, num_binaries, root_folder, year, ['scaffold14.py'])
-  package_level('15_angr_arbitrary_write', root_folder, num_binaries, root_folder, year, ['scaffold15.py'])
-  package_level('16_angr_arbitrary_jump', root_folder, num_binaries, root_folder, year, ['scaffold16.py'])
+  package_level('12_angr_veritesting', root_folder, num_binaries, root_folder, year, ['scaffold12.py'])
+  package_level('13_angr_static_binary', root_folder, num_binaries, root_folder, year, ['scaffold13.py'])
+  package_level('14_angr_shared_library', root_folder, num_binaries, root_folder, year, ['scaffold14.py'])
+  package_level('15_angr_arbitrary_read', root_folder, num_binaries, root_folder, year, ['scaffold15.py'])
+  package_level('16_angr_arbitrary_write', root_folder, num_binaries, root_folder, year, ['scaffold16.py'])
+  package_level('17_angr_arbitrary_jump', root_folder, num_binaries, root_folder, year, ['scaffold17.py'])
 
 if __name__ == '__main__':
   if len(sys.argv) != 2:

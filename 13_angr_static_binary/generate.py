@@ -1,4 +1,4 @@
-#!/usr/bin/env pypy
+#!/usr/bin/env python
 
 import sys, random, os, tempfile
 from templite import Templite
@@ -17,13 +17,13 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '11_angr_veritesting.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '13_angr_static_binary.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)
+    os.system('gcc -static -m32 -o ' + output_file + ' ' + temp.name)
 
 if __name__ == '__main__':
   generate(sys.argv)
