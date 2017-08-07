@@ -14,7 +14,7 @@ def main(argv):
   # start_address will specify where the symbolic execution engine should begin.
   # Note that we are using blank_state, not entry_state.
   # (!)
-  start_address = ???  # :integer (probably hexadecimal)
+  start_address = 0x8048864  # :integer (probably hexadecimal)
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
@@ -25,9 +25,14 @@ def main(argv):
   # you need, dissassemble the binary and determine the format parameter passed
   # to scanf.
   # (!)
-  password0_size_in_bits = ???  # :integer
+  password0_size_in_bits = 32  # :integer
   password0 = claripy.BVS('password0', password0_size_in_bits)
-  ...
+
+  password1_size_in_bits = 32  # :integer
+  password1 = claripy.BVS('password1', password1_size_in_bits)
+
+  password2_size_in_bits = 32  # :integer
+  password2 = claripy.BVS('password2', password2_size_in_bits)
 
   # Set a register to a symbolic value. This is one way to inject symbols into
   # the program.
@@ -41,18 +46,19 @@ def main(argv):
   # to inject which symbol, dissassemble the binary and look at the instructions
   # immediately following the call to scanf.
   # (!)
-  initial_state.regs.??? = password0
-  ...
+  initial_state.regs.eax = password0
+  initial_state.regs.ebx = password1
+  initial_state.regs.edx = password2
 
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return 'Good Job.' in stdout_output
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return ???
+    return 'Try again.' in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
@@ -64,12 +70,13 @@ def main(argv):
     # solution. Pass any_int the bitvector you want to solve for.
     # (!)
     solution0 = solution_state.se.any_int(password0)
-    ...
+    solution1 = solution_state.se.any_int(password1) 
+    solution2 = solution_state.se.any_int(password2)
 
     # Aggregate and format the solutions you computed above, and then print
     # the full string. Pay attention to the order of the integers, and the
     # expected base (decimal, octal, hexadecimal, etc).
-    solution = ???  # :string
+    solution = ' '.join(map(str, [ solution0, solution1, solution2 ]))  # :string
     print solution
   else:
     raise Exception('Could not find the solution')

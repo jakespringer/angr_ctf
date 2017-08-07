@@ -15,3 +15,5 @@ slideshow -> hooks -> change 16 bytes to 19 (double check this)
 Replace read/write levels with angr.Project.inspect (see documentation)
   can hook all memory reads/writes!!!
   instead of replace, add new levels that use these
+
+add checks to ensure everything is printed nicely (trailing \0)
