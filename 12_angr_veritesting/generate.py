@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env pypy
 
 import sys, random, os, tempfile
 from templite import Templite
@@ -17,7 +17,7 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '11_angr_sim_scanf.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '12_angr_veritesting.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:

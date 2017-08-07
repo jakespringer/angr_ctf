@@ -17,13 +17,13 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '11_angr_sim_scanf.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '15_angr_arbitrary_read.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)
+    os.system('gcc -m32 -fno-stack-protector -Wl,--section-start=.rodata=0x34343434 -o ' + output_file + ' ' + temp.name)
 
 if __name__ == '__main__':
   generate(sys.argv)
