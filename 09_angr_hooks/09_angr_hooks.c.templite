@@ -60,8 +60,7 @@ int main(int argc, char* argv[]) {
 
   scanf("%16s", buffer);
   
-  equals = equals && strncmp(buffer, password, 16);  
-
+  equals = equals && !strncmp(buffer, password, 16);
   if (!equals) {
     printf("Try again.\n");
   } else {

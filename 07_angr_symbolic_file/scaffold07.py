@@ -19,7 +19,6 @@
 
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):

@@ -45,7 +45,6 @@
 
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
@@ -55,10 +54,10 @@ def main(argv):
   start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  password0 = claripy.BVS('password', ???)
+  password = claripy.BVS('password', ???)
 
-  password0_address = ???
-  initial_state.memory.store(password0_address, password0)
+  password_address = ???
+  initial_state.memory.store(password_address, password)
 
   simulation = project.factory.simgr(initial_state)
 

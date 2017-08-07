@@ -17,7 +17,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
   initial_state = project.factory.entry_state()
-  simulation = project.factory.simulation(initial_state)
+  simulation = project.factory.simgr(initial_state)
 
   # Define a function that checks if you have found the state you are looking
   # for.

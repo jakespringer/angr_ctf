@@ -44,7 +44,7 @@ def main(argv):
   initial_state.regs.??? = password0
   ...
 
-  simulation = project.factory.simulation(initial_state)
+  simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
@@ -63,7 +63,7 @@ def main(argv):
     # care about one, so we can use any_int, which returns any (but only one)
     # solution. Pass any_int the bitvector you want to solve for.
     # (!)
-    solution0 = solution_state.state.se.any_int(password0)
+    solution0 = solution_state.se.any_int(password0)
     ...
 
     # Aggregate and format the solutions you computed above, and then print
