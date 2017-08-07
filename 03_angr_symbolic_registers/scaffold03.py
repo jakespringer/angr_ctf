@@ -1,3 +1,7 @@
+# Angr doesn't currently support reading multiple things with scanf (Ex: 
+# scanf("%u %u).) You will have to tell the simulation engine to begin the
+# program after scanf is called and manually inject the symbols into registers.
+
 import angr
 import claripy
 import sys
@@ -15,9 +19,11 @@ def main(argv):
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
   # values into the binary.) The first parameter is just a name Angr uses
-  # to reference it.
+  # to reference it. 
   # You will have to construct multiple bitvectors. Copy the two lines below
-  # and change the variable names.
+  # and change the variable names. To figure out how many (and of what size)
+  # you need, dissassemble the binary and determine the format parameter passed
+  # to scanf.
   # (!)
   password0_size_in_bits = ???  # :integer
   password0 = claripy.BVS('password0', password0_size_in_bits)
@@ -31,31 +37,33 @@ def main(argv):
   # initial_state.regs.eax = password0
   #
   # You will have to set multiple registers to distinct bitvectors. Copy and
-  # paste the line below and change the register.
+  # paste the line below and change the register. To determine which registers
+  # to inject which symbol, dissassemble the binary and look at the instructions
+  # immediately following the call to scanf.
   # (!)
   initial_state.regs.??? = password0
   ...
 
-  path_group = project.factory.path_group(initial_state)
+  simulation = project.factory.simulation(initial_state)
 
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  path_group.explore(find=is_successful, avoid=should_abort)
+  simulation.explore(find=is_successful, avoid=should_abort)
 
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
     # Solve for the symbolic values. If there are multiple solutions, we only
     # care about one, so we can use any_int, which returns any (but only one)
     # solution. Pass any_int the bitvector you want to solve for.
     # (!)
-    solution0 = good_path.state.se.any_int(password0)
+    solution0 = solution_state.state.se.any_int(password0)
     ...
 
     # Aggregate and format the solutions you computed above, and then print

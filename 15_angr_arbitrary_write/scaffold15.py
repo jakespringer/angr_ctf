@@ -11,8 +11,7 @@ def main(argv):
   # at the beginning of the program.
   initial_state = ???
 
-  global_symbols_key = ???
-  class ReplacementScanf(simuvex.SimProcedure):
+  class ReplacementScanf(angr.SimProcedure):
     # Hint: scanf("%u %20s")
     def run(self, format_string, ...???):
       # %u
@@ -28,7 +27,7 @@ def main(argv):
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
-      self.state.procedure_data.global_variables[global_symbols_key] = ???
+      self.state.globals['solutions'] = ???
 
   scanf_symbol = ???  # :string
   project.hook_symbol(scanf_symbol, angr.Hook(ReplacementScanf))
@@ -37,7 +36,7 @@ def main(argv):
   # both the source and the destination. It is common that we will be able to
   # control at least one of the parameters, (such as when the program copies a
   # string that it received via stdin).
-  def check_strncpy(path):
+  def check_strncpy(state):
     # The stack will look as follows:
     # ...          ________________
     # esp + 15 -> /                \
@@ -66,11 +65,11 @@ def main(argv):
     # the contents of src to determine if they are symbolic.
     # Hint: How many bytes is strncpy copying?
     # (!)
-    src_contents = path.state.memory.load(strncpy_src, ???)
+    src_contents = state.memory.load(strncpy_src, ???)
 
     # Determine if the destination pointer and the source is symbolic.
     # (!)
-    if path.state.se.symbolic(???) and ...:
+    if state.se.symbolic(???) and ...:
       # Use ltrace to determine the password. Decompile the binary to determine
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
@@ -106,19 +105,19 @@ def main(argv):
     else: # not path.state.se.symbolic(???)
       return False
 
-  path_group = project.factory.path_group(initial_state)
+  simulation = project.factory.simgr(initial_state)
 
-  def is_successful(path):
+  def is_successful(state):
     strncpy_address = ???
-    if path.addr == strncpy_address:
-      return check_strncpy(path)
+    if state.addr == strncpy_address:
+      return check_strncpy(state)
     else:
       return False
 
-  path_group.explore(find=is_successful, avoid=???)
+  simulation.explore(find=is_successful, avoid=???)
 
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
     solution = ???
     print solution

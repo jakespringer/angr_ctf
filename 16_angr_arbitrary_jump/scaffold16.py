@@ -1,14 +1,12 @@
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = ???
-  initial_state = project.factory.blank_state(addr=start_address)
+  initial_state = ??? 
 
   # An under-constrained (unconstrained) state occurs when there are too many
   # possible branches from a single instruction. This occurs, among other ways,
@@ -28,50 +26,50 @@ def main(argv):
   # behavior later. For now, test if a state is vulnerable by checking if we
   # can set the instruction pointer to the address of print_good in the binary.
   # (!)
-  def check_vulnerable(path):
+  def check_vulnerable(state):
     # Reimplement me!
     return False
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
-  # 'path_group.unconstrained'.
-  path_group = project.factory.path_group(initial_state, save_unconstrained=True)
+  # 'simulation.unconstrained'.
+  simulation = project.factory.simgr(initial_state, save_unconstrained=True)
 
   # Explore will not work for us, since the method specified with the 'find'
   # parameter will not be called on an unconstrained state. Instead, we want to
   # explore the binary ourselves.
   # To get started, construct an exit condition to know when we've found a
-  # solution. We will later be able to move paths from the unconstrained list
-  # to the path_group.found list. Alternatively, you can create a boolean value
+  # solution. We will later be able to move states from the unconstrained list
+  # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
-  has_found_solution = len(path_group.found) > 0
+  has_found_solution = len(simulation.found) > 0
 
-  # Check if there are still unconstrained paths left to check. Once we
+  # Check if there are still unconstrained states left to check. Once we
   # determine a given unconstrained state is not exploitable, we can throw it
-  # out. Use the path_group.unconstrained list.
+  # out. Use the simulation.unconstrained list.
   # (!)
   has_unconstrained_to_check = ???
 
-  # The list path_group.active is a list of all paths that can be explored
+  # The list simulation.active is a list of all states that can be explored
   # further.
   # (!)
   has_active = ???
   while (has_active or has_unconstrained_to_check) and (not has_found_solution):
-    # Iterate through all unconstrained path and check them.
+    # Iterate through all unconstrained states and check them.
     # (!)
-    for unconstrained_path in ???:
+    for unconstrained_state in ???:
       # Check if the unconstrained state is exploitable.
       # (!)
       if ???:
-        # Found an exploit, exit the while loop and keep unconstrained_path as
+        # Found an exploit, exit the while loop and keep unconstrained_state as
         # the solution. The way the loops is currently set up, you should move
         # the exploitable unconstrained state to the 'found' stash.
         # A 'stash' should be a string that corresponds to a list that stores
-        # all the paths that the path group keeps. Values include:
-        #  'active' = paths that can be stepped
-        #  'deadended' = paths that have exited the program
-        #  'errored' = paths that encountered an error with Angr
-        #  'unconstrained' = paths that are unconstrained
+        # all the states that the state group keeps. Values include:
+        #  'active' = states that can be stepped
+        #  'deadended' = states that have exited the program
+        #  'errored' = states that encountered an error with Angr
+        #  'unconstrained' = states that are unconstrained
         #  'found' = solutions
         #  anything else = whatever you want, perhaps you want a 'not_needed',
         #                  you can call it whatever you want
@@ -81,17 +79,17 @@ def main(argv):
         # Reimplement this entire block of code.
         # (!)
 
-        # def should_move(path):
+        # def should_move(state):
         #   # Reimplement me if you decide to use me
         #   return False
-        # path_group.move(from_stash, to_stash, filter_func=should_move)
+        # simulation.move(from_stash, to_stash, filter_func=should_move)
 
         # # For example, the following moves everything in 'active' to
-        # # 'not_needed' except if the path is in keep_paths
-        # keep_paths = [ ... ]
-        # def should_move(path):
-        #   return path in keep_paths
-        # path_group.move('active', 'not_needed', filter_func=should_move)
+        # # 'not_needed' except if the state is in keep_states
+        # keep_states = [ ... ]
+        # def should_move(state):
+        #   return state in keep_states
+        # simulation.move('active', 'not_needed', filter_func=should_move)
         pass
 
       else: # unconstrained state is not exploitable
@@ -100,16 +98,16 @@ def main(argv):
         # Reimplement me.
         # (!)
         pass
+ 
+    # Advance the simulation.
+    simulation.step()
 
-    path_group.step()
-
-
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
     # Constrain the instruction pointer to target the print_good function and
     # then solve for the user input (recall that this is
-    # 'good_path.state.posix.dumps(sys.stdin.fileno())')
+    # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
     ...
 

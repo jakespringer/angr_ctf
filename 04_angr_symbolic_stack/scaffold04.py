@@ -132,22 +132,22 @@ def main(argv):
   initial_state.stack_push(???)  # :bitvector (claripy.BVS, claripy.BVV, claripy.BV)
   ...
 
-  path_group = project.factory.path_group(initial_state)
+  simulation = project.factory.simgr(initial_state)
 
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  path_group.explore(find=is_successful, avoid=should_abort)
+  simulation.explore(find=is_successful, avoid=should_abort)
 
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
-    solution0 = good_path.state.se.any_int(password0)
+    solution0 = solution_state.se.any_int(password0)
     ...
 
     solution = ???

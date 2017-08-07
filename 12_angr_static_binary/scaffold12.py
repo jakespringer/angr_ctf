@@ -8,16 +8,20 @@
 # 
 # Here are a few SimProcedures Angr has already written for you. They implement
 # standard library functions. You will not need all of them:
-# simuvex.SimProcedures['libc.so.6']['malloc']
-# simuvex.SimProcedures['libc.so.6']['fopen']
-# simuvex.SimProcedures['libc.so.6']['fclose']
-# simuvex.SimProcedures['libc.so.6']['fwrite']
-# simuvex.SimProcedures['libc.so.6']['getchar']
-# simuvex.SimProcedures['libc.so.6']['strncmp']
-# simuvex.SimProcedures['libc.so.6']['strcmp']
-# simuvex.SimProcedures['libc.so.6']['__isoc99_scanf']
-# simuvex.SimProcedures['libc.so.6']['printf']
-# simuvex.SimProcedures['libc.so.6']['puts']
-# simuvex.SimProcedures['libc.so.6']['exit']
+# angr.SimProcedures['libc']['malloc']
+# angr.SimProcedures['libc']['fopen']
+# angr.SimProcedures['libc']['fclose']
+# angr.SimProcedures['libc']['fwrite']
+# angr.SimProcedures['libc']['getchar']
+# angr.SimProcedures['libc']['strncmp']
+# angr.SimProcedures['libc']['strcmp']
+# angr.SimProcedures['libc']['__isoc99_scanf']
+# angr.SimProcedures['libc']['printf']
+# angr.SimProcedures['libc']['puts']
+# angr.SimProcedures['libc']['exit']
+#
+# As a reminder, you can hook functions with something similar to:
+# project.hook(malloc_address, angr.SimProcedures['libc']['malloc'])
+#
 # There are many more, see:
-# https://github.com/angr/simuvex/tree/master/simuvex/procedures/libc___so___6
+# https://github.com/angr/angr/tree/master/angr/procedures/libc
