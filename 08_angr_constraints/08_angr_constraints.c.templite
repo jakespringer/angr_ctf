@@ -1,5 +1,6 @@
 ${
 import random, os
+random.seed(os.urandom(8))
 }$
 
 #include <stdio.h>
