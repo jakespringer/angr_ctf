@@ -1,105 +1,83 @@
-# This level performs complex computations necessary to evaluate user input
-# before scanf is called. This means we cannot start the program after scanf is
-# called to avoid handling it, as we would miss the initial computations in our
-# path. Instead, we need to 'hook' the call to scanf and replace it with our own
-# code that injects symbols correctly. This means we need to specify to Angr to
-# pause the execution when it arrives at the scanf instruction, run our Python
-# function, and then return to the execution with our modified state, skipping
-# the call to scanf.
+# This level performs the following computations:
+#
+# 1. Get 16 bytes of user input and encrypt it.
+# 2. Save the result of check_equals_AABBCCDDEEFFGGHH (or similar)
+# 3. Get another 16 bytes from the user and encrypt it.
+# 4. Check that it's equal to a predefined password.
+#
+# The ONLY part of this program that we have to worry about is #2. We will be
+# replacing the call to check_equals_ with our own version, using a hook, since
+# check_equals_ will run too slowly otherwise.
 
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  # You may want to replace this with entry_state to start from the beginning.
-  # (!)
-  start_address = ???
-  initial_state = project.factory.blank_state(addr=start_address)
+  # Since Angr can handle the initial call to scanf, we can start from the
+  # beginning.
+  initial_state = project.factory.entry_state()
 
-  # We want to store a reference to the symbolic variables we inject when scanf
-  # is called. We will store them in a dictionary associated with the state that
-  # will be visible in any state that comes after the state where we added them.
-  # Why is this necessary? 
-  # Imagine the following source code: 
-  # 
-  #   if exp:
-  #     correct = True
-  #   else:
-  #     correct = False
-  #
-  #   scanf("%u %u", password0, password1)
-  #
-  #   if correct and accept_passwords(password0, password1):
-  #     print "Good Job."
-  #   else:
-  #     print "Try again."
-  #
-  # There are two possible paths that lead to scanf (if exp, if not exp),
-  # meaning that our hook function will be called twice. If we have a global
-  # Python variable that stores our symbolic values, it would be overwritten
-  # on the second call of our scanf replacement. Instead, we want to store the
-  # symbolic variables with the state in which they were injected. We can do
-  # that by adding it to a dictionary provided by the state to be used for this
-  # purpose.
-  #
-  # This variable is just the key we will be using. It can be any string except
-  # the empty string.
-  global_symbols_key = ???  # :string
+  # Hook the address of where check_equals_ is called.
+  # (!)
+  check_equals_called_address = ???
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
-  # replace certain instructions (or groups of instructions).
+  # replace certain instructions (or groups of instructions). Determine the
+  # instructions involved in calling check_equals_, and then determine how many
+  # bytes are used to represent them in memory. This will be the skip length.
   # (!)
   instruction_to_skip_length = ???
-  @angr.Hook(length=instruction_to_skip_length)
-  def skip_scanf(state):
-    # The binary calls scanf(%u %u). We need to inject two integers.
-    # (!)
-    scanf0 = claripy.BVS('scanf0', ???)
-    ...
+  @angr.Hook(check_equals_called_address, length=instruction_to_skip_length)
+  def skip_check_equals_(state):
+    # Determine the address where user input is stored. It is passed as a
+    # parameter ot the check_equals_ function. Then, load the string. Reminder:
+    # int check_equals_(char* to_check, int length) { ...
+    user_input_buffer_address = ??? # :integer, probably hexadecimal
+    user_input_buffer_length = ???
+    user_input_string = state.memory.load(
+      user_input_buffer_address, 
+      user_input_buffer_length
+    )
+    
+    # Determine the string this function is checking the user input against.
+    # It's encoded in the name of this function; decompile the program to find
+    # it.
+    check_against_string = ??? # :string
 
-    # Identify the address where scanf writes the user input.
-    # (!)
-    scanf0_address = ???
-    state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
-    ...
+    # gcc uses eax to store the return value, if it is an integer. We need to
+    # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
+    # However, since we are describing an equation to be used by z3 (not to be
+    # evaluated immediately), we cannot use Python if else syntax. Instead, we 
+    # have to use claripy's built in function that deals with if statements.
+    state.regs.eax = claripy.If(
+      user_input_string == check_against_string, 
+      claripy.BVV(1, 32), 
+      claripy.BVV(1, 32)
+    )
 
-    # Now, we want to 'set aside' references to our symbolic values in the
-    # procedure_data plugin included by default with a state. You will need to
-    # store multiple bitvectors. You can either use a list, tuple, or multiple
-    # keys to reference the different bitvectors.
-    # (!)
-    state.procedure_data.global_variables[global_symbols_key] = ???
+  simulation = project.factory.simgr(initial_state)
 
-  # Hook the address of where scanf is called.
-  # (!)
-  scanf_called_address = ???
-  project.hook(scanf_called_address, skip_scanf)
-
-  path_group = project.factory.path_group(initial_state)
-
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  path_group.explore(find=is_successful, avoid=should_abort)
+  simulation.explore(find=is_successful, avoid=should_abort)
 
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
-    # Recall where you set aside the symbols and solve for them.
-    stored_solutions = good_path.state.procedure_data.global_variables[global_symbols_key]
+    # Since we are allowing Angr to handle the input, retrieve it by printing
+    # the contents of stdin. Use one of the early levels as a reference.
     solution = ???
-
     print solution
   else:
     raise Exception('Could not find the solution')

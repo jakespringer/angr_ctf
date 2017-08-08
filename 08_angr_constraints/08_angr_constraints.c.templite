@@ -1,5 +1,6 @@
 ${
 import random, os
+random.seed(os.urandom(8))
 }$
 
 #include <stdio.h>
@@ -24,8 +25,7 @@ int complex_function(int value, int i) {
     printf("Try again.\n");
     exit(1);
   }
-  return value;
-  //return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
 int check_equals_${ userdef }$(char* to_check, size_t length) {

@@ -17,12 +17,8 @@
 #    and propogated through the program.
 # 4. Solve for the symbolic input to determine the password.
 
-# Explain why the memory backing needs to start with 0 (explain memory backing)
-# Explain what the content parameter does
-
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
@@ -48,7 +44,7 @@ def main(argv):
   # supply the stream of data to the Linux file. Also, to communicate with 
   # Angr's constraint solving system, we need to associate the memory with the 
   # initial_state.
-  symbolic_file_backing_memory = simuvex.SimSymbolicMemory()
+  symbolic_file_backing_memory = angr.state_plugins.SimSymbolicMemory()
   symbolic_file_backing_memory.set_state(initial_state)
 
   # Construct a bitvector for the password and then store it in the file's
@@ -65,34 +61,39 @@ def main(argv):
   # In order to represent this in memory, we would want to write the string to
   # the beginning of the file:
   #
-  # hello_txt_backing_memory.store(0, claripy.BVV('Hello world, my name is John.', 30*8))
+  # hello_txt_contents = claripy.BVV('Hello world, my name is John.', 30*8)
+  # hello_txt_backing_memory.store(0, hello_txt_contents)
   #
   # Perhaps, then, we would want to replace John with a
   # symbolic variable. We would call:
   #
-  # hello_txt_backing_memory.store(24, claripy.BVS('symbolic_name', 4*8))
+  # name_bitvector = claripy.BVS('symbolic_name', 4*8)
+  # hello_txt_backing_memory.store(24, name_bitvector)
   #
   # Then, after the program calls fopen('hello.txt', 'r') and then
   # fread(buffer, sizeof(char), 30, hello_txt_file), the buffer would contain
-  # the string from the file, except four symbolic bytes replacing the
-  # underscores.
+  # the string from the file, except four symbolic bytes where the name would be
+  # stored.
   # (!)
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)
   symbolic_file_backing_memory.store(???, password)
 
   # Construct the symbolic file. The file_options parameter specifies the Linux
-  # file permissions (read, read/write, binary, etc.) The content parameter
+  # file permissions (read, read/write, execute etc.) The content parameter
   # specifies from where the stream of data should be supplied. If content is
   # an instance of SimSymbolicMemory (we constructed one above), the stream will
   # contain the contents (including any symbolic contents) of the memory,
   # beginning from address zero.
+  # Set the content parameter to our SimSymbolicMemory instance that holds the
+  # symbolic data.
+  # (!)
   file_options = 'r'
-  password_file = simuvex.SimFile(filename, file_options, content=???, size=symbolic_file_size_bytes)
+  password_file = angr.storage.SimFile(filename, file_options, content=???, size=symbolic_file_size_bytes)
 
   # We have already created the file and the memory that stores the data that
   # the file will stream to the program, but we now need to tell Angr where the
   # file should appear to exist on the filesystem. This is a mapping between 
-  # strings representing the filenames and the simuvex.SimFiles themselves. For
+  # strings representing the filenames and the angr.storage.SimFiles themselves. For
   # example, if hello_txt_file was a SimFile,
   # symbolic_filesystem = {
   #   'hello.txt' : hello_txt_file
@@ -104,22 +105,22 @@ def main(argv):
   }
   initial_state.posix.fs = symbolic_filesystem
 
-  path_group = project.factory.path_group(initial_state)
+  simulation = project.factory.simgr(initial_state)
 
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  path_group.explore(find=is_successful, avoid=should_abort)
+  simulation.explore(find=is_successful, avoid=should_abort)
 
-  if path_group.found:
-    good_path = path_group.found[0]
+  if simulation.found:
+    solution_state = simulation.found[0]
 
-    solution = good_path.state.se.any_str(password)
+    solution = solution_state.se.any_str(password)
 
     print solution
   else:
