@@ -62,7 +62,7 @@ def main(argv):
   # Tell Angr to explore the binary and find any state that is_successful identfies
   # as a successful state by returning True.
   simulation.explore(find=is_successful, avoid=should_abort)
-  print simulation
+  
   if simulation.found:
     solution_state = simulation.found[0]
     print solution_state.posix.dumps(sys.stdin.fileno())

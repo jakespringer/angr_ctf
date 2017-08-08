@@ -110,6 +110,10 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
+    # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
+    for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
+      solution_state.add_constraints(byte >= ???, byte <= ???)
+
     # Constrain the instruction pointer to target the print_good function and
     # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
