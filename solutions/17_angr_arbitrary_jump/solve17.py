@@ -6,7 +6,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = ??? 
+  initial_state = project.factory.entry_state() 
 
   # An under-constrained (unconstrained) state occurs when there are too many
   # possible branches from a single instruction. This occurs, among other ways,
@@ -27,13 +27,24 @@ def main(argv):
   # can set the instruction pointer to the address of print_good in the binary.
   # (!)
   def check_vulnerable(state):
-    # Reimplement me!
-    return False
+    return state.satisfiable(extra_constraints=(state.regs.eip == 0x34343549,))
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
   # 'simulation.unconstrained'.
-  simulation = project.factory.simgr(initial_state, save_unconstrained=True)
+  # Additionally, we will be using a few stashes that are not included by
+  # default, such as 'found' and 'not_needed'. You will see how these are used
+  # later.
+  simulation = project.factory.simgr(
+    initial_state, 
+    save_unconstrained=True,
+    stashes={
+      'active' : [initial_state],
+      'unconstrained' : [],
+      'found' : [],
+      'not_needed' : []
+    }
+  )
 
   # Explore will not work for us, since the method specified with the 'find'
   # parameter will not be called on an unconstrained state. Instead, we want to
@@ -42,25 +53,29 @@ def main(argv):
   # solution. We will later be able to move states from the unconstrained list
   # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
-  has_found_solution = len(simulation.found) > 0
+  def has_found_solution():
+    return simulation.found
 
   # Check if there are still unconstrained states left to check. Once we
   # determine a given unconstrained state is not exploitable, we can throw it
   # out. Use the simulation.unconstrained list.
   # (!)
-  has_unconstrained_to_check = ???
+  def has_unconstrained_to_check():
+    return simulation.unconstrained
 
   # The list simulation.active is a list of all states that can be explored
   # further.
   # (!)
-  has_active = ???
-  while (has_active or has_unconstrained_to_check) and (not has_found_solution):
+  def has_active():
+    return simulation.active
+
+  while (has_active() or has_unconstrained_to_check()) and (not has_found_solution()):
     # Iterate through all unconstrained states and check them.
     # (!)
-    for unconstrained_state in ???:
+    for unconstrained_state in simulation.unconstrained:
       # Check if the unconstrained state is exploitable.
       # (!)
-      if ???:
+      if check_vulnerable(unconstrained_state):
         # Found an exploit, exit the while loop and keep unconstrained_state as
         # the solution. The way the loops is currently set up, you should move
         # the exploitable unconstrained state to the 'found' stash.
@@ -74,11 +89,11 @@ def main(argv):
         #  anything else = whatever you want, perhaps you want a 'not_needed',
         #                  you can call it whatever you want
 
-        # Moves anything in the stash 'from_stash' to the 'to_stash' if the
-        # function should_move evaluates to true.
         # Reimplement this entire block of code.
         # (!)
 
+        # The following will move everything that passes the should_move check
+        # from the from_stash to the to_stash.
         # def should_move(state):
         #   # Reimplement me if you decide to use me
         #   return False
@@ -88,16 +103,21 @@ def main(argv):
         # # 'not_needed' except if the state is in keep_states
         # keep_states = [ ... ]
         # def should_move(state):
-        #   return state in keep_states
+        #   return not state in keep_states
         # simulation.move('active', 'not_needed', filter_func=should_move)
-        pass
+        def should_move(s):
+          return s is unconstrained_state
+        simulation.move('unconstrained', 'found', filter_func=should_move)
 
       else: # unconstrained state is not exploitable
         # Move the unconstrained_state that you tested that doesn't work to a
         # different stash, perhaps 'not_needed'.
         # Reimplement me.
         # (!)
-        pass
+        def should_move(s):
+          return s is state
+        simulation.move('active', 'not_needed', filter_func=should_move)
+        
  
     # Advance the simulation.
     simulation.step()
@@ -109,9 +129,9 @@ def main(argv):
     # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
-    ...
+    solution_state.add_constraints(solution_state.regs.eip == 0x34343549)
 
-    solution = ???
+    solution = solution_state.posix.dumps(sys.stdin.fileno())
     print solution
   else:
     raise Exception('Could not find the solution')

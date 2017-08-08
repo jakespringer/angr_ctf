@@ -21,6 +21,10 @@ def main(argv):
   # beginning.
   initial_state = project.factory.entry_state()
 
+  # Hook the address of where check_equals_ is called.
+  # (!)
+  check_equals_called_address = ???
+
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
   # replace certain instructions (or groups of instructions). Determine the
@@ -28,7 +32,7 @@ def main(argv):
   # bytes are used to represent them in memory. This will be the skip length.
   # (!)
   instruction_to_skip_length = ???
-  @angr.Hook(length=instruction_to_skip_length)
+  @angr.Hook(check_equals_called_address, length=instruction_to_skip_length)
   def skip_check_equals_(state):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
@@ -50,12 +54,11 @@ def main(argv):
     # However, since we are describing an equation to be used by z3 (not to be
     # evaluated immediately), we cannot use Python if else syntax. Instead, we 
     # have to use claripy's built in function that deals with if statements.
-    state.regs.eax = claripy.If(user_input_string == check_against_string, 1, 0)
-
-  # Hook the address of where check_equals_ is called.
-  # (!)
-  check_equals_called_address = ???
-  project.hook(check_equals_called_address, skip_check_equals_)
+    state.regs.eax = claripy.If(
+      user_input_string == check_against_string, 
+      claripy.BVV(1, 32), 
+      claripy.BVV(1, 32)
+    )
 
   simulation = project.factory.simgr(initial_state)
 

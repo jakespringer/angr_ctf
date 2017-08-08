@@ -8,20 +8,20 @@
 # 
 # Here are a few SimProcedures Angr has already written for you. They implement
 # standard library functions. You will not need all of them:
-# angr.SimProcedures['libc']['malloc']
-# angr.SimProcedures['libc']['fopen']
-# angr.SimProcedures['libc']['fclose']
-# angr.SimProcedures['libc']['fwrite']
-# angr.SimProcedures['libc']['getchar']
-# angr.SimProcedures['libc']['strncmp']
-# angr.SimProcedures['libc']['strcmp']
-# angr.SimProcedures['libc']['__isoc99_scanf']
-# angr.SimProcedures['libc']['printf']
-# angr.SimProcedures['libc']['puts']
-# angr.SimProcedures['libc']['exit']
+# angr.SIM_PROCEDURES['libc']['malloc']
+# angr.SIM_PROCEDURES['libc']['fopen']
+# angr.SIM_PROCEDURES['libc']['fclose']
+# angr.SIM_PROCEDURES['libc']['fwrite']
+# angr.SIM_PROCEDURES['libc']['getchar']
+# angr.SIM_PROCEDURES['libc']['strncmp']
+# angr.SIM_PROCEDURES['libc']['strcmp']
+# angr.SIM_PROCEDURES['libc']['__isoc99_scanf']
+# angr.SIM_PROCEDURES['libc']['printf']
+# angr.SIM_PROCEDURES['libc']['puts']
+# angr.SIM_PROCEDURES['libc']['exit']
 #
 # As a reminder, you can hook functions with something similar to:
-# project.hook(malloc_address, angr.SimProcedures['libc']['malloc'])
+# project.hook(malloc_address, angr.SIM_PROCEDURES['libc']['malloc'])
 #
 # There are many more, see:
 # https://github.com/angr/angr/tree/master/angr/procedures/libc

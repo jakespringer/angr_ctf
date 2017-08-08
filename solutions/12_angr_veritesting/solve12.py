@@ -1,14 +1,6 @@
-# It is very useful to be able to search for a state that reaches a certain
-# instruction. However, in some cases, you may not know the address of the
-# specific instruction you want to reach (or perhaps there is no single
-# instruction goal.) In this challenge, you don't know which instruction
-# grants you success. Instead, you just know that you want to find a state where
-# the binary prints "Good Job."
-#
-# Angr is powerful in that it allows you to search for a states that meets an
-# arbitrary condition that you specify in Python, using a predicate you define
-# as a function that takes a state and returns True if you have found what you
-# are looking for, and False otherwise.
+# When you construct a simulation manager, you will want to enable Veritesting:
+# project.factory.simgr(initial_state, veritesting=True)
+# Hint: use one of the first few levels' solutions as a reference.
 
 import angr
 import sys
@@ -17,7 +9,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
   initial_state = project.factory.entry_state()
-  simulation = project.factory.simgr(initial_state)
+  simulation = project.factory.simgr(initial_state, veritesting=True)
 
   # Define a function that checks if you have found the state you are looking
   # for.
@@ -27,7 +19,7 @@ def main(argv):
 
     # Return whether 'Good Job.' has been printed yet.
     # (!)
-    return ???  # :boolean
+    return 'Good Job.' in stdout_output  # :boolean
 
   # Same as above, but this time check if the state should abort. If you return
   # False, Angr will continue to step the state. In this specific challenge, the
@@ -35,7 +27,7 @@ def main(argv):
   # "Try again."
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return ???  # :boolean
+    return 'Try again.' in stdout_output  # :boolean
 
   # Tell Angr to explore the binary and find any state that is_successful identfies
   # as a successful state by returning True.
