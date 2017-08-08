@@ -42,19 +42,24 @@ def main(argv):
   # solution. We will later be able to move states from the unconstrained list
   # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
-  has_found_solution = len(simulation.found) > 0
+  def has_found_solution():
+    return len(simulation.found) > 0
 
   # Check if there are still unconstrained states left to check. Once we
   # determine a given unconstrained state is not exploitable, we can throw it
   # out. Use the simulation.unconstrained list.
   # (!)
-  has_unconstrained_to_check = ???
+  def has_unconstrained_to_check():
+    # Reimplement me! 
+    pass
 
   # The list simulation.active is a list of all states that can be explored
   # further.
   # (!)
-  has_active = ???
-  while (has_active or has_unconstrained_to_check) and (not has_found_solution):
+  def has_active():
+    # Reimplement me!
+    pass
+  while (has_active() or has_unconstrained_to_check()) and (not has_found_solution()):
     # Iterate through all unconstrained states and check them.
     # (!)
     for unconstrained_state in ???:
@@ -104,6 +109,10 @@ def main(argv):
 
   if simulation.found:
     solution_state = simulation.found[0]
+
+    # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
+    for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
+      solution_state.add_constraints(byte >= ???, byte <= ???)
 
     # Constrain the instruction pointer to target the print_good function and
     # then solve for the user input (recall that this is

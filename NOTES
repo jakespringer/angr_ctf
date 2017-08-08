@@ -20,3 +20,5 @@ add checks to ensure everything is printed nicely (trailing \0)
 for all arbitrary x, ensure solutions are capital letters
 
 for 17, add an exit() after print good job
+
+07, 12

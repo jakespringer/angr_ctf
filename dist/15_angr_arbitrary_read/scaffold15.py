@@ -81,11 +81,13 @@ def main(argv):
       for char in scanf1.chop(bits=8):
         # Ensure that each character in the string is printable. An interesting
         # experiment, once you have a working solution, would be to run the code
-        # without constraining the characters to the printable range of ASCII.
+        # without constraining the characters to the capital letters.
         # Even though the solution will technically work without this, it's more
         # difficult to enter in a solution that contains character you can't
         # copy, paste, or type into your terminal or the web form that checks 
         # your solution.
+        # If you are using the web form to submit answers, your solution must be
+        # entirely alphanumeric except for spaces.
         # (!)
         self.state.add_constraints(char >= ???, char <= ???)
 
@@ -98,7 +100,7 @@ def main(argv):
       self.state.globals['solutions'] = ???
 
   scanf_symbol = ???  # :string
-  project.hook_symbol(scanf_symbol, angr.Hook(ReplacementScanf))
+  project.hook_symbol(scanf_symbol, ReplacementScanf())
 
   # We will call this whenever puts is called. The goal of this function is to
   # determine if the pointer passed to puts is controllable by the user, such

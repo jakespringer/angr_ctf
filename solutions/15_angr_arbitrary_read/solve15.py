@@ -120,7 +120,7 @@ def main(argv):
     # esp + 1 -> |     address    |
     #     esp -> \----------------/
     # (!)
-    puts_parameter = state.memory.load(state.regs.esp + 4, 1)
+    puts_parameter = state.memory.load(state.regs.esp + 4, 4)
 
     # The following function takes a bitvector as a parameter and checks if it
     # can take on more than one value. While this does not necessary tell us we

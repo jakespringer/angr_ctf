@@ -1,6 +1,5 @@
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
@@ -30,7 +29,7 @@ def main(argv):
       self.state.globals['solutions'] = ???
 
   scanf_symbol = ???  # :string
-  project.hook_symbol(scanf_symbol, angr.Hook(ReplacementScanf))
+  project.hook_symbol(scanf_symbol, ReplacementScanf())
 
   # In this challenge, we want to check strncpy to determine if we can control
   # both the source and the destination. It is common that we will be able to
@@ -74,7 +73,7 @@ def main(argv):
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password = ??? # :string
+      password_string = ??? # :string
       buffer_address = ??? # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
@@ -88,8 +87,13 @@ def main(argv):
       # To access the beginning of the string, we need to access the last 16
       # bits, or bits 48-63:
       #  b[63:48] == 'AB'
+      # In this specific case, since we don't necessarily know the length of the
+      # contents (unless you look at the binary), we can use the following:
+      #  b[-1:-16] == 'AB', since, in Python, -1 is the end of the list, and -16
+      # is the 16th element from the end of the list. The actual numbers should
+      # correspond with the length of password_string.
       # (!)
-      does_src_hold_password = src_contents[???:???] == password
+      does_src_hold_password = src_contents[???:???] == password_string
       
       # Create an expression to check if the dest parameter can be set to
       # buffer_address. If this is true, then we have found our exploit!
@@ -97,8 +101,8 @@ def main(argv):
       does_dest_equal_buffer_address = ???
 
       # We can pass multiple expressions to extra_constraints!
-      if path.state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
-        path.state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
+      if state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
+        state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
         return True
       else:
         return False

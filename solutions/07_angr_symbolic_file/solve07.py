@@ -33,7 +33,7 @@ def main(argv):
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = 'ZNJYVMFZ.txt'  # :string
+  filename = 'WQNDNKKW.txt'  # :string
   symbolic_file_size_bytes = 64
 
   # A file, in Linux, represents a stream of sequential data. This stream may

@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     buffer[i] = complex_function(buffer[i], i);
   }
 
-  if (strncmp(buffer, USERDEF0, 8)) {
+  if (strncmp(buffer, USERDEF0, 9)) {
     printf("Try again.\n");
     exit(1);
   } else {

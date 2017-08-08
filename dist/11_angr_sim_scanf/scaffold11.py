@@ -30,19 +30,19 @@ def main(argv):
       # store multiple bitvectors. You can either use a list, tuple, or multiple
       # keys to reference the different bitvectors.
       # (!)
-      state.globals['solutions'] = ???
+      self.state.globals['solutions'] = ???
 
   scanf_symbol = ???
-  project.hook_symbol(scanf_symbol, Hook(ReplacementScanf))
+  project.hook_symbol(scanf_symbol, ReplacementScanf())
 
   simulation = project.factory.simgr(initial_state)
 
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
   simulation.explore(find=is_successful, avoid=should_abort)
