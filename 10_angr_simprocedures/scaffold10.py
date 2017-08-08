@@ -71,16 +71,16 @@ def main(argv):
   # correct symbol, disassemble the binary.
   # (!)
   check_equals_symbol = ??? # :string
-  project.hook_symbol(check_equals_symbol, Hook(ReplacementCheckEquals))
+  project.hook_symbol(check_equals_symbol, ReplacementCheckEquals())
 
   simulation = project.factory.simgr(initial_state)
 
-  def is_successful(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def is_successful(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
-  def should_abort(path):
-    stdout_output = path.state.posix.dumps(sys.stdout.fileno())
+  def should_abort(state):
+    stdout_output = state.posix.dumps(sys.stdout.fileno())
     return ???
 
   simulation.explore(find=is_successful, avoid=should_abort)

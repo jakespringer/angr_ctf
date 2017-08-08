@@ -1,6 +1,5 @@
 import angr
 import claripy
-import simuvex
 import sys
 
 def main(argv):
@@ -9,28 +8,29 @@ def main(argv):
 
   # You can either use a blank state or an entry state; just make sure to start
   # at the beginning of the program.
-  initial_state = ???
+  initial_state = project.factory.entry_state()
 
   class ReplacementScanf(angr.SimProcedure):
     # Hint: scanf("%u %20s")
-    def run(self, format_string, ...???):
+    def run(self, format_string, param0, param1):
       # %u
-      scanf0 = claripy.BVS('scanf0', ???)
+      scanf0 = claripy.BVS('scanf0', 32)
       
       # %20s
-      scanf1 = claripy.BVS('scanf1', ???)
+      scanf1 = claripy.BVS('scanf1', 20*8)
 
       for char in scanf1.chop(bits=8):
-        self.state.add_constraints(char >= ???, char <= ???)
+        self.state.add_constraints(char >= 48, char <= 96)
 
-      scanf0_address = ???
+      scanf0_address = param0
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
-      ...
+      scanf1_address = param1
+      self.state.memory.store(scanf1_address, scanf1)
 
-      self.state.globals['solutions'] = ???
+      self.state.globals['solutions'] = (scanf0, scanf1)
 
-  scanf_symbol = ???  # :string
-  project.hook_symbol(scanf_symbol, angr.Hook(ReplacementScanf))
+  scanf_symbol = '__isoc99_scanf'  # :string
+  project.hook_symbol(scanf_symbol, ReplacementScanf())
 
   # In this challenge, we want to check strncpy to determine if we can control
   # both the source and the destination. It is common that we will be able to
@@ -56,26 +56,26 @@ def main(argv):
     #  esp + 1 -> |     address    |
     #      esp -> \________________/
     # (!)
-    strncpy_src = ???
-    strncpy_dest = ???
-    strncpy_len = ???
+    strncpy_src = state.memory.load(state.regs.esp + 8, 4, endness=project.arch.memory_endness)
+    strncpy_dest = state.memory.load(state.regs.esp + 4, 4, endness=project.arch.memory_endness)
+    strncpy_len = state.memory.load(state.regs.esp + 12, 4, endness=project.arch.memory_endness)
 
     # We need to find out if src is symbolic, however, we care about the
     # contents, rather than the pointer itself. Therefore, we have to load the
     # the contents of src to determine if they are symbolic.
     # Hint: How many bytes is strncpy copying?
     # (!)
-    src_contents = state.memory.load(strncpy_src, ???)
+    src_contents = state.memory.load(strncpy_src, strncpy_len)
 
     # Determine if the destination pointer and the source is symbolic.
     # (!)
-    if state.se.symbolic(???) and ...:
+    if state.se.symbolic(src_contents) and state.se.symbolic(strncpy_dest):
       # Use ltrace to determine the password. Decompile the binary to determine
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password = ??? # :string
-      buffer_address = ??? # :integer, probably in hexadecimal
+      password_string = 'WQNDNKKW' # :string
+      buffer_address = 0x34343458 # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
@@ -89,16 +89,16 @@ def main(argv):
       # bits, or bits 48-63:
       #  b[63:48] == 'AB'
       # (!)
-      does_src_hold_password = src_contents[???:???] == password
+      does_src_hold_password = src_contents[-1:-64] == password_string
       
       # Create an expression to check if the dest parameter can be set to
       # buffer_address. If this is true, then we have found our exploit!
       # (!)
-      does_dest_equal_buffer_address = ???
+      does_dest_equal_buffer_address = strncpy_dest == buffer_address
 
       # We can pass multiple expressions to extra_constraints!
-      if path.state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
-        path.state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
+      if state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
+        state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
         return True
       else:
         return False
@@ -108,18 +108,18 @@ def main(argv):
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
-    strncpy_address = ???
+    strncpy_address = 0x8048410
     if state.addr == strncpy_address:
       return check_strncpy(state)
     else:
       return False
 
-  simulation.explore(find=is_successful, avoid=???)
-
+  simulation.explore(find=is_successful)
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = ???
+    scanf0, scanf1 = solution_state.globals['solutions']
+    solution = str(solution_state.se.any_int(scanf0)) + ' ' + solution_state.se.any_str(scanf1)
     print solution
   else:
     raise Exception('Could not find the solution')

@@ -20,6 +20,10 @@ def main(argv):
     } 
   })
 
+  # Initialize any symbolic values here; you will need at least one to pass to
+  # the validate function.
+  ...
+
   # Begin the state at the beginning of the validate function, as if it was
   # called by the program. Determine the parameters needed to call validate and
   # replace 'parameters...' with bitvectors holding the values you wish to pass.
@@ -35,7 +39,10 @@ def main(argv):
 
   # You will need to add code to inject a symbolic value into the program at the
   # end of the function that constrains eax to equal true (value of 1) just
-  # before the function returns.
+  # before the function returns. There are multiple ways to do this:
+  # 1. Use a hook.
+  # 2. Search for the address just before the function returns and then
+  #    constrain eax (this may require putting code elsewhere)
   ...
 
   simulation = project.factory.simgr(initial_state)
