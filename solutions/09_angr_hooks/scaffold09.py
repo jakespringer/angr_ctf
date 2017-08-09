@@ -23,7 +23,7 @@ def main(argv):
 
   # Hook the address of where check_equals_ is called.
   # (!)
-  check_equals_called_address = 0x80486b8
+  check_equals_called_address = ???
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
@@ -31,23 +31,23 @@ def main(argv):
   # instructions involved in calling check_equals_, and then determine how many
   # bytes are used to represent them in memory. This will be the skip length.
   # (!)
-  instruction_to_skip_length = 5
-  @project.hook(check_equals_called_address, length=instruction_to_skip_length)
+  instruction_to_skip_length = ???
+  @angr.Hook(check_equals_called_address, length=instruction_to_skip_length)
   def skip_check_equals_(state):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
     # int check_equals_(char* to_check, int length) { ...
-    user_input_buffer_address = 0x804a054 # :integer, probably hexadecimal
-    user_input_buffer_length = 16
+    user_input_buffer_address = ??? # :integer, probably hexadecimal
+    user_input_buffer_length = ???
     user_input_string = state.memory.load(
-      user_input_buffer_address,
+      user_input_buffer_address, 
       user_input_buffer_length
     )
     
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV' # :string
+    check_against_string = ??? # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
@@ -57,18 +57,18 @@ def main(argv):
     state.regs.eax = claripy.If(
       user_input_string == check_against_string, 
       claripy.BVV(1, 32), 
-      claripy.BVV(0, 32)
+      claripy.BVV(1, 32)
     )
 
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return ???
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return ???
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
@@ -77,7 +77,7 @@ def main(argv):
 
     # Since we are allowing Angr to handle the input, retrieve it by printing
     # the contents of stdin. Use one of the early levels as a reference.
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
+    solution = ???
     print solution
   else:
     raise Exception('Could not find the solution')

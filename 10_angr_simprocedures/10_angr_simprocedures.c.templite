@@ -35,7 +35,7 @@ def recursive_if_else(variable, value, end_statement, depth):
 
 char msg[] = "${ description }$";
 
-char password[16];
+char password[17];
 
 void print_msg() {
   printf("%s", msg);
@@ -61,11 +61,9 @@ int check_equals_${ userdef }$(char* to_check, size_t length) {
 }
 
 int main(int argc, char* argv[]) {
-  char password[20];
-  int keep_going = 1;
   unsigned int x = 0xDEADBEEF;
   char buffer[17];
-  int equals;
+  int equals = 17;
 
   print_msg();
 

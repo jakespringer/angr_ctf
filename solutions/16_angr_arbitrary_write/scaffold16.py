@@ -8,28 +8,27 @@ def main(argv):
 
   # You can either use a blank state or an entry state; just make sure to start
   # at the beginning of the program.
-  initial_state = project.factory.entry_state()
+  initial_state = ???
 
   class ReplacementScanf(angr.SimProcedure):
     # Hint: scanf("%u %20s")
-    def run(self, format_string, param0, param1):
+    def run(self, format_string, ...???):
       # %u
-      scanf0 = claripy.BVS('scanf0', 32)
+      scanf0 = claripy.BVS('scanf0', ???)
       
       # %20s
-      scanf1 = claripy.BVS('scanf1', 20*8)
+      scanf1 = claripy.BVS('scanf1', ???)
 
       for char in scanf1.chop(bits=8):
-        self.state.add_constraints(char >= 48, char <= 96)
+        self.state.add_constraints(char >= ???, char <= ???)
 
-      scanf0_address = param0
+      scanf0_address = ???
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
-      scanf1_address = param1
-      self.state.memory.store(scanf1_address, scanf1)
+      ...
 
-      self.state.globals['solutions'] = (scanf0, scanf1)
+      self.state.globals['solutions'] = ???
 
-  scanf_symbol = '__isoc99_scanf'  # :string
+  scanf_symbol = ???  # :string
   project.hook_symbol(scanf_symbol, ReplacementScanf())
 
   # In this challenge, we want to check strncpy to determine if we can control
@@ -56,26 +55,26 @@ def main(argv):
     #  esp + 1 -> |     address    |
     #      esp -> \________________/
     # (!)
-    strncpy_src = state.memory.load(state.regs.esp + 8, 4, endness=project.arch.memory_endness)
-    strncpy_dest = state.memory.load(state.regs.esp + 4, 4, endness=project.arch.memory_endness)
-    strncpy_len = state.memory.load(state.regs.esp + 12, 4, endness=project.arch.memory_endness)
+    strncpy_src = ???
+    strncpy_dest = ???
+    strncpy_len = ???
 
     # We need to find out if src is symbolic, however, we care about the
     # contents, rather than the pointer itself. Therefore, we have to load the
     # the contents of src to determine if they are symbolic.
     # Hint: How many bytes is strncpy copying?
     # (!)
-    src_contents = state.memory.load(strncpy_src, strncpy_len)
+    src_contents = state.memory.load(strncpy_src, ???)
 
     # Determine if the destination pointer and the source is symbolic.
     # (!)
-    if state.se.symbolic(src_contents) and state.se.symbolic(strncpy_dest):
+    if state.se.symbolic(???) and ...:
       # Use ltrace to determine the password. Decompile the binary to determine
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password_string = 'DVTBOGZL' # :string
-      buffer_address = 0x4655544c # :integer, probably in hexadecimal
+      password_string = ??? # :string
+      buffer_address = ??? # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
@@ -88,13 +87,18 @@ def main(argv):
       # To access the beginning of the string, we need to access the last 16
       # bits, or bits 48-63:
       #  b[63:48] == 'AB'
+      # In this specific case, since we don't necessarily know the length of the
+      # contents (unless you look at the binary), we can use the following:
+      #  b[-1:-16] == 'AB', since, in Python, -1 is the end of the list, and -16
+      # is the 16th element from the end of the list. The actual numbers should
+      # correspond with the length of password_string.
       # (!)
-      does_src_hold_password = src_contents[-1:-64] == password_string
+      does_src_hold_password = src_contents[???:???] == password_string
       
       # Create an expression to check if the dest parameter can be set to
       # buffer_address. If this is true, then we have found our exploit!
       # (!)
-      does_dest_equal_buffer_address = strncpy_dest == buffer_address
+      does_dest_equal_buffer_address = ???
 
       # We can pass multiple expressions to extra_constraints!
       if state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
@@ -108,18 +112,18 @@ def main(argv):
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
-    strncpy_address = 0x8048410
+    strncpy_address = ???
     if state.addr == strncpy_address:
       return check_strncpy(state)
     else:
       return False
 
-  simulation.explore(find=is_successful)
+  simulation.explore(find=is_successful, avoid=???)
+
   if simulation.found:
     solution_state = simulation.found[0]
 
-    scanf0, scanf1 = solution_state.globals['solutions']
-    solution = str(solution_state.se.any_int(scanf0)) + ' ' + solution_state.se.any_str(scanf1)
+    solution = ???
     print solution
   else:
     raise Exception('Could not find the solution')

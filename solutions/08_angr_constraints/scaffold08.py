@@ -51,12 +51,12 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x804862a
+  start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
-  password = claripy.BVS('password', 8*16)
+  password = claripy.BVS('password', ???)
 
-  password_address = 0x804a050
+  password_address = ???
   initial_state.memory.store(password_address, password)
 
   simulation = project.factory.simgr(initial_state)
@@ -64,7 +64,7 @@ def main(argv):
   # Angr will not be able to reach the point at which the binary prints out
   # 'Good Job.'. We cannot use that as the target anymore.
   # (!)
-  address_to_check_constraint = 0x8048671
+  address_to_check_constraint = ???
   simulation.explore(find=address_to_check_constraint)
 
   if simulation.found:
@@ -73,8 +73,8 @@ def main(argv):
     # Recall that we need to constrain the to_check parameter (see top) of the 
     # check_equals_ function. Determine the address that is being passed as the
     # parameter and load it into a bitvector so that we can constrain it.
-    constrained_parameter_address = 0x804a050
-    constrained_parameter_size_bytes = 16
+    constrained_parameter_address = ???
+    constrained_parameter_size_bytes = ???
     constrained_parameter_bitvector = solution_state.memory.load(
       constrained_parameter_address,
       constrained_parameter_size_bytes
@@ -82,11 +82,11 @@ def main(argv):
 
     # Constrain the system to find an input that will make
     # constrained_parameter_bitvector equal the desired value.
-    constrained_parameter_desired_value = 'BWYRUBQCMVSBRGFU' # :string
+    constrained_parameter_desired_value = ??? # :string
     solution_state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
     # Solve for the constrained_parameter_bitvector.
-    solution = solution_state.se.any_str(password)
+    solution = ???
 
     print solution
   else:
