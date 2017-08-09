@@ -6,40 +6,32 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x8048606
+  start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
   # The binary is calling scanf("%8s %8s %8s %8s").
   # (!)
-  password0 = claripy.BVS('password0', 8*8)
-  password1 = claripy.BVS('password1', 8*8)
-  password2 = claripy.BVS('password2', 8*8)
-  password3 = claripy.BVS('password3', 8*8)
+  password0 = claripy.BVS('password0', ???)
+  ...
 
   # Determine the address of the global variable to which scanf writes the user
   # input. The function 'initial_state.memory.store(address, value)' will write
   # 'value' (a bitvector) to 'address' (a memory location, as an integer.) The
   # 'address' parameter can also be a bitvector (and can be symbolic!).
   # (!)
-  password0_address = 0xa29faa0
+  password0_address = ???
   initial_state.memory.store(password0_address, password0)
-  password1_address = 0xa29faa8
-  initial_state.memory.store(password1_address, password1)
-  password2_address = 0xa29fab0
-  initial_state.memory.store(password2_address, password2)
-  password3_address = 0xa29fab8
-  initial_state.memory.store(password3_address, password3)
-
+  ...
 
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return ???
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return ???
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
@@ -51,11 +43,8 @@ def main(argv):
     # integer.
     # (!)
     solution0 = solution_state.se.any_str(password0)
-    solution1 = solution_state.se.any_str(password1)
-    solution2 = solution_state.se.any_str(password2)
-    solution3 = solution_state.se.any_str(password3)    
-
-    solution = ' '.join([ solution0, solution1, solution2, solution3 ])
+    ...
+    solution = ???
 
     print solution
   else:

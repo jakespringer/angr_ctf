@@ -25,7 +25,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x80488db
+  start_address = ???
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Specify some information needed to construct a simulated file. For this
@@ -33,8 +33,8 @@ def main(argv):
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = 'WCEXPXBW.txt'  # :string
-  symbolic_file_size_bytes = 64
+  filename = ???  # :string
+  symbolic_file_size_bytes = ???
 
   # A file, in Linux, represents a stream of sequential data. This stream may
   # come from a physical file on your hard drive, the network, the output of
@@ -76,7 +76,7 @@ def main(argv):
   # stored.
   # (!)
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)
-  symbolic_file_backing_memory.store(0, password)
+  symbolic_file_backing_memory.store(???, password)
 
   # Construct the symbolic file. The file_options parameter specifies the Linux
   # file permissions (read, read/write, execute etc.) The content parameter
@@ -88,7 +88,7 @@ def main(argv):
   # symbolic data.
   # (!)
   file_options = 'r'
-  password_file = angr.storage.SimFile(filename, file_options, content=symbolic_file_backing_memory, size=symbolic_file_size_bytes)
+  password_file = angr.storage.SimFile(filename, file_options, content=???, size=symbolic_file_size_bytes)
 
   # We have already created the file and the memory that stores the data that
   # the file will stream to the program, but we now need to tell Angr where the
@@ -109,11 +109,11 @@ def main(argv):
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return ???
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return ???
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
