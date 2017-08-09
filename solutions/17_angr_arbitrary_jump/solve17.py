@@ -129,15 +129,15 @@ def main(argv):
     # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
-    solution_state.add_constraints(solution_state.regs.eip == 0x34343549)
+    solution_state.add_constraints(solution_state.regs.eip == 0x544b4e49)
 
     # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
     for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
       solution_state.add_constraints(
         claripy.Or(
-          byte == 0x0, 
+          byte == 0x0,
           claripy.And(
-            byte >= '0', 
+            byte >= 'A', 
             byte <= 'Z'
           )
         )
