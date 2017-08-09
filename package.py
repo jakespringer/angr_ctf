@@ -5,7 +5,7 @@ def level_generate_module(level_name):
   return __import__(level_name + '.generate')
 
 def package_level(level_name, output_base_directory, num_binaries, user, salt, extra_files):
-  seed = user + salt
+  seed = level_name + user + salt
   generate_module = level_generate_module(level_name)
   output_directory = os.path.join(output_base_directory, level_name)
   binary_file_output_prefix = os.path.join(output_directory, level_name)

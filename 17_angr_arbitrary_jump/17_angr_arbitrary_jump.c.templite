@@ -16,6 +16,7 @@ void print_msg() {
 
 void print_good() {
   printf("Good Job.\n");
+  exit(0);
 }
 
 void read_input() {
