@@ -7,7 +7,7 @@ def level_generate_module(level_name):
 def package_level(level_name, output_base_directory, num_binaries, user, salt, extra_files):
   seed = level_name + user + salt
   generate_module = level_generate_module(level_name)
-  output_directory = os.path.join(output_base_directory, level_name)
+  output_directory = output_base_directory
   binary_file_output_prefix = os.path.join(output_directory, level_name)
   suffix_format_str = '{:0' + str(len(str(num_binaries - 1))) + '}' if (num_binaries - 1 > 0) else ''
 
@@ -21,7 +21,7 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
 
   for extra_file in extra_files:
     extra_file_abs = os.path.join('.', level_name, extra_file)
-    extra_file_target = os.path.join(output_base_directory, level_name, extra_file)
+    extra_file_target = os.path.join(output_base_directory, extra_file)
     shutil.copyfile(extra_file_abs, extra_file_target)
   print('Compiled %s.' % (level_name,))
 
