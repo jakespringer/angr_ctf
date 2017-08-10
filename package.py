@@ -12,7 +12,7 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
   suffix_format_str = '{:0' + str(len(str(num_binaries - 1))) + '}' if (num_binaries - 1 > 0) else ''
 
   if not os.path.exists(output_directory):
-    os.mkdir(output_directory)
+    os.makedirs(output_directory)
 
   for i in xrange(num_binaries):
     suffix = suffix_format_str.format(i)
@@ -53,5 +53,5 @@ if __name__ == '__main__':
     sys.exit()
 
   if not os.path.exists(sys.argv[1]):
-    os.mkdir(sys.argv[1])
+    os.makedirs(sys.argv[1])
   package_all(sys.argv[1])
