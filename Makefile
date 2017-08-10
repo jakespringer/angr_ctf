@@ -10,7 +10,7 @@ wwwusers:
 	python3 wwwusers.py
 
 install: wwwusers
-	cp -R obj/* $(WWWDIR)
+	mkdir -p $(WWWDIR) && cp -R obj/* $(WWWDIR)
 
 clean:
 	rm -rf obj
