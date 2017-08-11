@@ -1,3 +1,26 @@
+# This binary takes both an integer and a string as a parameter. A certain
+# integer input causes the program to reach a buffer overflow with which we can
+# read a string from an arbitrary memory location. Our goal is to use Angr to 
+# search the program for this buffer overflow and then automatically generate
+# an exploit to read the string "Good Job." 
+#
+# What is the point of reading the string "Good Job."?
+# This CTF attempts to replicate a simplified version of a possible vulnerability
+# where a user can exploit the program to print a secret, such as a password or
+# a private key. In order to keep consistency with the other challenges and to
+# simplify the challenge, the goal of this program will be to print "Good Job."
+# instead.
+#
+# The general strategy for crafting this script will be to:
+# 1) Search for calls of the 'puts' function, which will eventually be exploited
+#    to print out "Good Job."
+# 2) Determine if the first parameter of 'puts', a pointer to the string to be 
+#    printed, can be controlled by the user to be set to the location of the
+#    "Good Job." string.
+# 3) Solve for the input that prints "Good Job."
+#
+# Note: The script is structured to implement #2 before #1.
+
 # Some of the source code for this challenge:
 #
 # #include <stdio.h>
@@ -202,11 +225,7 @@ def main(argv):
       # We have not yet found a call to puts; we should continue!
       return False
 
-  # Determine the situation in which you should avoid. Optionally, you can
-  # remove the avoid parameter, although it may cause the program to run more
-  # slowly.
-  # (!)
-  simulation.explore(find=is_successful, avoid=???)
+  simulation.explore(find=is_successful)
 
   if simulation.found:
     solution_state = simulation.found[0]
