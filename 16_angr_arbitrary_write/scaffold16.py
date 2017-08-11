@@ -1,3 +1,35 @@
+# Essentially, the program does the following:
+#
+# scanf("%d %20s", &key, user_input);
+# ...
+#   // if certain unknown conditions are true...
+#   strncpy(random_buffer, user_input);
+# ...
+# if (strncmp(secure_buffer, reference_string)) {
+#   // The secure_buffer does not equal the reference string.
+#   puts("Try again.");
+# } else {
+#   // The two are equal.
+#   puts("Good Job.");
+# }
+#
+# If this program has no bugs in it, it would _always_ print "Try again." since
+# user_input copies into random_buffer, not secure_buffer.
+#
+# The question is: can we find a buffer overflow that will allow us to overwrite
+# the random_buffer pointer to point to secure_buffer? (Spoiler: we can, but we
+# will need to use Angr.)
+#
+# We want to identify a place in the binary, when strncpy is called, when we can:
+#  1) Control the source contents (not the source pointer!)
+#     * This will allow us to write arbitrary data to the destination.
+#  2) Control the destination pointer
+#     * This will allow us to write to an arbitrary location.
+# If we can meet both of those requirements, we can write arbitrary data to an
+# arbitrary location. Finally, we need to contrain the source contents to be
+# equal to the reference_string and the destination pointer to be equal to the
+# secure_buffer.
+
 import angr
 import claripy
 import sys
@@ -103,13 +135,17 @@ def main(argv):
       # (!)
       does_dest_equal_buffer_address = ???
 
-      # We can pass multiple expressions to extra_constraints!
+      # In the previous challenge, we copied the state, added constraints to the
+      # copied state, and then determined if the constraints of the new state 
+      # were satisfiable. Since that pattern is so common, Angr implemented a
+      # parameter 'extra_constraints' for the satisfiable function that does the
+      # exact same thing:
       if state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
         state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
         return True
       else:
         return False
-    else: # not path.state.se.symbolic(???)
+    else: # not state.se.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
@@ -121,7 +157,7 @@ def main(argv):
     else:
       return False
 
-  simulation.explore(find=is_successful, avoid=???)
+  simulation.explore(find=is_successful)
 
   if simulation.found:
     solution_state = simulation.found[0]
