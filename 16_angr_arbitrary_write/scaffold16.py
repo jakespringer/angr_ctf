@@ -66,12 +66,15 @@ def main(argv):
     # (!)
     src_contents = state.memory.load(strncpy_src, ???)
 
-    # Determine if the destination pointer and the source is symbolic.
+    # Our goal is to determine if we can write arbitrary data to an arbitrary
+    # location. This means determining if the source contents are symbolic 
+    # (arbitrary data) and the destination pointer is symbolic (arbitrary
+    # destination).
     # (!)
     if state.se.symbolic(???) and ...:
-      # Use ltrace to determine the password. Decompile the binary to determine
-      # the address of the buffer it checks the password against. Our goal is to
-      # overwrite that buffer to store the password.
+      # Use ltrace to determine the reference string. Decompile the binary to 
+      # determine the address of the buffer it checks the password against. Our 
+      # goal is to overwrite that buffer to store the password.
       # (!)
       password_string = ??? # :string
       buffer_address = ??? # :integer, probably in hexadecimal
