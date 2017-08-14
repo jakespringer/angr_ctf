@@ -19,7 +19,7 @@
 #    "Good Job." string.
 # 3) Solve for the input that prints "Good Job."
 #
-# Note: The script is structured to implement #2 before #1.
+# Note: The script is structured to implement step #2 before #1.
 
 # Some of the source code for this challenge:
 #
@@ -161,7 +161,7 @@ def main(argv):
 
     # The following function takes a bitvector as a parameter and checks if it
     # can take on more than one value. While this does not necessary tell us we
-    # have found an exploitable path, it is a strong indication that the 
+    # have found an exploitable state, it is a strong indication that the 
     # bitvector we checked may be controllable by the user.
     # Use it to determine if the pointer passed to puts is symbolic.
     # (!)
