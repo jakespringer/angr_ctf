@@ -1,6 +1,10 @@
 # The shared library has the function validate, which takes a string and returns
 # either true (1) or false (0). The binary calls this function. If it returns
 # true, the program prints "Good Job." otherwise, it prints "Try again."
+#
+# Note: When you run this script, make sure you run it on 
+# lib14_angr_shared_library.so, not the executable. This level is intended to 
+# teach how to analyse binary formats that are not typical executables.
 
 import angr
 import claripy

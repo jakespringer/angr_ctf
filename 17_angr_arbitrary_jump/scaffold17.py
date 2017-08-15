@@ -1,3 +1,11 @@
+# This challenge represents a classic stack-based buffer overflow attack to
+# overwrite the return address and jump to a function that prints "Good Job."
+# Our strategy for solving the challenge is as follows:
+# 1. Initialize the simulation and ask Angr to record unconstrained states.
+# 2. Step through the simulation until we have found a state where eip is
+#    symbolic.
+# 3. Constrain eip to equal the address of the "print_good" function.
+
 import angr
 import claripy
 import sys
@@ -42,74 +50,44 @@ def main(argv):
   # solution. We will later be able to move states from the unconstrained list
   # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
+  
+  # We will set this to the exploitable state once we find it.
+  solution_state = None
   def has_found_solution():
-    return len(simulation.found) > 0
+    return solution_state is not None
 
   # Check if there are still unconstrained states left to check. Once we
   # determine a given unconstrained state is not exploitable, we can throw it
   # out. Use the simulation.unconstrained list.
-  # (!)
-  def has_unconstrained_to_check():
-    # Reimplement me! 
-    pass
+  def has_unconstrained():
+    return len(simulation.unconstrained) > 0
 
   # The list simulation.active is a list of all states that can be explored
   # further.
   # (!)
   def has_active():
-    # Reimplement me!
+    # Reimplement me! See below to see how this is used. Hint: should look very
+    # similar to has_unconstrained()
     pass
-  while (has_active() or has_unconstrained_to_check()) and (not has_found_solution()):
+
+  while (has_active() or has_unconstrained()) and (not has_found_solution()):
     # Iterate through all unconstrained states and check them.
     # (!)
     for unconstrained_state in ???:
-      # Check if the unconstrained state is exploitable.
+      # Check if the unconstrained state is exploitable. Hint: You defined a
+      # function above that should check this.
       # (!)
       if ???:
-        # Found an exploit, exit the while loop and keep unconstrained_state as
-        # the solution. The way the loops is currently set up, you should move
-        # the exploitable unconstrained state to the 'found' stash.
-        # A 'stash' should be a string that corresponds to a list that stores
-        # all the states that the state group keeps. Values include:
-        #  'active' = states that can be stepped
-        #  'deadended' = states that have exited the program
-        #  'errored' = states that encountered an error with Angr
-        #  'unconstrained' = states that are unconstrained
-        #  'found' = solutions
-        #  anything else = whatever you want, perhaps you want a 'not_needed',
-        #                  you can call it whatever you want
+        solution_state = unconstrained_state
+        break
 
-        # Moves anything in the stash 'from_stash' to the 'to_stash' if the
-        # function should_move evaluates to true.
-        # Reimplement this entire block of code.
-        # (!)
+    # Since we already checked all of the unconstrained states and did not find
+    simulation.drop(stash='unconstrained')
 
-        # def should_move(state):
-        #   # Reimplement me if you decide to use me
-        #   return False
-        # simulation.move(from_stash, to_stash, filter_func=should_move)
-
-        # # For example, the following moves everything in 'active' to
-        # # 'not_needed' except if the state is in keep_states
-        # keep_states = [ ... ]
-        # def should_move(state):
-        #   return state in keep_states
-        # simulation.move('active', 'not_needed', filter_func=should_move)
-        pass
-
-      else: # unconstrained state is not exploitable
-        # Move the unconstrained_state that you tested that doesn't work to a
-        # different stash, perhaps 'not_needed'.
-        # Reimplement me.
-        # (!)
-        pass
- 
     # Advance the simulation.
     simulation.step()
 
-  if simulation.found:
-    solution_state = simulation.found[0]
-
+  if solution_state:
     # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
     for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
       solution_state.add_constraints(byte >= ???, byte <= ???)
