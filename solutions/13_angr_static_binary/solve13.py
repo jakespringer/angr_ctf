@@ -33,11 +33,12 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.blank_state(addr=0x080488fe)
+  initial_state = project.factory.entry_state()
  
   project.hook(0x804ed40, angr.SIM_PROCEDURES['libc']['printf']())
   project.hook(0x804ed80, angr.SIM_PROCEDURES['libc']['scanf']())
   project.hook(0x804f350, angr.SIM_PROCEDURES['libc']['puts']())
+  project.hook(0x8048d10, angr.SIM_PROCEDURES['glibc']['__libc_start_main']())
 
   simulation = project.factory.simgr(initial_state)
 

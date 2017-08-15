@@ -1,11 +1,3 @@
-# This challenge represents a classic stack-based buffer overflow attack to
-# overwrite the return address and jump to a function that prints "Good Job."
-# Our strategy for solving the challenge is as follows:
-# 1. Initialize the simulation and ask Angr to record unconstrained states.
-# 2. Step through the simulation until we have found a state where eip is
-#    symbolic.
-# 3. Constrain eip to equal the address of the "print_good" function.
-
 import angr
 import claripy
 import sys
@@ -88,6 +80,8 @@ def main(argv):
     simulation.step()
 
   if solution_state:
+    solution_state = simulation.found[0]
+
     # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
     for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
       solution_state.add_constraints(byte >= ???, byte <= ???)
