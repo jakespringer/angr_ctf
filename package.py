@@ -24,8 +24,8 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
     extra_file_target = os.path.join(output_base_directory, extra_file)
     shutil.copyfile(extra_file_abs, extra_file_target)
   name_candidates = user.split('/')
-  if len(name_candidates) >= 3:
-    name = name_candidates[-3]
+  if len(name_candidates) >= 2:
+    name = name_candidates[-2]
   else:
     name = name_candidates[-1]
   print('Compiled %s for user %s.' % (level_name, name))
