@@ -23,7 +23,7 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
     extra_file_abs = os.path.join('.', level_name, extra_file)
     extra_file_target = os.path.join(output_base_directory, extra_file)
     shutil.copyfile(extra_file_abs, extra_file_target)
-  print('Compiled %s.' % (level_name,))
+  print('Compiled %s for user %s.' % (level_name, user.split('/')[-1]))
 
 def package_all(root_folder):
   num_binaries = 1
