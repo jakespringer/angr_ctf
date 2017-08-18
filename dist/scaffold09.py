@@ -66,7 +66,7 @@ def main(argv):
     state.regs.eax = claripy.If(
       user_input_string == check_against_string, 
       claripy.BVV(1, 32), 
-      claripy.BVV(1, 32)
+      claripy.BVV(0, 32)
     )
 
   simulation = project.factory.simgr(initial_state)

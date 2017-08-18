@@ -78,6 +78,11 @@ def main(argv):
       if state.satisfiable(extra_constraints=(eip == ???):
         # We can!
         solution_state = unconstrained_state
+
+        # Now, constrain eip to equal the address of the print_good function.
+        # (!)
+        ...
+
         break
 
     # Since we already checked all of the unconstrained states and did not find
@@ -91,8 +96,7 @@ def main(argv):
     for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
       solution_state.add_constraints(byte >= ???, byte <= ???)
 
-    # Constrain the instruction pointer to target the print_good function and
-    # then solve for the user input (recall that this is
+    # Solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
     ...
