@@ -1,4 +1,4 @@
-# An under-constrained (unconstrained) state occurs when there are too many
+# An unconstrained state occurs when there are too many
 # possible branches from a single instruction. This occurs, among other ways,
 # when the instruction pointer (on x86, eip) is completely symbolic, meaning
 # that user input can control the address of code the computer executes.
