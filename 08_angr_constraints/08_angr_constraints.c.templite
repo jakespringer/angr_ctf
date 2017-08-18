@@ -39,7 +39,7 @@ int check_equals_${ userdef }$(char* to_check, size_t length) {
 }
 
 int main(int argc, char* argv[]) {
-  print_msg();
+  //print_msg();
 
   memcpy(password, USERDEF, 16);
   memset(buffer, 0, 17);

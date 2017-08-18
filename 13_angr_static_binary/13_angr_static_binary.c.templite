@@ -31,7 +31,7 @@ int main(int argc, char* argv[]) {
   char buffer[20];
   char password[20];
 
-  print_msg();
+  //print_msg();
 
   for (int i=0; i < 20; ++i) {
     password[i] = 0;

@@ -30,7 +30,7 @@ void read_input() {
 int main(int argc, char* argv[]) {
   uint32_t key = 0;
 
-  print_msg();
+  //print_msg();
 
   printf("Enter the password: ");
   read_input();

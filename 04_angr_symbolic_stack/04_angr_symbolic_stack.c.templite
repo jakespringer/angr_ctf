@@ -42,7 +42,7 @@ void handle_user() {
 }
 
 int main(int argc, char* argv[]) {
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   handle_user();
 }
