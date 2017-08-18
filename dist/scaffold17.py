@@ -1,3 +1,20 @@
+# An under-constrained (unconstrained) state occurs when there are too many
+# possible branches from a single instruction. This occurs, among other ways,
+# when the instruction pointer (on x86, eip) is completely symbolic, meaning
+# that user input can control the address of code the computer executes.
+# For example, imagine the following pseudo assembly:
+#
+# mov user_input, eax
+# jmp eax
+#
+# The value of what the user entered dictates the next instruction. This
+# is an unconstrained state. It wouldn't usually make sense for the execution
+# engine to continue. (Where should the program jump to if eax could be
+# anything?) Normally, when Angr encounters an unconstrained state, it throws
+# it out. In our case, we want to exploit the unconstrained state to jump to
+# a location of our choosing. We will get to how to disable Angr's default
+# behavior later.
+#
 # This challenge represents a classic stack-based buffer overflow attack to
 # overwrite the return address and jump to a function that prints "Good Job."
 # Our strategy for solving the challenge is as follows:
@@ -15,28 +32,6 @@ def main(argv):
   project = angr.Project(path_to_binary)
 
   initial_state = ??? 
-
-  # An under-constrained (unconstrained) state occurs when there are too many
-  # possible branches from a single instruction. This occurs, among other ways,
-  # when the instruction pointer (on x86, eip) is completely symbolic, meaning
-  # that user input can control the address of code the computer executes.
-  # For example, imagine the following pseudo assembly:
-  #
-  # mov user_input, eax
-  # jmp eax
-  #
-  # The value of what the user entered dictates the next instruction. This
-  # is an unconstrained state. It wouldn't usually make sense for the execution
-  # engine to continue. (Where should the program jump to if eax could be
-  # anything?) Normally, when Angr encounters an unconstrained state, it throws
-  # it out. In our case, we want to exploit the unconstrained state to jump to
-  # a location of our choosing. We will get to how to disable Angr's default
-  # behavior later. For now, test if a state is vulnerable by checking if we
-  # can set the instruction pointer to the address of print_good in the binary.
-  # (!)
-  def check_vulnerable(state):
-    # Reimplement me!
-    return False
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
@@ -71,13 +66,17 @@ def main(argv):
     pass
 
   while (has_active() or has_unconstrained()) and (not has_found_solution()):
-    # Iterate through all unconstrained states and check them.
+    # Check every unconstrained state that the simulation has found so far.
     # (!)
-    for unconstrained_state in ???:
-      # Check if the unconstrained state is exploitable. Hint: You defined a
-      # function above that should check this.
+    for unconstrained_state in simulation.unconstrained:
+      # Get the eip register (review 03_angr_symbolic_registers).
       # (!)
-      if ???:
+      eip = unconstrained.regs.???
+
+      # Check if we can set the state to our print_good function.
+      # (!)
+      if state.satisfiable(extra_constraints=(eip == ???):
+        # We can!
         solution_state = unconstrained_state
         break
 
