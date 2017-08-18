@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
   int keep_going = 1;
   unsigned int x = 0xDEADBEEF;
 
-  print_msg();
+  //print_msg();
 
   memset(password, 0, 20);
   strncpy(&password[0], USERDEF0, LEN_USERDEF);

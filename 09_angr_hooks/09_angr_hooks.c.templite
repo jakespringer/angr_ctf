@@ -40,18 +40,18 @@ int check_equals_${ userdef }$(char* to_check, size_t length) {
 }
 
 int main(int argc, char* argv[]) {
-  print_msg();
+  //print_msg();
 
   memcpy(password, USERDEF, 16);
   memset(buffer, 0, 17);
 
   printf("Enter the password: ");
   scanf("%16s", buffer);
- 
+
   for (int i=0; i<16; ++i) {
     buffer[i] = complex_function(buffer[i], -i+18);
   }
- 
+
   equals = check_equals_${ userdef }$(buffer, 16);
 
   for (int i=0; i<16; ++i) {
@@ -59,7 +59,7 @@ int main(int argc, char* argv[]) {
   }
 
   scanf("%16s", buffer);
-  
+
   equals = equals && !strncmp(buffer, password, 16);
   if (!equals) {
     printf("Try again.\n");

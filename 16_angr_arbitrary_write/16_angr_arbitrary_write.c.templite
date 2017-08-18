@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
   memset(locals.buffer, 0, 16);
   strncpy(password_buffer, "PASSWORD", 12);
 
-  print_msg();
+  //print_msg();
 
   printf("Enter the password: ");
   scanf("%u %20s", &key, locals.buffer);

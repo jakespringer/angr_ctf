@@ -4,7 +4,7 @@ random.seed(os.urandom(8))
 
 letter0 = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 integer = random.randint(0, 256)
-lamb = random.choice([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71]) 
+lamb = random.choice([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71])
 }$
 
 #include <stdio.h>
@@ -30,7 +30,7 @@ int complex_function(int value, int i) {
 int main(int argc, char* argv[]) {
   char buffer[33];
 
-  print_msg();
+  //print_msg();
 
   memset(buffer, 0, 33);
 
@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
       counter0++;
     }
   }
-  
+
   if (counter0 == 32 && buffer[33] == 0x0) {
     printf("Good Job.\n");
   } else {
