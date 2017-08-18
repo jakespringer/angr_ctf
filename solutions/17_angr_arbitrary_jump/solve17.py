@@ -27,7 +27,7 @@ def main(argv):
   # can set the instruction pointer to the address of print_good in the binary.
   # (!)
   def check_vulnerable(state):
-    return state.satisfiable(extra_constraints=(state.regs.eip == 0x34343549,))
+    return state.se.symbolic(state.regs.eip)
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
@@ -75,7 +75,7 @@ def main(argv):
     for unconstrained_state in simulation.unconstrained:
       # Check if the unconstrained state is exploitable.
       # (!)
-      if check_vulnerable(unconstrained_state):
+      #if check_vulnerable(unconstrained_state):
         # Found an exploit, exit the while loop and keep unconstrained_state as
         # the solution. The way the loops is currently set up, you should move
         # the exploitable unconstrained state to the 'found' stash.
@@ -105,18 +105,18 @@ def main(argv):
         # def should_move(state):
         #   return not state in keep_states
         # simulation.move('active', 'not_needed', filter_func=should_move)
-        def should_move(s):
-          return s is unconstrained_state
-        simulation.move('unconstrained', 'found', filter_func=should_move)
+      def should_move(s):
+        return s is unconstrained_state
+      simulation.move('unconstrained', 'found', filter_func=should_move)
 
-      else: # unconstrained state is not exploitable
+      #else: # unconstrained state is not exploitable
         # Move the unconstrained_state that you tested that doesn't work to a
         # different stash, perhaps 'not_needed'.
         # Reimplement me.
         # (!)
-        def should_move(s):
-          return s is state
-        simulation.move('active', 'not_needed', filter_func=should_move)
+      #  def should_move(s):
+      #    return s is state
+      #  simulation.move('active', 'not_needed', filter_func=should_move)
         
  
     # Advance the simulation.
