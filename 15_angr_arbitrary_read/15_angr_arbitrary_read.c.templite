@@ -29,13 +29,13 @@ void print_msg() {
 struct overflow_me {
   char buffer[16];
   char* to_print;
-}; 
+};
 
 int main(int argc, char* argv[]) {
   struct overflow_me locals;
   locals.to_print = try_again;
 
-  print_msg();
+  //print_msg();
 
   printf("Enter the password: ");
   scanf("%u %20s", &key, locals.buffer);

@@ -65,11 +65,11 @@ int main(int argc, char* argv[]) {
   char buffer[17];
   int equals = 17;
 
-  print_msg();
+  //print_msg();
 
   memcpy(password, USERDEF, 16);
   memset(buffer, 0, 17);
-  
+
   printf("Enter the password: ");
   scanf("%16s", buffer);
 

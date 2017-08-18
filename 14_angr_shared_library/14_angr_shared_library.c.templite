@@ -12,7 +12,7 @@ extern int validate(char*, int);
 int main(int argc, char* argv[]) {
   char buffer[16];
   memset(buffer, 0, 16);
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   scanf("%8s", buffer);
   if (validate(buffer, 8)) {

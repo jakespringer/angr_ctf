@@ -33,7 +33,7 @@ int complex_function(int value, int i) {
 int main(int argc, char* argv[]) {
   memset(user_input, 0, sizeof(user_input));
 
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   scanf("%8s %8s %8s %8s", user_input, &user_input[8], &user_input[16], &user_input[24]);
 

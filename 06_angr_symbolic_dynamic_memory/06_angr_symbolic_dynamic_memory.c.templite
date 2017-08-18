@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
   memset(buffer0, 0, 9);
   memset(buffer1, 0, 9);
 
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   scanf("%8s %8s", buffer0, buffer1);
 
