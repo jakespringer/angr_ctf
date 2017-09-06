@@ -49,7 +49,7 @@ void ignore_me(char* buffer, int length) {
 int main(int argc, char* argv[]) {
   memset(buffer, 0, FILESIZE);
 
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   scanf("%64s", buffer);
   ignore_me(buffer, FILESIZE);
@@ -60,10 +60,10 @@ int main(int argc, char* argv[]) {
   unlink(USERDEF1);
 
   for (int i=0; i<8; ++i) {
-    buffer[i] = complex_function(buffer[i], -i);
+    buffer[i] = complex_function(buffer[i], i);
   }
 
-  if (strncmp(buffer, USERDEF0, 8)) {
+  if (strncmp(buffer, USERDEF0, 9)) {
     printf("Try again.\n");
     exit(1);
   } else {
