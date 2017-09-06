@@ -1,11 +1,14 @@
-why is check_all_Z not the password?
- - figure out what is causing the explosion,
-
 call complex function on password in level 8 in description (scaffold)
 
 - add gcc-32 to requirements
 - document package.py to explain how it works
 - add something that uses unicorn engine
-- redo or remove 07, pushing anything to the heap probably doesn't need to be taught
-  perhaps rename to "use_memory" or something to teach that you can use arbitrary
-  memory addresses
+
+Replace read/write levels with angr.Project.inspect (see documentation)
+  can hook all memory reads/writes!!!
+  instead of replace, add new levels that use these
+
+add checks to ensure everything is printed nicely (trailing \0)
+for all arbitrary x, ensure solutions are capital letters
+
+for 17, add an exit() after print good job

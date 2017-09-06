@@ -31,7 +31,7 @@ int complex_function(int value, int i) {
 int main(int argc, char* argv[]) {
   char buffer[9];
 
-  print_msg();
+  //print_msg();
 
   printf("Enter the password: ");
   scanf("%8s", buffer);

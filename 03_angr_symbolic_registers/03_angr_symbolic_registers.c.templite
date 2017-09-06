@@ -54,7 +54,7 @@ void get_user_input() {
 }
 
 int main(int argc, char* argv[]) {
-  print_msg();
+  //print_msg();
   printf("Enter the password: ");
   get_user_input();
   int non_eax = eax;
