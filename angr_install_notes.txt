@@ -1,5 +1,6 @@
 -------------------------------------------------------------------------------
-1.  Install and customize the angr container
+1.  Install and customize the angr container (Skip this step if you want to
+    start with Wu's Docker image)
 
 # Create an account at Docker Hub (github, but for Docker images)
 # Get your userid (e.g. wuchangfeng)
@@ -38,18 +39,22 @@ docker push <uid>/angr_malware
 -------------------------------------------------------------------------------
 2.  Run the modified docker container
 
-# Start the container
-docker run -it --net=host -e DISPLAY -v /tmp/.X11-unix <uid>/angr_malware bash
+# Get your CTF levels into a directory on the host file system that you
+#  run Docker from  /path/to/angr_ctf
 
-# To allow firefox to work (needed if you use radare2 for disassembly)
-# On host, do an "xauth list" to find X windows cookie
-# Should look like
+# Start the container and have it mount your local volume as well as give
+#  access to your X11 socket to allow firefox to work when using radare2 for
+# disassembly)
+
+docker run -it --net=host -e DISPLAY -v /path/to/angr_ctf:/home/angr -v /tmp/.X11-unix wuchangfeng/angr_malware bash
+
+# If this does not work, then on host, do an "xauth list" to find X windows
+# cookie Should look like
 #   mashimaro/unix:0  MIT-MAGIC-COOKIE-1  80bc8327c1745e110807be4a7311d7c6
-# On docker, do an
+# Then on docker, do an
 #  "xauth add mashimaro/unix:0  MIT-MAGIC-COOKIE-1  80bc8327c1745e110807be4a7311d7c6"
 #  Ignore file does not exist message
-#  "firefox"
-#  Browser output should on host
+#  Firefox output should on host
 
 -------------------------------------------------------------------------------
 3.  If you want multiple windows to your container
