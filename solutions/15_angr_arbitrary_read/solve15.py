@@ -181,7 +181,7 @@ def main(argv):
     solution_state = simulation.found[0]
 
     (scanf0, scanf1) = solution_state.globals['solutions']
-    solution = str(solution_state.se.any_int(scanf0)) + ' ' + solution_state.se.any_str(scanf1)
+    solution = str(solution_state.se.eval(scanf0)) + ' ' + solution_state.se.eval(scanf1,cast_to=str)
     print solution
   else:
     raise Exception('Could not find the solution')
