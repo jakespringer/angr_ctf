@@ -47,13 +47,13 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Solve for the symbolic values. We are trying to solve for a string.
-    # Therefore, we will use any_str, which returns a string instead of an
-    # integer.
+    # Therefore, we will use eval, with named parameter cast_to=str
+    # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.se.any_str(password0)
-    solution1 = solution_state.se.any_str(password1)
-    solution2 = solution_state.se.any_str(password2)
-    solution3 = solution_state.se.any_str(password3)    
+    solution0 = solution_state.se.eval(password0,cast_to=str)
+    solution1 = solution_state.se.eval(password1,cast_to=str)
+    solution2 = solution_state.se.eval(password2,cast_to=str)
+    solution3 = solution_state.se.eval(password3,cast_to=str)
 
     solution = ' '.join([ solution0, solution1, solution2, solution3 ])
 
