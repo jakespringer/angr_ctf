@@ -15,7 +15,7 @@ def main(argv):
     def run(self, format_string, param0, param1):
       # %u
       scanf0 = claripy.BVS('scanf0', 32)
-      
+
       # %20s
       scanf1 = claripy.BVS('scanf1', 20*8)
 
@@ -90,7 +90,7 @@ def main(argv):
       #  b[63:48] == 'AB'
       # (!)
       does_src_hold_password = src_contents[-1:-64] == password_string
-      
+
       # Create an expression to check if the dest parameter can be set to
       # buffer_address. If this is true, then we have found our exploit!
       # (!)
@@ -119,7 +119,7 @@ def main(argv):
     solution_state = simulation.found[0]
 
     scanf0, scanf1 = solution_state.globals['solutions']
-    solution = str(solution_state.se.any_int(scanf0)) + ' ' + solution_state.se.any_str(scanf1)
+    solution = str(solution_state.se.eval(scanf0)) + ' ' + solution_state.se.eval(scanf1, cast_to=str)
     print solution
   else:
     raise Exception('Could not find the solution')

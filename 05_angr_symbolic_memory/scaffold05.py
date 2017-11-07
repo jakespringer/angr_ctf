@@ -39,10 +39,10 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Solve for the symbolic values. We are trying to solve for a string.
-    # Therefore, we will use any_str, which returns a string instead of an
-    # integer.
+    # Therefore, we will use eval, with named parameter cast_to=str
+    # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.se.any_str(password0)
+    solution0 = solution_state.se.eval(password0,cast_to=str)
     ...
     solution = ???
 

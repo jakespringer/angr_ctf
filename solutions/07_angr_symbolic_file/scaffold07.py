@@ -120,7 +120,7 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = solution_state.se.any_str(password)
+    solution = solution_state.se.eval(password,cast_to=str)
 
     print solution
   else:
