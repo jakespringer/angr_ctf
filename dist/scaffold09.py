@@ -32,7 +32,7 @@ def main(argv):
   # bytes are used to represent them in memory. This will be the skip length.
   # (!)
   instruction_to_skip_length = ???
-  @angr.Hook(check_equals_called_address, length=instruction_to_skip_length)
+  @project.hook(check_equals_called_address, length=instruction_to_skip_length)
   def skip_check_equals_(state):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
