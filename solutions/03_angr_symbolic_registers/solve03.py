@@ -66,12 +66,12 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Solve for the symbolic values. If there are multiple solutions, we only
-    # care about one, so we can use any_int, which returns any (but only one)
-    # solution. Pass any_int the bitvector you want to solve for.
+    # care about one, so we can use eval, which returns any (but only one)
+    # solution. Pass eval the bitvector you want to solve for.
     # (!)
-    solution0 = solution_state.se.any_int(password0)
-    solution1 = solution_state.se.any_int(password1) 
-    solution2 = solution_state.se.any_int(password2)
+    solution0 = solution_state.se.eval(password0)
+    solution1 = solution_state.se.eval(password1) 
+    solution2 = solution_state.se.eval(password2)
 
     # Aggregate and format the solutions you computed above, and then print
     # the full string. Pay attention to the order of the integers, and the
