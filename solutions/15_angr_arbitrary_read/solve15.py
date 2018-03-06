@@ -144,7 +144,12 @@ def main(argv):
       # Have Angr evaluate the state to determine if all the constraints can
       # be met, including the one we specified above. If it can be satisfied,
       # we have found our exploit!
-      if state.satisfiable(extra_constraints=(is_vulnerable_expression,)):
+      
+      copied_state = state.copy()
+
+      copied_state.add_constraints(is_vulnerable_expression)
+       
+      if copied_state.satisfiable():
         # Before we return, let's add the constraint to the solver for real,
         # instead of just querying whether the constraint _could_ be added.
         state.add_constraints(is_vulnerable_expression)
