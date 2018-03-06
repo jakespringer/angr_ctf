@@ -11,7 +11,7 @@
 # angr.SIM_PROCEDURES['libc']['getchar']
 # angr.SIM_PROCEDURES['libc']['strncmp']
 # angr.SIM_PROCEDURES['libc']['strcmp']
-# angr.SIM_PROCEDURES['libc']['__isoc99_scanf']
+# angr.SIM_PROCEDURES['libc']['scanf']
 # angr.SIM_PROCEDURES['libc']['printf']
 # angr.SIM_PROCEDURES['libc']['puts']
 # angr.SIM_PROCEDURES['libc']['exit']
