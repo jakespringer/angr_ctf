@@ -174,8 +174,6 @@ def main(argv):
       good_job_string_address = ??? # :integer, probably hexadecimal
 
       # Create an expression that will test if puts_parameter equals
-      # good_job_string_address. If we add this as a constraint to our solver,
-      # it will try and find an input to make this expression true. Take a look
       # at level 08 to remind yourself of the syntax of this.
       # (!)
       is_vulnerable_expression = ??? # :boolean bitvector expression
@@ -185,8 +183,6 @@ def main(argv):
       # we have found our exploit!
       #
       # When doing this, however, we do not want to edit our state in case we
-      # have not yet found what we are looking for. To test if our expression
-      # is satisfiable without editing the original, we need to clone the state.
       copied_state = state.copy()
 
       # We can now play around with the copied state without changing the
