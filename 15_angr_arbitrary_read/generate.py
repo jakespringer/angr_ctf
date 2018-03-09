@@ -13,10 +13,12 @@ def generate(argv):
 
   random.seed(seed)
   
-  rodata_tail_modifier = 0x13 
+  rodata_tail_modifier = 0x14 
   rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(3) ] 
     + [ chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier)) ])
   rodata_address = '0x' + rodata_parts.encode('hex')
+
+  print rodata_address
 
   description = ''
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
