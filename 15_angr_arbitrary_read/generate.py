@@ -18,8 +18,6 @@ def generate(argv):
     + [ chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier)) ])
   rodata_address = '0x' + rodata_parts.encode('hex')
 
-  print rodata_address
-
   description = ''
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
