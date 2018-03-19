@@ -195,7 +195,7 @@ def main(argv):
       copied_state.add_constraints(is_vulnerable_expression)
 
       # Finally, we test if we can satisfy the constraints of the state.
-      if state.satisfiable(copied_state):
+      if copied_state.satisfiable():
         # Before we return, let's add the constraint to the solver for real.
         state.add_constraints(is_vulnerable_expression)
         return True

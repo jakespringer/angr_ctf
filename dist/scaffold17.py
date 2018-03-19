@@ -71,11 +71,11 @@ def main(argv):
     for unconstrained_state in simulation.unconstrained:
       # Get the eip register (review 03_angr_symbolic_registers).
       # (!)
-      eip = unconstrained.regs.???
+      eip = unconstrained_state.regs.???
 
       # Check if we can set the state to our print_good function.
       # (!)
-      if state.satisfiable(extra_constraints=(eip == ???):
+      if unconstrained_state.satisfiable(extra_constraints=(eip == ???)):
         # We can!
         solution_state = unconstrained_state
 
