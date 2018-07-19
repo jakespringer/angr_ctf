@@ -44,8 +44,8 @@ def main(argv):
   # supply the stream of data to the Linux file. Also, to communicate with 
   # Angr's constraint solving system, we need to associate the memory with the 
   # initial_state.
-  symbolic_file_backing_memory = angr.state_plugins.SimSymbolicMemory()
-  symbolic_file_backing_memory.set_state(initial_state)
+#  symbolic_file_backing_memory = angr.state_plugins.SimSymbolicMemory()
+#  symbolic_file_backing_memory.set_state(initial_state)
 
   # Construct a bitvector for the password and then store it in the file's
   # backing memory. The store method works exactly the same as the store method
@@ -76,7 +76,7 @@ def main(argv):
   # stored.
   # (!)
   password = claripy.BVS('password', symbolic_file_size_bytes * 8)
-  symbolic_file_backing_memory.store(0, password)
+ # symbolic_file_backing_memory.store(0, password)
 
   # Construct the symbolic file. The file_options parameter specifies the Linux
   # file permissions (read, read/write, execute etc.) The content parameter
@@ -87,8 +87,8 @@ def main(argv):
   # Set the content parameter to our SimSymbolicMemory instance that holds the
   # symbolic data.
   # (!)
-  file_options = 'r'
-  password_file = angr.storage.SimFile(filename, file_options, content=symbolic_file_backing_memory, size=symbolic_file_size_bytes)
+ # file_options = 'r'
+  password_file = angr.storage.SimFile(filename, content=password)
 
   # We have already created the file and the memory that stores the data that
   # the file will stream to the program, but we now need to tell Angr where the
@@ -100,10 +100,11 @@ def main(argv):
   # }
   # would specify that any fopen('hello.txt', 'r') calls should stream data from
   # hello_txt_file.
-  symbolic_filesystem = {
-    filename : password_file
-  }
-  initial_state.posix.fs = symbolic_filesystem
+#  symbolic_filesystem = {
+#    filename : password_file
+#  }
+#  initial_state.posix.fs = symbolic_filesystem
+  initial_state.fs.insert(filename, password_file)
 
   simulation = project.factory.simgr(initial_state)
 
