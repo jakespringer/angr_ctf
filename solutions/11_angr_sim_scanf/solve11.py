@@ -39,11 +39,11 @@ def main(argv):
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
-    stdout_output = state.posix.dumps(sys.stdout.fileno())
+    stdout_output = state.posix.dumps(sys.stdout.fileno()).decode('utf-8')
     return 'Good Job.' in stdout_output
 
   def should_abort(state):
-    stdout_output = state.posix.dumps(sys.stdout.fileno())
+    stdout_output = state.posix.dumps(sys.stdout.fileno()).decode('utf-8')
     return 'Try again.' in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
@@ -53,9 +53,9 @@ def main(argv):
 
     # Grab whatever you set aside in the globals dict.
     stored_solutions = solution_state.globals['solutions']
-    solution = ' '.join(map(str, map(solution_state.se.eval, stored_solutions)))
+    solution = ' '.join(map(str, map(solution_state.solver.eval, stored_solutions)))
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

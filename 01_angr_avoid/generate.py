@@ -4,7 +4,7 @@ from templite import Templite
 
 def generate(argv):
   if len(argv) != 3:
-    print 'Usage: pypy generate.py [seed] [output_file]'
+    print('Usage: pypy generate.py [seed] [output_file]')
     sys.exit()
 
   seed = argv[1]
@@ -12,16 +12,17 @@ def generate(argv):
 
   random.seed(seed)
 
-  description = ''
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
-    description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
+    description = desc_file.read().strip()
 
-  random_list = [random.choice([True, False]) for _ in xrange(64)]
+  random_list = [random.choice([True, False]) for _ in range(64)]
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '01_angr_avoid.c.templite'), 'r').read()
+  with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '01_angr_avoid.c.templite'), 'r') as temp_file:
+    template = temp_file.read()
+
   c_code = Templite(template).render(description=description, random_list=random_list)
 
-  with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
+  with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.c') as temp:
     temp.write(c_code)
     temp.seek(0)
     os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)

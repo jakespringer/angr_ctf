@@ -43,7 +43,7 @@ def main(argv):
 
   if simulation.found:
     solution_state = simulation.found[0]
-    print solution_state.posix.dumps(sys.stdin.fileno())
+    print(solution_state.posix.dumps(sys.stdin.fileno()).decode('utf-8'))
   else:
     raise Exception('Could not find the solution')
 

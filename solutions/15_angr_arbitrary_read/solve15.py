@@ -128,7 +128,7 @@ def main(argv):
     # bitvector we checked may be controllable by the user.
     # Use it to determine if the pointer passed to puts is symbolic.
     # (!)
-    if state.se.symbolic(puts_parameter):
+    if state.solver.symbolic(puts_parameter):
       # Determine the location of the "Good Job.\n" string. We want to print it
       # out, and we will do so by attempting to constrain the puts parameter to
       # equal it. (Hint: look at .rodata).
@@ -186,8 +186,8 @@ def main(argv):
     solution_state = simulation.found[0]
 
     (scanf0, scanf1) = solution_state.globals['solutions']
-    solution = str(solution_state.se.eval(scanf0)) + ' ' + solution_state.se.eval(scanf1,cast_to=str)
-    print solution
+    solution = str(solution_state.solver.eval(scanf0)) + ' ' + solution_state.solver.eval(scanf1, cast_to=bytes).decode('utf-8')
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

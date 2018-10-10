@@ -86,9 +86,9 @@ def main(argv):
     solution_state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
     # Solve for the constrained_parameter_bitvector.
-    solution = solution_state.se.eval(password,cast_to=str)
+    solution = solution_state.solver.eval(password,cast_to=bytes).decode('utf-8')
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

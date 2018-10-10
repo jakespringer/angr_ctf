@@ -14,7 +14,7 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
   if not os.path.exists(output_directory):
     os.makedirs(output_directory)
 
-  for i in xrange(num_binaries):
+  for i in range(num_binaries):
     suffix = suffix_format_str.format(i)
     binary_file_output = binary_file_output_prefix + suffix
     generate_module.generate.generate([None, seed, binary_file_output])

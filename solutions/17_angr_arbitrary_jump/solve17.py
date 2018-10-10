@@ -132,19 +132,19 @@ def main(argv):
     solution_state.add_constraints(solution_state.regs.eip == 0x4d4c4749)
 
     # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
-    for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
+    for byte in solution_state.posix.dumps(sys.stdin.fileno()):
       solution_state.add_constraints(
         claripy.Or(
           byte == 0x0,
           claripy.And(
-            byte >= 'A', 
-            byte <= 'Z'
+            byte >= ord('A'), 
+            byte <= ord('Z')
           )
         )
       )
 
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
-    print solution
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode('utf-8')
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

@@ -69,7 +69,7 @@ def main(argv):
 
     # Determine if the destination pointer and the source is symbolic.
     # (!)
-    if state.se.symbolic(src_contents) and state.se.symbolic(strncpy_dest):
+    if state.solver.symbolic(src_contents) and state.solver.symbolic(strncpy_dest):
       # Use ltrace to determine the password. Decompile the binary to determine
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
@@ -119,8 +119,8 @@ def main(argv):
     solution_state = simulation.found[0]
 
     scanf0, scanf1 = solution_state.globals['solutions']
-    solution = str(solution_state.se.eval(scanf0)) + ' ' + solution_state.se.eval(scanf1, cast_to=str)
-    print solution
+    solution = str(solution_state.solver.eval(scanf0)) + ' ' + solution_state.solver.eval(scanf1, cast_to=bytes).decode('utf-8')
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

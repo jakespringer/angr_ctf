@@ -48,7 +48,7 @@ int main(int argc, char* argv[]) {
   ${
   hit_statement = 'strncpy(locals.to_copy_to, locals.buffer, 16)'
   miss_statement = 'strncpy(unimportant_buffer, locals.buffer, 16)'
-  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**26-1), 2))
+  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(range(2**26-1), 2))
   }$
 
   if (strncmp(password_buffer, USERDEF, 8)) {

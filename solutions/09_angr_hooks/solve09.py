@@ -63,11 +63,11 @@ def main(argv):
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
-    stdout_output = state.posix.dumps(sys.stdout.fileno())
+    stdout_output = state.posix.dumps(sys.stdout.fileno()).decode('utf-8')
     return 'Good Job.' in stdout_output
 
   def should_abort(state):
-    stdout_output = state.posix.dumps(sys.stdout.fileno())
+    stdout_output = state.posix.dumps(sys.stdout.fileno()).decode('utf-8')
     return 'Try again.' in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
@@ -77,8 +77,8 @@ def main(argv):
 
     # Since we are allowing Angr to handle the input, retrieve it by printing
     # the contents of stdin. Use one of the early levels as a reference.
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
-    print solution
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode('utf-8')
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

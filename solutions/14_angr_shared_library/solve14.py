@@ -59,8 +59,8 @@ def main(argv):
     # Determine where the program places the return value, and constrain it so
     # that it is true. Then, solve for the solution and print it.
     # (!)
-    solution = solution_state.se.eval(password,cast_to=str)
-    print solution
+    solution = solution_state.solver.eval(password,cast_to=bytes).decode('utf-8')
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

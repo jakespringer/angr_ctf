@@ -120,9 +120,9 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = solution_state.se.eval(password,cast_to=str)
+    solution = solution_state.se.eval(password,cast_to=bytes).decode('utf-8')
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
