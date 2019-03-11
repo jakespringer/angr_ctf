@@ -17,7 +17,7 @@
 # angr.SIM_PROCEDURES['libc']['exit']
 #
 # As a reminder, you can hook functions with something similar to:
-# project.hook(malloc_address, angr.SIM_PROCEDURES['libc']['malloc'])
+# project.hook(malloc_address, angr.SIM_PROCEDURES['libc']['malloc']())
 #
 # There are many more, see:
 # https://github.com/angr/angr/tree/master/angr/procedures/libc
