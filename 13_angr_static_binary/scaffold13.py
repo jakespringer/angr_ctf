@@ -15,6 +15,7 @@
 # angr.SIM_PROCEDURES['libc']['printf']
 # angr.SIM_PROCEDURES['libc']['puts']
 # angr.SIM_PROCEDURES['libc']['exit']
+# angr.SIM_PROCEDURES['glibc']['__libc_start_main']
 #
 # As a reminder, you can hook functions with something similar to:
 # project.hook(malloc_address, angr.SIM_PROCEDURES['libc']['malloc']())
