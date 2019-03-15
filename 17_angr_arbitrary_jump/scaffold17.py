@@ -31,7 +31,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = ??? 
+  initial_state = ???
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
@@ -45,7 +45,7 @@ def main(argv):
   # solution. We will later be able to move states from the unconstrained list
   # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
-  
+
   # We will set this to the exploitable state once we find it.
   solution_state = None
   def has_found_solution():
@@ -71,11 +71,11 @@ def main(argv):
     for unconstrained_state in simulation.unconstrained:
       # Get the eip register (review 03_angr_symbolic_registers).
       # (!)
-      eip = unconstrained.regs.???
+      eip = unconstrained_state.regs.???
 
       # Check if we can set the state to our print_good function.
       # (!)
-      if state.satisfiable(extra_constraints=(eip == ???):
+      if unconstrained_state.satisfiable(extra_constraints=(eip == ???):
         # We can!
         solution_state = unconstrained_state
 
