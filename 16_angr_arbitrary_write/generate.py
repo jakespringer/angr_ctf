@@ -13,9 +13,9 @@ def generate(argv):
 
   random.seed(seed)
 
-  rodata_tail_modifier = 0x2e
-  rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(3) ]
-    + [ chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier)) ])
+  rodata_tail_modifier = 0x15
+  rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(3) ] + [ chr(random.randint(0,4) + rodata_tail_modifier) ])
+
   rodata_address = '0x' + rodata_parts.encode('hex')
 
   userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
