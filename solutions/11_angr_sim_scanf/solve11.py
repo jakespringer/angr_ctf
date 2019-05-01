@@ -53,7 +53,7 @@ def main(argv):
 
     # Grab whatever you set aside in the globals dict.
     stored_solutions = solution_state.globals['solutions']
-    solution = ' '.join(map(str, map(solution_state.se.eval, stored_solutions)))
+    solution = ' '.join(map(str, map(solution_state.solver.eval, stored_solutions)))
 
     print(solution)
   else:
