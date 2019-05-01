@@ -42,11 +42,11 @@ def main(argv):
     # Therefore, we will use eval, with named parameter cast_to=str
     # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.se.eval(password0,cast_to=str)
+    solution0 = solution_state.se.eval(password0,cast_to=bytes).decode()
     ...
     solution = ???
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

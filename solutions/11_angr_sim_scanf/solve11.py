@@ -40,11 +40,11 @@ def main(argv):
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return 'Good Job.'.encode() in stdout_output
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return 'Try again.'.encode() in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
@@ -55,7 +55,7 @@ def main(argv):
     stored_solutions = solution_state.globals['solutions']
     solution = ' '.join(map(str, map(solution_state.se.eval, stored_solutions)))
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

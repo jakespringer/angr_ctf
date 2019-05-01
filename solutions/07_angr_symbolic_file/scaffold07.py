@@ -122,7 +122,7 @@ def main(argv):
 
     solution = solution_state.se.eval(password,cast_to=str)
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
