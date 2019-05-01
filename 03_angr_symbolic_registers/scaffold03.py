@@ -63,7 +63,7 @@ def main(argv):
     # care about one, so we can use eval, which returns any (but only one)
     # solution. Pass eval the bitvector you want to solve for.
     # (!)
-    solution0 = solution_state.se.eval(password0)
+    solution0 = solution_state.solver.eval(password0)
     ...
 
     # Aggregate and format the solutions you computed above, and then print

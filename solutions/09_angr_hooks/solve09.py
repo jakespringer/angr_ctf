@@ -47,7 +47,7 @@ def main(argv):
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV' # :string
+    check_against_string = 'XKSPZSJKJYQCQXZV'.encode() # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
