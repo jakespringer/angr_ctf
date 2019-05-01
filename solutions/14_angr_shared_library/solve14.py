@@ -37,7 +37,7 @@ def main(argv):
   validate_function_address = base + 0x6d7
   initial_state = project.factory.call_state(validate_function_address, buffer_pointer, claripy.BVV(8, 32))
 
-  # You will need to add code to inject a symbolic value into the program. Also, 
+  # You will need to add code to inject a symbolic value into the program. Also,
   # at the end of the function, constrain eax to equal true (value of 1) just
   # before the function returns. There are multiple ways to do this:
   # 1. Use a hook.
@@ -59,8 +59,8 @@ def main(argv):
     # Determine where the program places the return value, and constrain it so
     # that it is true. Then, solve for the solution and print it.
     # (!)
-    solution = solution_state.se.eval(password,cast_to=str)
-    print solution
+    solution = solution_state.se.eval(password,cast_to=bytes).decode()
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
