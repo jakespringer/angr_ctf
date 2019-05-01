@@ -57,7 +57,7 @@ def main(argv):
         user_input_buffer_length
       )
 
-      check_against_string = 'WQNDNKKWAWOLXBAC'
+      check_against_string = 'WQNDNKKWAWOLXBAC'.encode()
       
       # Finally, instead of setting eax, we can use a Pythonic return statement
       # to return the output of this function. 

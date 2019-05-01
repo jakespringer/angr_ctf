@@ -50,10 +50,10 @@ def main(argv):
     # Therefore, we will use eval, with named parameter cast_to=str
     # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.se.eval(password0,cast_to=str)
-    solution1 = solution_state.se.eval(password1,cast_to=str)
-    solution2 = solution_state.se.eval(password2,cast_to=str)
-    solution3 = solution_state.se.eval(password3,cast_to=str)
+    solution0 = solution_state.solver.eval(password0,cast_to=bytes).decode()
+    solution1 = solution_state.solver.eval(password1,cast_to=bytes).decode()
+    solution2 = solution_state.solver.eval(password2,cast_to=bytes).decode()
+    solution3 = solution_state.solver.eval(password3,cast_to=bytes).decode()
 
     solution = ' '.join([ solution0, solution1, solution2, solution3 ])
 
