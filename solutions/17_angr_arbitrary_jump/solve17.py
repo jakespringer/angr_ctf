@@ -6,7 +6,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state() 
+  initial_state = project.factory.entry_state()
 
   # An under-constrained (unconstrained) state occurs when there are too many
   # possible branches from a single instruction. This occurs, among other ways,
@@ -36,7 +36,7 @@ def main(argv):
   # default, such as 'found' and 'not_needed'. You will see how these are used
   # later.
   simulation = project.factory.simgr(
-    initial_state, 
+    initial_state,
     save_unconstrained=True,
     stashes={
       'active' : [initial_state],
@@ -117,8 +117,7 @@ def main(argv):
       #  def should_move(s):
       #    return s is state
       #  simulation.move('active', 'not_needed', filter_func=should_move)
-        
- 
+
     # Advance the simulation.
     simulation.step()
 
@@ -137,14 +136,14 @@ def main(argv):
         claripy.Or(
           byte == 0x0,
           claripy.And(
-            byte >= 'A', 
+            byte >= 'A',
             byte <= 'Z'
           )
         )
       )
 
     solution = solution_state.posix.dumps(sys.stdin.fileno())
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

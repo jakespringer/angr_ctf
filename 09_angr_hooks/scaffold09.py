@@ -45,7 +45,7 @@ def main(argv):
     # It will return a bitvector holding the value. This value can either be
     # symbolic or concrete, depending on what was stored there in the program.
     user_input_string = state.memory.load(
-      user_input_buffer_address, 
+      user_input_buffer_address,
       user_input_buffer_length
     )
     
@@ -87,7 +87,7 @@ def main(argv):
     # Since we are allowing Angr to handle the input, retrieve it by printing
     # the contents of stdin. Use one of the early levels as a reference.
     solution = ???
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

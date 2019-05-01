@@ -19,7 +19,7 @@ def main(argv):
 
     # Return whether 'Good Job.' has been printed yet.
     # (!)
-    return 'Good Job.' in stdout_output  # :boolean
+    return 'Good Job.'.encode() in stdout_output  # :boolean
 
   # Same as above, but this time check if the state should abort. If you return
   # False, Angr will continue to step the state. In this specific challenge, the
@@ -27,7 +27,7 @@ def main(argv):
   # "Try again."
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output  # :boolean
+    return 'Try again.'.encode() in stdout_output  # :boolean
 
   # Tell Angr to explore the binary and find any state that is_successful identfies
   # as a successful state by returning True.
@@ -35,7 +35,7 @@ def main(argv):
 
   if simulation.found:
     solution_state = simulation.found[0]
-    print solution_state.posix.dumps(sys.stdin.fileno())
+    print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
   else:
     raise Exception('Could not find the solution')
 
