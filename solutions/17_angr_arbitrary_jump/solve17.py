@@ -6,7 +6,18 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  # Make a SimFile of decent size for input
+  input = claripy.BVS("input", 200 * 8)
+
+  initial_state = project.factory.entry_state(stdin=input)
+  # Ensure that every byte of input is within the acceptable ASCII range (A..Z)
+  for byte in input.chop(bits=8):
+    initial_state.add_constraints(
+      claripy.And(
+        byte >= 'A',
+        byte <= 'Z'
+      )
+    )
 
   # An under-constrained (unconstrained) state occurs when there are too many
   # possible branches from a single instruction. This occurs, among other ways,
@@ -130,19 +141,7 @@ def main(argv):
     # (!)
     solution_state.add_constraints(solution_state.regs.eip == 0x4d4c4749)
 
-    # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
-    for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
-      solution_state.add_constraints(
-        claripy.Or(
-          byte == 0x0,
-          claripy.And(
-            byte >= 'A',
-            byte <= 'Z'
-          )
-        )
-      )
-
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')
