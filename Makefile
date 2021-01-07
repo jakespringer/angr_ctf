@@ -11,8 +11,7 @@ env:
 	)
 
 web: env
-	$(foreach user,$(USERS), env/bin/python2 package.py obj/$(user)/angr;)
-	mkdir -p $(WWWDIR) && cp -R obj/* $(WWWDIR)
+	$(foreach user,$(USERS), mkdir obj/$(user)/angr/solved; env/bin/python2 package.py obj/$(user)/angr; cp -R obj/$(user) $(WWWDIR))
 
 local: env
 	$(foreach user,$(USERS), env/bin/python2 package.py obj/$(user)/angr;)
