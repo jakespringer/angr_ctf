@@ -75,7 +75,7 @@ def main(argv):
 
       # Check if we can set the state to our print_good function.
       # (!)
-      if unconstrained_state.satisfiable(extra_constraints=(eip == ???):
+      if unconstrained_state.satisfiable(extra_constraints=(eip == ???)):
         # We can!
         solution_state = unconstrained_state
 
