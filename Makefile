@@ -1,19 +1,27 @@
-WWWDIR=$(PWD)/www/static/obj
-USERS=$(shell cut -d" " -f 1 users)
+WWWDIR=../www/static/obj
 
-.PHONY: all wwwusers install clean distclean
+.PHONY: all web local clean local_clean web_clean
 
 all:
-	$(foreach user,$(USERS),python2 package.py obj/$(user)/angr;)
 
-wwwusers:
-	python3 wwwusers.py
+env:
+	( \
+	  virtualenv -p python2 env; \
+	  env/bin/pip install templite; \
+	)
 
-install: wwwusers
+web: env
+	$(foreach user,$(USERS), env/bin/python2 package.py obj/$(user)/angr;)
 	mkdir -p $(WWWDIR) && cp -R obj/* $(WWWDIR)
 
-clean:
-	rm -rf obj
+local: env
+	$(foreach user,$(USERS), env/bin/python2 package.py obj/$(user)/angr;)
 
-distclean:
-	rm -rf $(WWWDIR)
+clean: local_clean web_clean
+
+local_clean:
+	rm -rf obj
+	rm -rf env
+
+web_clean:
+	rm -rf $(WWWDIR)/*
