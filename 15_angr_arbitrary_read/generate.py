@@ -18,7 +18,7 @@ def generate(argv):
 #  rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(3) ] + [ chr(random.randint(0,16) + rodata_tail_modifier) ])
   rodata_tail_modifier = 0x14 
   rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(3) ] 
-    + [ chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier)) ])
+    + [ chr(ord('A') - rodata_tail_modifier) ])
   rodata_address = '0x' + rodata_parts.encode('hex')
 
   description = ''

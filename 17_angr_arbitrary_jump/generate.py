@@ -15,11 +15,11 @@ def generate(argv):
 
 # cs492
 #  text_tail_modifier0 = 0x05
-  text_tail_modifier0 = 0x30
+  text_tail_modifier0 = 0x10
   text_tail_modifier1 = 0x01
   text_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in xrange(2) ]
     + [ chr(random.randint(ord('A') - text_tail_modifier1, ord('Z') - text_tail_modifier1)) ]
-    + [ chr(random.randint(0,16) + text_tail_modifier0) ])
+    + [ chr(ord('A') - text_tail_modifier0) ])
   text_address = '0x' + text_parts.encode('hex')
 
   description = ''
