@@ -14,7 +14,7 @@ ANGR_OUT_05="$(python3 05_angr_symbolic_memory/solver.py 05_angr_symbolic_memory
 echo -n "."
 ANGR_OUT_06="$(python3 06_angr_symbolic_dynamic_memory/solver.py 06_angr_symbolic_dynamic_memory/bin 2> /dev/null)"
 echo -n "."
-ANGR_OUT_07="$(python3 07_angr_symbolic_file/solver.py 07_angr_symbolic_file/bin 2> /dev/null)"
+ANGR_OUT_07="$(python3 07_angr_symbolic_file/solver.py 07_angr_symbolic_file/bin 2> /dev/null | tr -d '\0')"
 echo -n "."
 ANGR_OUT_08="$(python3 08_angr_constraints/solver.py 08_angr_constraints/bin 2> /dev/null)"
 echo -n "."
