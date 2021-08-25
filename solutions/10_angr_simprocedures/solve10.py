@@ -57,14 +57,14 @@ def main(argv):
         user_input_buffer_length
       )
 
-      check_against_string = 'WQNDNKKWAWOLXBAC'
+      check_against_string = 'WQNDNKKWAWOLXBAC'.encode()
       
       # Finally, instead of setting eax, we can use a Pythonic return statement
       # to return the output of this function. 
       # Hint: Look at the previous solution.
       return claripy.If(
-        user_input_string == check_against_string, 
-        claripy.BVV(1, 32), 
+        user_input_string == check_against_string,
+        claripy.BVV(1, 32),
         claripy.BVV(0, 32)
       )
 
@@ -81,19 +81,19 @@ def main(argv):
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return 'Good Job.'.encode() in stdout_output
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return 'Try again.'.encode() in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
-    print solution
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

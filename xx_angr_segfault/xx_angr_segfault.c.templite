@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
   ${
   hit_statement = 'locals.random_char = *(&locals.allocated_memory);'
   miss_statement = 'locals.random_char = *locals.arbitrary_pointer;'
-  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**26-1), 2))
+  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(range(2**26-1), 2))
   }$
 
   return 0;

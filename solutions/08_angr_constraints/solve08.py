@@ -82,13 +82,13 @@ def main(argv):
 
     # Constrain the system to find an input that will make
     # constrained_parameter_bitvector equal the desired value.
-    constrained_parameter_desired_value = 'BWYRUBQCMVSBRGFU' # :string
+    constrained_parameter_desired_value = 'BWYRUBQCMVSBRGFU'.encode() # :string
     solution_state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
     # Solve for the constrained_parameter_bitvector.
-    solution = solution_state.se.eval(password,cast_to=str)
+    solution = solution_state.solver.eval(password,cast_to=bytes).decode()
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

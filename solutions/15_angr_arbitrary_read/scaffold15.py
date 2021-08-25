@@ -182,7 +182,7 @@ def main(argv):
     solution_state = simulation.found[0]
 
     solution = ???
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
