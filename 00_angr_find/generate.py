@@ -1,10 +1,10 @@
-#!/usr/bin/env pypy
+#!/usr/bin/env python3
 import sys, random, os, tempfile
 from templite import Templite
 
 def generate(argv):
   if len(argv) != 3:
-    print 'Usage: pypy generate.py [seed] [output_file]'
+    print('Usage: ./generate.py [seed] [output_file]')
     sys.exit()
 
   seed = argv[1]
@@ -14,12 +14,12 @@ def generate(argv):
 
   description = ''
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
-    description = desc_file.read().encode('string_escape').replace('\"', '\\\"')
+    description = desc_file.read().encode('unicode_escape')
 
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '00_angr_find.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
-  with tempfile.NamedTemporaryFile(delete=False, suffix='.c') as temp:
+  with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
     temp.seek(0)
     os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)

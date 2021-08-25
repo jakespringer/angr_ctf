@@ -1,7 +1,7 @@
 ${
 import random, os
 random.seed(os.urandom(8))
-userdef = [random.randint(0, 0xFFFFFFFF) for i in xrange(2)]
+userdef = [random.randint(0, 0xFFFFFFFF) for i in range(2)]
 }$
 
 #include <stdio.h>
@@ -19,12 +19,12 @@ void print_msg() {
 }
 
 uint32_t complex_function0(uint32_t value) {
-  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in range(32) ])) }$
   return value;
 }
 
 uint32_t complex_function1(uint32_t value) {
-  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in xrange(32) ])) }$
+  ${ write(''.join([ ('value ^= %d;' % (random.randint(0, 0xFFFFFFFF),)) for _ in range(32) ])) }$
   return value;
 }
 
