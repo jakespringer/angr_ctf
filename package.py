@@ -2,7 +2,7 @@
 import datetime, os, sys, shutil
 
 def level_generate_module(level_name):
-  return __import__(level_name + '.generate')
+  return __import__('projects.{}.generate'.format(level_name), fromlist=[None])
 
 def package_level(level_name, output_base_directory, num_binaries, user, salt, extra_files):
   seed = level_name + user + salt
@@ -17,10 +17,10 @@ def package_level(level_name, output_base_directory, num_binaries, user, salt, e
   for i in range(num_binaries):
     suffix = suffix_format_str.format(i)
     binary_file_output = binary_file_output_prefix + suffix
-    generate_module.generate.generate([None, seed, binary_file_output])
+    generate_module.generate([None, seed, binary_file_output])
 
   for extra_file in extra_files:
-    extra_file_abs = os.path.join('.', level_name, extra_file)
+    extra_file_abs = os.path.join('projects', level_name, extra_file)
     extra_file_target = os.path.join(output_base_directory, extra_file)
     shutil.copyfile(extra_file_abs, extra_file_target)
   name_candidates = user.split('/')
