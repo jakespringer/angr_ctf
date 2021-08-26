@@ -20,7 +20,7 @@ def generate(argv):
   padding0 = random.randint(0, 2**26)
   padding1 = random.randint(0, 2**26)
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '05_angr_symbolic_memory.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description, padding0=padding0, padding1=padding1)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
