@@ -9,6 +9,7 @@ RUN apt install -y \
     tmux \
     tree \
     curl \
+    screen \
     git
 
 # Install GCC and multilibs to allow x86 compilation
