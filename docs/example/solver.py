@@ -1,6 +1,4 @@
 # TODO: FIXME
-#!/usr/bin/env python3
-
 import angr
 import sys
 import os

@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-
 import binascii, sys, random, os, tempfile
 from templite import Templite
 
