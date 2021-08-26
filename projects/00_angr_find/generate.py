@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import sys, random, os, tempfile
 from templite import Templite
 

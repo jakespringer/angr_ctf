@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import datetime, os, sys, shutil
 
 def level_generate_module(level_name):
