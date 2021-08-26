@@ -19,7 +19,7 @@ def generate(argv):
 
   userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   userdef = ''.join([random.choice(userdef_charset) for _ in range(16)])
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '09_angr_hooks.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description, userdef=userdef)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:

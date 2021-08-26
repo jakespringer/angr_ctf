@@ -17,7 +17,7 @@ def generate(argv):
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('unicode_escape')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library_so.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'mainlib.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
@@ -28,7 +28,7 @@ def generate(argv):
     os.system('rm 14_angr_shared_library.o')
     os.system('chmod -x ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so'))
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main.c.templite'), 'r').read()
   c_code = Templite(template).render()
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
