@@ -12,12 +12,12 @@ def generate(argv):
   output_file = argv[2]
 
   random.seed(seed)
-  
+
   description = ''
   with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
     description = desc_file.read().encode('unicode_escape')
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'xx_angr_segfault.c.templite'), 'r').read()
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main.c.templite'), 'r').read()
   c_code = Templite(template).render(description=description)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
