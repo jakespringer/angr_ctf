@@ -6,6 +6,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
 
@@ -14,10 +15,10 @@ def main(argv):
   # base + offset, where offset is their address in the file.
   # (!)
   base = 0x4000000
-  project = angr.Project(path_to_binary, load_options={ 
-    'main_opts' : { 
-      'custom_base_addr' : base 
-    } 
+  project = angr.Project(path_to_binary, load_options={
+      'main_opts': {
+          'custom_base_addr': base
+      }
   })
 
   # Initialize any needed values here; you will need at least one to pass to
@@ -27,7 +28,7 @@ def main(argv):
   # Begin the state at the beginning of the validate function, as if it was
   # called by the program. Determine the parameters needed to call validate and
   # replace 'parameters...' with bitvectors holding the values you wish to pass.
-  # Recall that 'claripy.BVV(value, size_in_bits)' constructs a bitvector 
+  # Recall that 'claripy.BVV(value, size_in_bits)' constructs a bitvector
   # initialized to a single value.
   # Remember to add the base value you specified at the beginning to the
   # function address!
@@ -55,14 +56,15 @@ def main(argv):
     solution_state = simulation.found[0]
 
     solution_state.add_constraints(solution_state.regs.eax != 0)
-  
+
     # Determine where the program places the return value, and constrain it so
     # that it is true. Then, solve for the solution and print it.
     # (!)
-    solution = solution_state.solver.eval(password,cast_to=bytes).decode()
+    solution = solution_state.solver.eval(password, cast_to=bytes).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

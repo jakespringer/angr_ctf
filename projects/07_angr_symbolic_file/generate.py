@@ -1,5 +1,9 @@
-import sys, random, os, tempfile
+import sys
+import random
+import os
+import tempfile
 from templite import Templite
+
 
 def generate(argv):
   if len(argv) != 3:
@@ -24,6 +28,7 @@ def generate(argv):
     temp.write(c_code)
     temp.seek(0)
     os.system('gcc -m32 -o ' + output_file + ' ' + temp.name)
+
 
 if __name__ == '__main__':
   generate(sys.argv)

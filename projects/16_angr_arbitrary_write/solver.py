@@ -34,6 +34,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -47,7 +48,7 @@ def main(argv):
     def run(self, format_string, ...???):
       # %u
       scanf0 = claripy.BVS('scanf0', ???)
-      
+
       # %20s
       scanf1 = claripy.BVS('scanf1', ???)
 
@@ -99,17 +100,17 @@ def main(argv):
     src_contents = state.memory.load(strncpy_src, ???)
 
     # Our goal is to determine if we can write arbitrary data to an arbitrary
-    # location. This means determining if the source contents are symbolic 
+    # location. This means determining if the source contents are symbolic
     # (arbitrary data) and the destination pointer is symbolic (arbitrary
     # destination).
     # (!)
     if state.se.symbolic(???) and ...:
-      # Use ltrace to determine the reference string. Decompile the binary to 
-      # determine the address of the buffer it checks the password against. Our 
+      # Use ltrace to determine the reference string. Decompile the binary to
+      # determine the address of the buffer it checks the password against. Our
       # goal is to overwrite that buffer to store the password.
       # (!)
-      password_string = ??? # :string
-      buffer_address = ??? # :integer, probably in hexadecimal
+      password_string = ???  # :string
+      buffer_address = ???  # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
@@ -129,14 +130,14 @@ def main(argv):
       # correspond with the length of password_string.
       # (!)
       does_src_hold_password = src_contents[???:???] == password_string
-      
+
       # Create an expression to check if the dest parameter can be set to
       # buffer_address. If this is true, then we have found our exploit!
       # (!)
       does_dest_equal_buffer_address = ???
 
       # In the previous challenge, we copied the state, added constraints to the
-      # copied state, and then determined if the constraints of the new state 
+      # copied state, and then determined if the constraints of the new state
       # were satisfiable. Since that pattern is so common, Angr implemented a
       # parameter 'extra_constraints' for the satisfiable function that does the
       # exact same thing:
@@ -145,7 +146,7 @@ def main(argv):
         return True
       else:
         return False
-    else: # not state.se.symbolic(???)
+    else:  # not state.se.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
@@ -166,6 +167,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

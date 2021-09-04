@@ -1,5 +1,10 @@
-import binascii, sys, random, os, tempfile
+import binascii
+import sys
+import random
+import os
+import tempfile
 from templite import Templite
+
 
 def generate(argv):
   if len(argv) != 3:
@@ -10,10 +15,10 @@ def generate(argv):
   output_file = argv[2]
 
   random.seed(seed)
-  
-  rodata_tail_modifier = 0x14 
-  rodata_parts = ''.join([ chr(random.randint(ord('A'), ord('Z'))) for _ in range(3) ] 
-    + [ chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier)) ])
+
+  rodata_tail_modifier = 0x14
+  rodata_parts = ''.join([chr(random.randint(ord('A'), ord('Z'))) for _ in range(3)]
+                         + [chr(random.randint(ord('A') - rodata_tail_modifier, ord('Z') - rodata_tail_modifier))])
   rodata_address = '0x' + binascii.hexlify(rodata_parts.encode('utf8')).decode('utf8')
 
   description = ''
@@ -26,7 +31,9 @@ def generate(argv):
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -m32 -fno-stack-protector -Wl,--section-start=.rodata=' + rodata_address + ' -o ' + output_file + ' ' + temp.name)
+    os.system('gcc -m32 -fno-stack-protector -Wl,--section-start=.rodata=' +
+              rodata_address + ' -o ' + output_file + ' ' + temp.name)
+
 
 if __name__ == '__main__':
   generate(sys.argv)

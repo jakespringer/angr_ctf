@@ -1,10 +1,11 @@
-# Angr doesn't currently support reading multiple things with scanf (Ex: 
+# Angr doesn't currently support reading multiple things with scanf (Ex:
 # scanf("%u %u).) You will have to tell the simulation engine to begin the
 # program after scanf is called and manually inject the symbols into registers.
 
 import angr
 import claripy
 import sys
+
 
 def main(argv):
   path_to_binary = argv[1]
@@ -19,7 +20,7 @@ def main(argv):
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
   # values into the binary.) The first parameter is just a name Angr uses
-  # to reference it. 
+  # to reference it.
   # You will have to construct multiple bitvectors. Copy the two lines below
   # and change the variable names. To figure out how many (and of what size)
   # you need, dissassemble the binary and determine the format parameter passed
@@ -73,6 +74,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

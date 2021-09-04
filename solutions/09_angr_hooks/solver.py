@@ -13,6 +13,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -32,32 +33,33 @@ def main(argv):
   # bytes are used to represent them in memory. This will be the skip length.
   # (!)
   instruction_to_skip_length = 5
+
   @project.hook(check_equals_called_address, length=instruction_to_skip_length)
   def skip_check_equals_(state):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
     # int check_equals_(char* to_check, int length) { ...
-    user_input_buffer_address = 0x804a054 # :integer, probably hexadecimal
+    user_input_buffer_address = 0x804a054  # :integer, probably hexadecimal
     user_input_buffer_length = 16
     user_input_string = state.memory.load(
-      user_input_buffer_address,
-      user_input_buffer_length
+        user_input_buffer_address,
+        user_input_buffer_length
     )
-    
+
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV'.encode() # :string
+    check_against_string = 'XKSPZSJKJYQCQXZV'.encode()  # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
     # However, since we are describing an equation to be used by z3 (not to be
-    # evaluated immediately), we cannot use Python if else syntax. Instead, we 
+    # evaluated immediately), we cannot use Python if else syntax. Instead, we
     # have to use claripy's built in function that deals with if statements.
     state.regs.eax = claripy.If(
-      user_input_string == check_against_string, 
-      claripy.BVV(1, 32), 
-      claripy.BVV(0, 32)
+        user_input_string == check_against_string,
+        claripy.BVV(1, 32),
+        claripy.BVV(0, 32)
     )
 
   simulation = project.factory.simgr(initial_state)
@@ -81,6 +83,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

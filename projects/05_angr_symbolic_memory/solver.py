@@ -2,6 +2,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -42,13 +43,14 @@ def main(argv):
     # Therefore, we will use eval, with named parameter cast_to=str
     # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.solver.eval(password0,cast_to=bytes).decode()
+    solution0 = solution_state.solver.eval(password0, cast_to=bytes).decode()
     ...
     solution = ???
 
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

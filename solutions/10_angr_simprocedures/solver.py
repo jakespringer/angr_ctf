@@ -1,13 +1,14 @@
 # This challenge is similar to the previous one. It operates under the same
-# premise that you will have to replace the check_equals_ function. In this 
-# case, however, check_equals_ is called so many times that it wouldn't make 
+# premise that you will have to replace the check_equals_ function. In this
+# case, however, check_equals_ is called so many times that it wouldn't make
 # sense to hook where each one was called. Instead, use a SimProcedure to write
-# your own check_equals_ implementation and then hook the check_equals_ symbol 
+# your own check_equals_ implementation and then hook the check_equals_ symbol
 # to replace all calls to scanf with a call to your SimProcedure.
 
 import angr
 import claripy
 import sys
+
 
 def main(argv):
   path_to_binary = argv[1]
@@ -50,31 +51,30 @@ def main(argv):
       user_input_buffer_address = to_check
       user_input_buffer_length = length
 
-      # Note the use of self.state to find the state of the system in a 
+      # Note the use of self.state to find the state of the system in a
       # SimProcedure.
       user_input_string = self.state.memory.load(
-        user_input_buffer_address,
-        user_input_buffer_length
+          user_input_buffer_address,
+          user_input_buffer_length
       )
 
       check_against_string = 'WQNDNKKWAWOLXBAC'.encode()
-      
+
       # Finally, instead of setting eax, we can use a Pythonic return statement
-      # to return the output of this function. 
+      # to return the output of this function.
       # Hint: Look at the previous solution.
       return claripy.If(
-        user_input_string == check_against_string,
-        claripy.BVV(1, 32),
-        claripy.BVV(0, 32)
+          user_input_string == check_against_string,
+          claripy.BVV(1, 32),
+          claripy.BVV(0, 32)
       )
 
-
-  # Hook the check_equals symbol. Angr automatically looks up the address 
+  # Hook the check_equals symbol. Angr automatically looks up the address
   # associated with the symbol. Alternatively, you can use 'hook' instead
-  # of 'hook_symbol' and specify the address of the function. To find the 
+  # of 'hook_symbol' and specify the address of the function. To find the
   # correct symbol, disassemble the binary.
   # (!)
-  check_equals_symbol = 'check_equals_WQNDNKKWAWOLXBAC' # :string
+  check_equals_symbol = 'check_equals_WQNDNKKWAWOLXBAC'  # :string
   project.hook_symbol(check_equals_symbol, ReplacementCheckEquals())
 
   simulation = project.factory.simgr(initial_state)
@@ -96,6 +96,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -2,6 +2,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -13,10 +14,10 @@ def main(argv):
   # Ensure that every byte of input is within the acceptable ASCII range (A..Z)
   for byte in input.chop(bits=8):
     initial_state.add_constraints(
-      claripy.And(
-        byte >= 'A',
-        byte <= 'Z'
-      )
+        claripy.And(
+            byte >= 'A',
+            byte <= 'Z'
+        )
     )
 
   # An under-constrained (unconstrained) state occurs when there are too many
@@ -47,14 +48,14 @@ def main(argv):
   # default, such as 'found' and 'not_needed'. You will see how these are used
   # later.
   simulation = project.factory.simgr(
-    initial_state,
-    save_unconstrained=True,
-    stashes={
-      'active' : [initial_state],
-      'unconstrained' : [],
-      'found' : [],
-      'not_needed' : []
-    }
+      initial_state,
+      save_unconstrained=True,
+      stashes={
+          'active': [initial_state],
+          'unconstrained': [],
+          'found': [],
+          'not_needed': []
+      }
   )
 
   # Explore will not work for us, since the method specified with the 'find'
@@ -86,7 +87,7 @@ def main(argv):
     for unconstrained_state in simulation.unconstrained:
       # Check if the unconstrained state is exploitable.
       # (!)
-      #if check_vulnerable(unconstrained_state):
+      # if check_vulnerable(unconstrained_state):
         # Found an exploit, exit the while loop and keep unconstrained_state as
         # the solution. The way the loops is currently set up, you should move
         # the exploitable unconstrained state to the 'found' stash.
@@ -120,11 +121,11 @@ def main(argv):
         return s is unconstrained_state
       simulation.move('unconstrained', 'found', filter_func=should_move)
 
-      #else: # unconstrained state is not exploitable
-        # Move the unconstrained_state that you tested that doesn't work to a
-        # different stash, perhaps 'not_needed'.
-        # Reimplement me.
-        # (!)
+      # else: # unconstrained state is not exploitable
+      # Move the unconstrained_state that you tested that doesn't work to a
+      # different stash, perhaps 'not_needed'.
+      # Reimplement me.
+      # (!)
       #  def should_move(s):
       #    return s is state
       #  simulation.move('active', 'not_needed', filter_func=should_move)
@@ -145,6 +146,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

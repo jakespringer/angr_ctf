@@ -11,6 +11,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -86,7 +87,7 @@ def main(argv):
   #   push   %eax
   #   push   $0x80489c3
   #   call   8048370 <__isoc99_scanf@plt>
-  #   add    $0x10,%esp 
+  #   add    $0x10,%esp
   # As you can see, the call to scanf looks like this:
   # scanf(  0x80489c3,   ebp - 0xc,   ebp - 0x10  )
   #      format_string    password0    password1
@@ -150,10 +151,11 @@ def main(argv):
     solution0 = solution_state.solver.eval(password0)
     solution1 = solution_state.solver.eval(password1)
 
-    solution = ' '.join(map(str, [ solution0, solution1 ]))
+    solution = ' '.join(map(str, [solution0, solution1]))
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

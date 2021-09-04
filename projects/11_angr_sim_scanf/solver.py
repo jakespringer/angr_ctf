@@ -5,6 +5,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -18,7 +19,7 @@ def main(argv):
       scanf0 = claripy.BVS('scanf0', ???)
       ...
 
-      # The scanf function writes user input to the buffers to which the 
+      # The scanf function writes user input to the buffers to which the
       # parameters point.
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
@@ -57,6 +58,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)
