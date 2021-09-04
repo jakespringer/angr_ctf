@@ -2,6 +2,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -74,8 +75,8 @@ def main(argv):
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password_string = 'DVTBOGZL'.encode() # :string
-      buffer_address = 0x4655544c # :integer, probably in hexadecimal
+      password_string = 'DVTBOGZL'.encode()  # :string
+      buffer_address = 0x4655544c  # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
@@ -102,7 +103,7 @@ def main(argv):
         return True
       else:
         return False
-    else: # not path.state.solver.symbolic(???)
+    else:  # not path.state.solver.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
@@ -119,10 +120,12 @@ def main(argv):
     solution_state = simulation.found[0]
 
     scanf0, scanf1 = solution_state.globals['solutions']
-    solution = str(solution_state.solver.eval(scanf0)) + ' ' + solution_state.solver.eval(scanf1, cast_to=bytes).decode()
+    solution = str(solution_state.solver.eval(scanf0)) + ' ' + \
+        solution_state.solver.eval(scanf1, cast_to=bytes).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

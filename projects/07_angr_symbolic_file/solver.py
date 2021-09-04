@@ -6,7 +6,7 @@
 # Problem description and general solution strategy:
 # The binary loads the password from a file using the fread function. If the
 # password is correct, it prints "Good Job." In order to keep consistency with
-# the other challenges, the input from the console is written to a file in the 
+# the other challenges, the input from the console is written to a file in the
 # ignore_me function. As the name suggests, ignore it, as it only exists to
 # maintain consistency with other challenges.
 # We want to:
@@ -21,6 +21,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -29,7 +30,7 @@ def main(argv):
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Specify some information needed to construct a simulated file. For this
-  # challenge, the filename is hardcoded, but in theory, it could be symbolic. 
+  # challenge, the filename is hardcoded, but in theory, it could be symbolic.
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
@@ -41,8 +42,8 @@ def main(argv):
   # another program (ex: /dev/urandom), or anything else. In our case, we want
   # to construct a block of memory where we store our symbolic variables for the
   # program to read. The following constructs the symbolic memory that will
-  # supply the stream of data to the Linux file. Also, to communicate with 
-  # Angr's constraint solving system, we need to associate the memory with the 
+  # supply the stream of data to the Linux file. Also, to communicate with
+  # Angr's constraint solving system, we need to associate the memory with the
   # initial_state.
   symbolic_file_backing_memory = angr.state_plugins.SimSymbolicMemory()
   symbolic_file_backing_memory.set_state(initial_state)
@@ -92,7 +93,7 @@ def main(argv):
 
   # We have already created the file and the memory that stores the data that
   # the file will stream to the program, but we now need to tell Angr where the
-  # file should appear to exist on the filesystem. This is a mapping between 
+  # file should appear to exist on the filesystem. This is a mapping between
   # strings representing the filenames and the angr.storage.SimFiles themselves. For
   # example, if hello_txt_file was a SimFile,
   # symbolic_filesystem = {
@@ -101,7 +102,7 @@ def main(argv):
   # would specify that any fopen('hello.txt', 'r') calls should stream data from
   # hello_txt_file.
   symbolic_filesystem = {
-    filename : password_file
+      filename: password_file
   }
   initial_state.posix.fs = symbolic_filesystem
 
@@ -120,11 +121,12 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = solution_state.solver.eval(password,cast_to=bytes).decode()
+    solution = solution_state.solver.eval(password, cast_to=bytes).decode()
 
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

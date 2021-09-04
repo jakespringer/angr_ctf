@@ -13,6 +13,7 @@
 import angr
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -46,6 +47,7 @@ def main(argv):
     print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -2,6 +2,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -30,7 +31,6 @@ def main(argv):
   password3_address = 0xa29fab8
   initial_state.memory.store(password3_address, password3)
 
-
   simulation = project.factory.simgr(initial_state)
 
   def is_successful(state):
@@ -50,16 +50,17 @@ def main(argv):
     # Therefore, we will use eval, with named parameter cast_to=str
     # which returns a string instead of an integer.
     # (!)
-    solution0 = solution_state.solver.eval(password0,cast_to=bytes).decode()
-    solution1 = solution_state.solver.eval(password1,cast_to=bytes).decode()
-    solution2 = solution_state.solver.eval(password2,cast_to=bytes).decode()
-    solution3 = solution_state.solver.eval(password3,cast_to=bytes).decode()
+    solution0 = solution_state.solver.eval(password0, cast_to=bytes).decode()
+    solution1 = solution_state.solver.eval(password1, cast_to=bytes).decode()
+    solution2 = solution_state.solver.eval(password2, cast_to=bytes).decode()
+    solution3 = solution_state.solver.eval(password3, cast_to=bytes).decode()
 
-    solution = ' '.join([ solution0, solution1, solution2, solution3 ])
+    solution = ' '.join([solution0, solution1, solution2, solution3])
 
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -4,13 +4,13 @@
 # #include <stdlib.h>
 # #include <string.h>
 # #include <stdint.h>
-# 
+#
 # // This will all be in .rodata
 # char msg[] = "${ description }$";
 # char* try_again = "Try again.";
 # char* good_job = "Good Job.";
 # uint32_t key;
-# 
+#
 # void print_msg() {
 #   printf("%s", msg);
 # }
@@ -18,23 +18,23 @@
 # uint32_t complex_function(uint32_t input) {
 #   ...
 # }
-# 
+#
 # struct overflow_me {
 #   char buffer[16];
 #   char* to_print;
-# }; 
-# 
+# };
+#
 # int main(int argc, char* argv[]) {
 #   struct overflow_me locals;
 #   locals.to_print = try_again;
-# 
+#
 #   print_msg();
-# 
+#
 #   printf("Enter the password: ");
 #   scanf("%u %20s", &key, locals.buffer);
 #
 #   key = complex_function(key);
-# 
+#
 #   switch (key) {
 #     case ?:
 #       puts(try_again);
@@ -45,16 +45,17 @@
 #     case ?:
 #       puts(locals.to_print);
 #       break;
-#     
+#
 #     ...
 #   }
-# 
+#
 #   return 0;
 # }
 
 import angr
 import claripy
 import sys
+
 
 def main(argv):
   path_to_binary = argv[1]
@@ -71,7 +72,7 @@ def main(argv):
     def run(self, format_string, param0, param1):
       # %u
       scanf0 = claripy.BVS('scanf0', 32)
-      
+
       # %20s
       scanf1 = claripy.BVS('scanf1', 20*8)
 
@@ -84,7 +85,7 @@ def main(argv):
         # without constraining the characters to the printable range of ASCII.
         # Even though the solution will technically work without this, it's more
         # difficult to enter in a solution that contains character you can't
-        # copy, paste, or type into your terminal or the web form that checks 
+        # copy, paste, or type into your terminal or the web form that checks
         # your solution.
         # (!)
         self.state.add_constraints(char >= 'A'.encode(), char <= 'Z'.encode())
@@ -124,7 +125,7 @@ def main(argv):
 
     # The following function takes a bitvector as a parameter and checks if it
     # can take on more than one value. While this does not necessary tell us we
-    # have found an exploitable path, it is a strong indication that the 
+    # have found an exploitable path, it is a strong indication that the
     # bitvector we checked may be controllable by the user.
     # Use it to determine if the pointer passed to puts is symbolic.
     # (!)
@@ -133,22 +134,22 @@ def main(argv):
       # out, and we will do so by attempting to constrain the puts parameter to
       # equal it. (Hint: look at .rodata).
       # (!)
-      good_job_string_address = 0x594e4257 # :integer, probably hexadecimal
+      good_job_string_address = 0x594e4257  # :integer, probably hexadecimal
 
       # Create an expression that will test if puts_parameter equals
       # good_job_string_address. If we add this as a constraint to our solver,
       # it will try and find an input to make this expression true.
       # (!)
-      is_vulnerable_expression = puts_parameter == good_job_string_address # :boolean bitvector expression
+      is_vulnerable_expression = puts_parameter == good_job_string_address  # :boolean bitvector expression
 
       # Have Angr evaluate the state to determine if all the constraints can
       # be met, including the one we specified above. If it can be satisfied,
       # we have found our exploit!
-      
+
       copied_state = state.copy()
 
       copied_state.add_constraints(is_vulnerable_expression)
-       
+
       if copied_state.satisfiable():
         # Before we return, let's add the constraint to the solver for real,
         # instead of just querying whether the constraint _could_ be added.
@@ -156,7 +157,7 @@ def main(argv):
         return True
       else:
         return False
-    else: # not path.state.solver.symbolic(???)
+    else:  # not path.state.solver.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
@@ -186,10 +187,12 @@ def main(argv):
     solution_state = simulation.found[0]
 
     (scanf0, scanf1) = solution_state.globals['solutions']
-    solution = str(solution_state.solver.eval(scanf0)) + ' ' + solution_state.solver.eval(scanf1,cast_to=bytes).decode()
+    solution = str(solution_state.solver.eval(scanf0)) + ' ' + \
+        solution_state.solver.eval(scanf1, cast_to=bytes).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

@@ -1,5 +1,9 @@
-import sys, random, os, tempfile
+import sys
+import random
+import os
+import tempfile
 from templite import Templite
+
 
 def generate(argv):
   if len(argv) != 3:
@@ -21,10 +25,13 @@ def generate(argv):
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -I' + os.path.dirname(os.path.realpath(__file__))  + ' -fno-stack-protector -fpic -m32 -c -o 14_angr_shared_library.o ' + temp.name)
-    os.system('gcc -shared -m32 -o ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so') + ' 14_angr_shared_library.o')
+    os.system('gcc -I' + os.path.dirname(os.path.realpath(__file__)) +
+              ' -fno-stack-protector -fpic -m32 -c -o 14_angr_shared_library.o ' + temp.name)
+    os.system('gcc -shared -m32 -o ' + os.path.join('/'.join(output_file.split('/')
+              [0:-1]), 'lib' + output_file.split('/')[-1] + '.so') + ' 14_angr_shared_library.o')
     os.system('rm 14_angr_shared_library.o')
-    os.system('chmod -x ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so'))
+    os.system('chmod -x ' + os.path.join('/'.join(output_file.split('/')
+              [0:-1]), 'lib' + output_file.split('/')[-1] + '.so'))
 
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main.c.templite'), 'r').read()
   c_code = Templite(template).render()
@@ -32,7 +39,9 @@ def generate(argv):
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
     temp.seek(0)
-    os.system('gcc -m32 -I . -L ' + '/'.join(output_file.split('/')[0:-1]) + ' -o ' + output_file + ' ' + temp.name + ' -l' + output_file.split('/')[-1])
+    os.system('gcc -m32 -I . -L ' + '/'.join(output_file.split('/')
+              [0:-1]) + ' -o ' + output_file + ' ' + temp.name + ' -l' + output_file.split('/')[-1])
+
 
 if __name__ == '__main__':
   generate(sys.argv)

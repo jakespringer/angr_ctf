@@ -6,7 +6,7 @@
 # Problem description and general solution strategy:
 # The binary loads the password from a file using the fread function. If the
 # password is correct, it prints "Good Job." In order to keep consistency with
-# the other challenges, the input from the console is written to a file in the 
+# the other challenges, the input from the console is written to a file in the
 # ignore_me function. As the name suggests, ignore it, as it only exists to
 # maintain consistency with other challenges.
 # We want to:
@@ -21,6 +21,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -29,7 +30,7 @@ def main(argv):
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Specify some information needed to construct a simulated file. For this
-  # challenge, the filename is hardcoded, but in theory, it could be symbolic. 
+  # challenge, the filename is hardcoded, but in theory, it could be symbolic.
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
@@ -68,7 +69,7 @@ def main(argv):
   # Set the content parameter to our BVS instance that holds the symbolic data.
   # (!)
   password_file = angr.storage.SimFile(filename, content=password)
-  
+
   # Add the symbolic file we created to the symbolic filesystem.
   initial_state.fs.insert(filename, password_file)
 
@@ -87,11 +88,12 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution = solution_state.solver.eval(password,cast_to=bytes).decode()
+    solution = solution_state.solver.eval(password, cast_to=bytes).decode()
 
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

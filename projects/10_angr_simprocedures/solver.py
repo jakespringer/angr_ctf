@@ -1,16 +1,16 @@
 # This challenge is similar to the previous one. It operates under the same
-# premise that you will have to replace the check_equals_ function. In this 
-# case, however, check_equals_ is called so many times that it wouldn't make 
+# premise that you will have to replace the check_equals_ function. In this
+# case, however, check_equals_ is called so many times that it wouldn't make
 # sense to hook where each one was called. Instead, use a SimProcedure to write
-# your own check_equals_ implementation and then hook the check_equals_ symbol 
+# your own check_equals_ implementation and then hook the check_equals_ symbol
 # to replace all calls to scanf with a call to your SimProcedure.
 #
-# You may be thinking: 
+# You may be thinking:
 #   Why can't I just use hooks? The function is called many times, but if I hook
-#   the address of the function itself (rather than the addresses where it is 
+#   the address of the function itself (rather than the addresses where it is
 #   called), I can replace its behavior everywhere. Furthermore, I can get the
 #   parameters by reading them off the stack (with memory.load(regs.esp + xx)),
-#   and return a value by simply setting eax! Since I know the length of the 
+#   and return a value by simply setting eax! Since I know the length of the
 #   function in bytes, I can return from the hook just before the 'ret'
 #   instruction is called, which will allow the program to jump back to where it
 #   was before it called my hook.
@@ -24,6 +24,7 @@
 import angr
 import claripy
 import sys
+
 
 def main(argv):
   path_to_binary = argv[1]
@@ -66,27 +67,26 @@ def main(argv):
       user_input_buffer_address = ???
       user_input_buffer_length = ???
 
-      # Note the use of self.state to find the state of the system in a 
+      # Note the use of self.state to find the state of the system in a
       # SimProcedure.
       user_input_string = self.state.memory.load(
-        user_input_buffer_address,
-        user_input_buffer_length
+          user_input_buffer_address,
+          user_input_buffer_length
       )
 
       check_against_string = ???
-      
+
       # Finally, instead of setting eax, we can use a Pythonic return statement
-      # to return the output of this function. 
+      # to return the output of this function.
       # Hint: Look at the previous solution.
       return claripy.If(???, ???, ???)
 
-
-  # Hook the check_equals symbol. Angr automatically looks up the address 
+  # Hook the check_equals symbol. Angr automatically looks up the address
   # associated with the symbol. Alternatively, you can use 'hook' instead
-  # of 'hook_symbol' and specify the address of the function. To find the 
+  # of 'hook_symbol' and specify the address of the function. To find the
   # correct symbol, disassemble the binary.
   # (!)
-  check_equals_symbol = ??? # :string
+  check_equals_symbol = ???  # :string
   project.hook_symbol(check_equals_symbol, ReplacementCheckEquals())
 
   simulation = project.factory.simgr(initial_state)
@@ -108,6 +108,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)
