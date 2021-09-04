@@ -25,6 +25,7 @@
 import angr
 import sys
 
+
 def main(argv):
   # Create an Angr project.
   # If you want to be able to point to the binary from the command line, you can
@@ -45,8 +46,8 @@ def main(argv):
   simulation = project.factory.simgr(initial_state)
 
   # Explore the binary to attempt to find the address that prints "Good Job."
-  # You will have to find the address you want to find and insert it here. 
-  # This function will keep executing until it either finds a solution or it 
+  # You will have to find the address you want to find and insert it here.
+  # This function will keep executing until it either finds a solution or it
   # has explored every possible path through the executable.
   # (!)
   print_good_address = ???  # :integer (probably in hexadecimal)
@@ -61,13 +62,14 @@ def main(argv):
     # target address.
     solution_state = simulation.found[0]
 
-    # Print the string that Angr wrote to stdin to follow solution_state. This 
+    # Print the string that Angr wrote to stdin to follow solution_state. This
     # is our solution.
     print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
   else:
     # If Angr could not find a path that reaches print_good_address, throw an
     # error. Perhaps you mistyped the print_good_address?
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

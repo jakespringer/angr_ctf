@@ -5,6 +5,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -18,7 +19,7 @@ def main(argv):
       scanf0 = claripy.BVS('scanf0', 32)
       scanf1 = claripy.BVS('scanf1', 32)
 
-      # The scanf function writes user input to the buffers to which the 
+      # The scanf function writes user input to the buffers to which the
       # parameters point.
       # Hint: scanf0_address is passed as a parameter, isn't it?
       scanf0_address = param0
@@ -58,6 +59,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

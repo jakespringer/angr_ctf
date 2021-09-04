@@ -27,11 +27,12 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = ??? 
+  initial_state = ???
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
@@ -45,9 +46,10 @@ def main(argv):
   # solution. We will later be able to move states from the unconstrained list
   # to the simulation.found list. Alternatively, you can create a boolean value
   # that serves the same purpose.
-  
+
   # We will set this to the exploitable state once we find it.
   solution_state = None
+
   def has_found_solution():
     return solution_state is not None
 
@@ -105,6 +107,7 @@ def main(argv):
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)

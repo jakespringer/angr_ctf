@@ -2,6 +2,7 @@ import angr
 import claripy
 import sys
 
+
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
@@ -52,14 +53,15 @@ def main(argv):
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution0 = solution_state.solver.eval(password0,cast_to=bytes).decode()
-    solution1 = solution_state.solver.eval(password1,cast_to=bytes).decode()
+    solution0 = solution_state.solver.eval(password0, cast_to=bytes).decode()
+    solution1 = solution_state.solver.eval(password1, cast_to=bytes).decode()
 
-    solution = ' '.join([ solution0, solution1 ])
+    solution = ' '.join([solution0, solution1])
 
     print(solution)
   else:
     raise Exception('Could not find the solution')
+
 
 if __name__ == '__main__':
   main(sys.argv)
