@@ -10,8 +10,9 @@
 # as a function that takes a state and returns True if you have found what you
 # are looking for, and False otherwise.
 
-import angr
 import sys
+
+import angr
 
 
 def main(argv):

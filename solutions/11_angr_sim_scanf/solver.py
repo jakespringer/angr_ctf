@@ -1,9 +1,10 @@
 # This time, the solution involves simply replacing scanf with our own version,
 # since Angr does not support requesting multiple parameters with scanf.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

@@ -43,9 +43,10 @@
 # be assured that if the program can solve for an input that makes them equal,
 # the input will be the correct password.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

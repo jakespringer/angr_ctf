@@ -5,9 +5,10 @@
 # your own check_equals_ implementation and then hook the check_equals_ symbol
 # to replace all calls to scanf with a call to your SimProcedure.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

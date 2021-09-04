@@ -30,9 +30,10 @@
 # equal to the reference_string and the destination pointer to be equal to the
 # secure_buffer.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

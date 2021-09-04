@@ -1,8 +1,9 @@
 import binascii
-import sys
-import random
 import os
+import random
+import sys
 import tempfile
+
 from templite import Templite
 
 

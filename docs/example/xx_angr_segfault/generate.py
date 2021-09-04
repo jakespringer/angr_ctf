@@ -1,5 +1,10 @@
-import sys, random, os, tempfile
+import os
+import random
+import sys
+import tempfile
+
 from templite import Templite
+
 
 def generate(argv):
   if len(argv) != 3:

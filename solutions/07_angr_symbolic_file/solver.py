@@ -17,9 +17,10 @@
 #    and propogated through the program.
 # 4. Solve for the symbolic input to determine the password.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

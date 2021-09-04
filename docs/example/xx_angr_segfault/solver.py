@@ -1,6 +1,8 @@
+import sys
+
 import angr
 import claripy
-import sys
+
 
 def main(argv):
   path_to_binary = argv[1]

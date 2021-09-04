@@ -9,9 +9,10 @@
 # replacing the call to check_equals_ with our own version, using a hook, since
 # check_equals_ will run too slowly otherwise.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

@@ -2,9 +2,10 @@
 # scanf("%u %u).) You will have to tell the simulation engine to begin the
 # program after scanf is called and manually inject the symbols into registers.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

@@ -2,9 +2,10 @@
 # either true (1) or false (0). The binary calls this function. If it returns
 # true, the program prints "Good Job." otherwise, it prints "Try again."
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

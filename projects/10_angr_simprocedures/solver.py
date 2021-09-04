@@ -21,9 +21,10 @@
 # As a bonus, SimProcedures allow you to specify custom calling conventions, but
 # unfortunately it is not covered in this CTF.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

@@ -26,8 +26,9 @@
 # There are many more, see:
 # https://github.com/angr/angr/tree/master/angr/procedures/libc
 
-import angr
 import sys
+
+import angr
 
 
 def main(argv):

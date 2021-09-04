@@ -1,6 +1,7 @@
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

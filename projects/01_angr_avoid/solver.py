@@ -1,5 +1,6 @@
-import angr
 import sys
+
+import angr
 
 
 def main(argv):

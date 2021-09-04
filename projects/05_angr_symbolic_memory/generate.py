@@ -1,8 +1,8 @@
-import sys
-import random
 import os
+import random
+import sys
 import tempfile
-import string
+
 from templite import Templite
 
 

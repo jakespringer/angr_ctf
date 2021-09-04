@@ -6,9 +6,10 @@
 # lib14_angr_shared_library.so, not the executable. This level is intended to
 # teach how to analyse binary formats that are not typical executables.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

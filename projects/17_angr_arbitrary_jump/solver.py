@@ -23,9 +23,10 @@
 #    symbolic.
 # 3. Constrain eip to equal the address of the "print_good" function.
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

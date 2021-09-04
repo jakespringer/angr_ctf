@@ -7,9 +7,10 @@
 #            the binary yourself to determine the correct addresses!
 #   ! ! !
 
+import sys
+
 import angr
 import claripy
-import sys
 
 
 def main(argv):

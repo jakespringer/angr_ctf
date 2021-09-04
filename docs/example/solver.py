@@ -1,7 +1,9 @@
 # TODO: FIXME
-import angr
-import sys
 import os
+import sys
+
+import angr
+
 
 def main():
   proj = angr.Project(sys.argv[1])

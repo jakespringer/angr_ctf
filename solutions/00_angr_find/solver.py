@@ -22,8 +22,9 @@
 # comment documents a part of the code that needs to be changed, it will be
 # marked with an exclamation point at the end, on a separate line (!).
 
-import angr
 import sys
+
+import angr
 
 
 def main(argv):
