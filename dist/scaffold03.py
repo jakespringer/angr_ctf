@@ -70,7 +70,7 @@ def main(argv):
     # the full string. Pay attention to the order of the integers, and the
     # expected base (decimal, octal, hexadecimal, etc).
     solution = ???  # :string
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

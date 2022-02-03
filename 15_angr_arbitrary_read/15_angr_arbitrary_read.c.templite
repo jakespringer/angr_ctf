@@ -43,7 +43,7 @@ int main(int argc, char* argv[]) {
   ${
   hit_statement = 'puts(locals.to_print);'
   miss_statement = 'puts(try_again);'
-  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(xrange(2**26-1), 2))
+  expanded_switch_statement('key', miss_statement, hit_statement, random.sample(range(2**26-1), 2))
   }$
 
   return 0;

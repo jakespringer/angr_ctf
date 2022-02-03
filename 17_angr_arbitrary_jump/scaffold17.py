@@ -102,7 +102,7 @@ def main(argv):
     ...
 
     solution = ???
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
