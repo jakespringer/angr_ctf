@@ -14,7 +14,7 @@ def main(argv):
   # start_address will specify where the symbolic execution engine should begin.
   # Note that we are using blank_state, not entry_state.
   # (!)
-  start_address = 0x80488d1  # :integer (probably hexadecimal)
+  start_address = 0x8048918  # :integer (probably hexadecimal)
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
