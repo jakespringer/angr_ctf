@@ -13,8 +13,8 @@ def main(argv):
   # everything you will need to look at is near the beginning of the address 
   # space.
   # (!)
-  print_good_address = 0x080485e5
-  will_not_succeed_address = 0x080485a8
+  print_good_address = 0x80485f7
+  will_not_succeed_address = 0x80485bf
   simulation.explore(find=print_good_address, avoid=will_not_succeed_address)
 
   if simulation.found:
