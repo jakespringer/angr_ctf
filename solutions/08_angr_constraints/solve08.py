@@ -51,9 +51,12 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x804862a
-  initial_state = project.factory.blank_state(addr=start_address)
-
+  start_address = 0x804863c
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
   password = claripy.BVS('password', 8*16)
 
   password_address = 0x804a050
@@ -64,7 +67,7 @@ def main(argv):
   # Angr will not be able to reach the point at which the binary prints out
   # 'Good Job.'. We cannot use that as the target anymore.
   # (!)
-  address_to_check_constraint = 0x8048671
+  address_to_check_constraint = 0x8048683
   simulation.explore(find=address_to_check_constraint)
 
   if simulation.found:
@@ -82,7 +85,7 @@ def main(argv):
 
     # Constrain the system to find an input that will make
     # constrained_parameter_bitvector equal the desired value.
-    constrained_parameter_desired_value = 'BWYRUBQCMVSBRGFU'.encode() # :string
+    constrained_parameter_desired_value = 'KLXNXIBRIMHLJQXZ'.encode() # :string
     solution_state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
     # Solve for the constrained_parameter_bitvector.
