@@ -25,7 +25,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x80488db
+  start_address = 0x80488bc
   initial_state = project.factory.blank_state(addr=start_address)
 
   # Specify some information needed to construct a simulated file. For this
@@ -33,7 +33,7 @@ def main(argv):
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = 'WCEXPXBW.txt'  # :string
+  filename = 'ICDRVCAC.txt'  # :string
   symbolic_file_size_bytes = 64
 
   # Construct a bitvector for the password and then store it in the file's
