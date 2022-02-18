@@ -19,11 +19,13 @@ def main(argv):
 
   # Since Angr can handle the initial call to scanf, we can start from the
   # beginning.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS})
 
   # Hook the address of where check_equals_ is called.
   # (!)
-  check_equals_called_address = 0x80486b8
+  check_equals_called_address = 0x80486ca
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
@@ -47,7 +49,7 @@ def main(argv):
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV'.encode() # :string
+    check_against_string = 'UESEBDDUBNSKSGDJ'.encode() # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
