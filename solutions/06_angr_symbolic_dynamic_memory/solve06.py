@@ -7,7 +7,11 @@ def main(argv):
   project = angr.Project(path_to_binary)
 
   start_address = 0x80486af
-  initial_state = project.factory.blank_state(addr=start_address)
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # The binary is calling scanf("%8s %8s").
   # (!)
@@ -23,13 +27,14 @@ def main(argv):
   # Note: by default, Angr stores integers in memory with big-endianness. To
   # specify to use the endianness of your architecture, use the parameter
   # endness=project.arch.memory_endness. On x86, this is little-endian.
+  # size=number of bytes being stored (e.g. 32-bit address = 4 bytes)
   # (!)
   fake_heap_address0 = 0x4444444
   pointer_to_malloc_memory_address0 = 0x9c0a48c
-  initial_state.memory.store(pointer_to_malloc_memory_address0, fake_heap_address0, endness=project.arch.memory_endness)
+  initial_state.memory.store(pointer_to_malloc_memory_address0, fake_heap_address0, endness=project.arch.memory_endness, size=4)
   fake_heap_address1 = 0x4444454
   pointer_to_malloc_memory_address1 = 0x9c0a494
-  initial_state.memory.store(pointer_to_malloc_memory_address1, fake_heap_address1, endness=project.arch.memory_endness)
+  initial_state.memory.store(pointer_to_malloc_memory_address1, fake_heap_address1, endness=project.arch.memory_endness, size=4)
 
   # Store our symbolic values at our fake_heap_address. Look at the binary to
   # determine the offsets from the fake_heap_address where scanf writes.

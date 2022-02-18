@@ -16,7 +16,10 @@ import sys
 def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
   simulation = project.factory.simgr(initial_state)
 
   # Define a function that checks if you have found the state you are looking

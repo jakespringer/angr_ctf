@@ -39,8 +39,12 @@ def main(argv):
   # start?
   # (!)
   start_address = 0x80486ae
-  initial_state = project.factory.blank_state(addr=start_address)
-
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
+  
   # We are jumping into the middle of a function! Therefore, we need to account
   # for how the function constructs the stack. The second instruction of the
   # function is:

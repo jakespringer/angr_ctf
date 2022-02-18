@@ -7,7 +7,11 @@ def main(argv):
   project = angr.Project(path_to_binary)
 
   start_address = 0x8048618
-  initial_state = project.factory.blank_state(addr=start_address)
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # The binary is calling scanf("%8s %8s %8s %8s").
   # (!)
