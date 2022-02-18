@@ -38,7 +38,7 @@ def main(argv):
   # Given that we are not calling scanf in our Angr simulation, where should we
   # start?
   # (!)
-  start_address = 0x8048697
+  start_address = 0x80486ae
   initial_state = project.factory.blank_state(addr=start_address)
 
   # We are jumping into the middle of a function! Therefore, we need to account
