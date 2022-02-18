@@ -9,7 +9,10 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   class ReplacementScanf(angr.SimProcedure):
     # Finish the parameters to the scanf function. Hint: 'scanf("%u %u", ...)'.
