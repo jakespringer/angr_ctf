@@ -6,7 +6,7 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x804869e
+  start_address = 0x80486af
   initial_state = project.factory.blank_state(addr=start_address)
 
   # The binary is calling scanf("%8s %8s").
@@ -25,10 +25,10 @@ def main(argv):
   # endness=project.arch.memory_endness. On x86, this is little-endian.
   # (!)
   fake_heap_address0 = 0x4444444
-  pointer_to_malloc_memory_address0 = 0xa79a118
+  pointer_to_malloc_memory_address0 = 0x9c0a48c
   initial_state.memory.store(pointer_to_malloc_memory_address0, fake_heap_address0, endness=project.arch.memory_endness)
   fake_heap_address1 = 0x4444454
-  pointer_to_malloc_memory_address1 = 0xa79a120
+  pointer_to_malloc_memory_address1 = 0x9c0a494
   initial_state.memory.store(pointer_to_malloc_memory_address1, fake_heap_address1, endness=project.arch.memory_endness)
 
   # Store our symbolic values at our fake_heap_address. Look at the binary to
