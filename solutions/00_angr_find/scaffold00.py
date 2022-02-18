@@ -63,7 +63,7 @@ def main(argv):
 
     # Print the string that Angr wrote to stdin to follow solution_state. This 
     # is our solution.
-    print solution_state.posix.dumps(sys.stdin.fileno())
+    print(solution_state.posix.dumps(sys.stdin.fileno()))
   else:
     # If Angr could not find a path that reaches print_good_address, throw an
     # error. Perhaps you mistyped the print_good_address?

@@ -87,7 +87,7 @@ def main(argv):
     # Since we are allowing Angr to handle the input, retrieve it by printing
     # the contents of stdin. Use one of the early levels as a reference.
     solution = ???
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

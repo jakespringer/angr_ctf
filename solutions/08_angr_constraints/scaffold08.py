@@ -88,7 +88,7 @@ def main(argv):
     # Solve for the constrained_parameter_bitvector.
     solution = ???
 
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

@@ -136,22 +136,22 @@ def main(argv):
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return 'Good Job.'.encode() in stdout_output
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return 'Try again.'.encode() in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
   if simulation.found:
     solution_state = simulation.found[0]
 
-    solution0 = solution_state.se.eval(password0)
-    solution1 = solution_state.se.eval(password1)
+    solution0 = solution_state.solver.eval(password0)
+    solution1 = solution_state.solver.eval(password1)
 
     solution = ' '.join(map(str, [ solution0, solution1 ]))
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

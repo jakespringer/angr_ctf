@@ -47,7 +47,7 @@ def main(argv):
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV' # :string
+    check_against_string = 'XKSPZSJKJYQCQXZV'.encode() # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
@@ -64,11 +64,11 @@ def main(argv):
 
   def is_successful(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Good Job.' in stdout_output
+    return 'Good Job.'.encode() in stdout_output
 
   def should_abort(state):
     stdout_output = state.posix.dumps(sys.stdout.fileno())
-    return 'Try again.' in stdout_output
+    return 'Try again.'.encode() in stdout_output
 
   simulation.explore(find=is_successful, avoid=should_abort)
 
@@ -77,8 +77,8 @@ def main(argv):
 
     # Since we are allowing Angr to handle the input, retrieve it by printing
     # the contents of stdin. Use one of the early levels as a reference.
-    solution = solution_state.posix.dumps(sys.stdin.fileno())
-    print solution
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 

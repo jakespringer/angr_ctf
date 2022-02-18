@@ -61,7 +61,7 @@ def main(argv):
     # that it is true. Then, solve for the solution and print it.
     # (!)
     solution = ???
-    print solution
+    print(solution)
   else:
     raise Exception('Could not find the solution')
 
