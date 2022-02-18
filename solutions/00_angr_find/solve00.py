@@ -49,7 +49,7 @@ def main(argv):
   # This function will keep executing until it either finds a solution or it 
   # has explored every possible path through the executable.
   # (!)
-  print_good_address = 0x804867d  # :integer (probably in hexadecimal)
+  print_good_address = 0x804868c  # :integer (probably in hexadecimal)
   simulation.explore(find=print_good_address)
 
   # Check that we have found a solution. The simulation.explore() method will
