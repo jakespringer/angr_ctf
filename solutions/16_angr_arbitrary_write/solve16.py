@@ -8,7 +8,10 @@ def main(argv):
 
   # You can either use a blank state or an entry state; just make sure to start
   # at the beginning of the program.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   class ReplacementScanf(angr.SimProcedure):
     # Hint: scanf("%u %20s")
@@ -74,8 +77,8 @@ def main(argv):
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password_string = 'DVTBOGZL'.encode() # :string
-      buffer_address = 0x4655544c # :integer, probably in hexadecimal
+      password_string = 'SMLDYJAP'.encode() # :string
+      buffer_address = 0x44534954 # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
