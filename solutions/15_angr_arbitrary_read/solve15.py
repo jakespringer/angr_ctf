@@ -63,7 +63,10 @@ def main(argv):
   # You can either use a blank state or an entry state; just make sure to start
   # at the beginning of the program.
   # (!)
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Again, scanf needs to be replaced.
   class ReplacementScanf(angr.SimProcedure):
@@ -133,7 +136,7 @@ def main(argv):
       # out, and we will do so by attempting to constrain the puts parameter to
       # equal it. (Hint: look at .rodata).
       # (!)
-      good_job_string_address = 0x594e4257 # :integer, probably hexadecimal
+      good_job_string_address = 0x58434353 # :integer, probably hexadecimal
 
       # Create an expression that will test if puts_parameter equals
       # good_job_string_address. If we add this as a constraint to our solver,
