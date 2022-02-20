@@ -7,9 +7,16 @@ def main(argv):
   project = angr.Project(path_to_binary)
 
   # Make a SimFile of decent size for input
-  input = claripy.BVS("input", 200 * 8)
+  input = claripy.BVS("input", 100 * 8)
 
-  initial_state = project.factory.entry_state(stdin=input)
+  initial_state = project.factory.entry_state(
+          stdin=input,
+          add_options = {
+              angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+              angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS
+              }
+          )
+
   # Ensure that every byte of input is within the acceptable ASCII range (A..Z)
   for byte in input.chop(bits=8):
     initial_state.add_constraints(
@@ -139,7 +146,7 @@ def main(argv):
     # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
-    solution_state.add_constraints(solution_state.regs.eip == 0x4d4c4749)
+    solution_state.add_constraints(solution_state.regs.eip == 0x425a4e50)
 
     solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
     print(solution)
