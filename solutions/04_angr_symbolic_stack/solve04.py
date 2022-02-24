@@ -44,7 +44,7 @@ def main(argv):
     add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
                     angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
   )
-  
+
   # We are jumping into the middle of a function! Therefore, we need to account
   # for how the function constructs the stack. The second instruction of the
   # function is:
@@ -71,7 +71,7 @@ def main(argv):
   # start by initializing ebp in the exact same way the program does.
   initial_state.regs.ebp = initial_state.regs.esp
 
-  # scanf("%u %u") needs to be replaced by injecting four bitvectors. The
+  # scanf("%u %u") needs to be replaced by injecting two bitvectors. The
   # reason for this is that Angr does not (currently) automatically inject
   # symbols if scanf has more than one input parameter. This means Angr can
   # handle 'scanf("%u")', but not 'scanf("%u %u")'.

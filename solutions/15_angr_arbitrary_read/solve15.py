@@ -1,3 +1,26 @@
+# This binary takes both an integer and a string as a parameter. A certain
+# integer input causes the program to reach a buffer overflow with which we can
+# read a string from an arbitrary memory location. Our goal is to use Angr to
+# search the program for this buffer overflow and then automatically generate
+# an exploit to read the string "Good Job."
+#
+# What is the point of reading the string "Good Job."?
+# This CTF attempts to replicate a simplified version of a possible vulnerability
+# where a user can exploit the program to print a secret, such as a password or
+# a private key. In order to keep consistency with the other challenges and to
+# simplify the challenge, the goal of this program will be to print "Good Job."
+# instead.
+#
+# The general strategy for crafting this script will be to:
+# 1) Search for calls of the 'puts' function, which will eventually be exploited
+#    to print out "Good Job."
+# 2) Determine if the first parameter of 'puts', a pointer to the string to be
+#    printed, can be controlled by the user to be set to the location of the
+#    "Good Job." string.
+# 3) Solve for the input that prints "Good Job."
+#
+# Note: The script is structured to implement step #2 before #1.
+
 # Some of the source code for this challenge:
 #
 # #include <stdio.h>
@@ -43,6 +66,9 @@
 #     ...
 #
 #     case ?:
+#       // Our goal is to trick this call to puts to print the "secret
+#       // password" (which happens, in our case, to be the string
+#       // "Good Job.")
 #       puts(locals.to_print);
 #       break;
 #     
@@ -108,6 +134,11 @@ def main(argv):
   # determine if the pointer passed to puts is controllable by the user, such
   # that we can rewrite it to point to the string "Good Job."
   def check_puts(state):
+    # Recall that puts takes one parameter, a pointer to the string it will
+    # print. If we load that pointer from memory, we can analyse it to determine
+    # if it can be controlled by the user input in order to point it to the
+    # location of the "Good Job." string.
+    #
     # Treat the implementation of this function as if puts was just called.
     # The stack, registers, memory, etc should be set up as if the x86 call
     # instruction was just invoked (but, of course, the function hasn't copied
@@ -122,36 +153,49 @@ def main(argv):
     # esp + 2 -> |     return     |
     # esp + 1 -> |     address    |
     #     esp -> \----------------/
+    #
+    # Hint: Look at level 08, 09, or 10 to review how to load a value from a
+    # memory address. Remember to use the correct endianness in the future when
+    # loading integers; it has been included for you here.
     # (!)
     puts_parameter = state.memory.load(state.regs.esp + 4, 4, endness=project.arch.memory_endness)
 
     # The following function takes a bitvector as a parameter and checks if it
     # can take on more than one value. While this does not necessary tell us we
-    # have found an exploitable path, it is a strong indication that the 
+    # have found an exploitable state, it is a strong indication that the 
     # bitvector we checked may be controllable by the user.
     # Use it to determine if the pointer passed to puts is symbolic.
     # (!)
     if state.solver.symbolic(puts_parameter):
-      # Determine the location of the "Good Job.\n" string. We want to print it
+      # Determine the location of the "Good Job." string. We want to print it
       # out, and we will do so by attempting to constrain the puts parameter to
-      # equal it. (Hint: look at .rodata).
+      # equal it. Hint: use 'objdump -s <binary>' to look for the string's
+      # address in .rodata.
       # (!)
       good_job_string_address = 0x58434353 # :integer, probably hexadecimal
 
       # Create an expression that will test if puts_parameter equals
       # good_job_string_address. If we add this as a constraint to our solver,
-      # it will try and find an input to make this expression true.
+      # it will try and find an input to make this expression true. Take a look
+      # at level 08 to remind yourself of the syntax of this.
       # (!)
       is_vulnerable_expression = puts_parameter == good_job_string_address # :boolean bitvector expression
 
       # Have Angr evaluate the state to determine if all the constraints can
       # be met, including the one we specified above. If it can be satisfied,
       # we have found our exploit!
-      
+      #
+      # When doing this, however, we do not want to edit our state in case we
+      # have not yet found what we are looking for. To test if our expression
+      # is satisfiable without editing the original, we need to clone the state.
       copied_state = state.copy()
 
+      # We can now play around with the copied state without changing the
+      # original. We need to add our vulnerable expression as a state to test it.
+      # Look at level 08 and compare this call to how it is called there.
       copied_state.add_constraints(is_vulnerable_expression)
-       
+
+      # Finally, we test if we can satisfy the constraints of the state.
       if copied_state.satisfiable():
         # Before we return, let's add the constraint to the solver for real,
         # instead of just querying whether the constraint _could_ be added.
@@ -159,11 +203,15 @@ def main(argv):
         return True
       else:
         return False
-    else: # not path.state.solver.symbolic(???)
+    else: # not state.solver.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
 
+  # In order to determine if we have found a vulnerable call to 'puts',  we need
+  # to run the function check_puts (defined above) whenever we reach a 'puts'
+  # call. To do this, we will look for the place where the instruction pointer,
+  # state.addr, is equal to the beginning of the puts function.
   def is_successful(state):
     # We are looking for puts. Check that the address is at the (very) beginning
     # of the puts function. Warning: while, in theory, you could look for
@@ -179,10 +227,6 @@ def main(argv):
       # We have not yet found a call to puts; we should continue!
       return False
 
-  # Determine the situation in which you should avoid. Optionally, you can
-  # remove the avoid parameter, although it may cause the program to run more
-  # slowly.
-  # (!)
   simulation.explore(find=is_successful)
 
   if simulation.found:

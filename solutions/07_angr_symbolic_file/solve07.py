@@ -38,7 +38,7 @@ def main(argv):
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
   filename = 'ICDRVCAC.txt'  # :string
-  symbolic_file_size_bytes = 64
+  symbolic_file_size_bytes = 8
 
   # Construct a bitvector for the password and then store it in the file's
   # backing memory. For example, imagine a simple file, 'hello.txt':

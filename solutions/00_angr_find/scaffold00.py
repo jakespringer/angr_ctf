@@ -38,7 +38,10 @@ def main(argv):
   # Tell Angr where to start executing (should it start from the main()
   # function or somewhere else?) For now, use the entry_state function
   # to instruct Angr to start from the main() function.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Create a simulation manager initialized with the starting state. It provides
   # a number of useful tools to search and execute the binary.
@@ -63,7 +66,7 @@ def main(argv):
 
     # Print the string that Angr wrote to stdin to follow solution_state. This 
     # is our solution.
-    print(solution_state.posix.dumps(sys.stdin.fileno()))
+    print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
   else:
     # If Angr could not find a path that reaches print_good_address, throw an
     # error. Perhaps you mistyped the print_good_address?

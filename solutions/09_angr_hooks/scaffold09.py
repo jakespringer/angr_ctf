@@ -19,7 +19,10 @@ def main(argv):
 
   # Since Angr can handle the initial call to scanf, we can start from the
   # beginning.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Hook the address of where check_equals_ is called.
   # (!)
@@ -39,8 +42,13 @@ def main(argv):
     # int check_equals_(char* to_check, int length) { ...
     user_input_buffer_address = ??? # :integer, probably hexadecimal
     user_input_buffer_length = ???
+
+    # Reminder: state.memory.load will read the stored value at the address
+    # user_input_buffer_address of byte length user_input_buffer_length.
+    # It will return a bitvector holding the value. This value can either be
+    # symbolic or concrete, depending on what was stored there in the program.
     user_input_string = state.memory.load(
-      user_input_buffer_address, 
+      user_input_buffer_address,
       user_input_buffer_length
     )
     
@@ -54,6 +62,10 @@ def main(argv):
     # However, since we are describing an equation to be used by z3 (not to be
     # evaluated immediately), we cannot use Python if else syntax. Instead, we 
     # have to use claripy's built in function that deals with if statements.
+    # claripy.If(expression, ret_if_true, ret_if_false) will output an
+    # expression that evaluates to ret_if_true if expression is true and
+    # ret_if_false otherwise.
+    # Think of it like the Python "value0 if expression else value1".
     state.regs.eax = claripy.If(
       user_input_string == check_against_string, 
       claripy.BVV(1, 32), 

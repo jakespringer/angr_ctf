@@ -5,7 +5,7 @@
 # To solve the challenge, manually hook any standard library c functions that
 # are used. Then, ensure that you begin the execution at the beginning of the
 # main function. Do not use entry_state.
-# 
+#
 # Here are a few SimProcedures Angr has already written for you. They implement
 # standard library functions. You will not need all of them:
 # angr.SIM_PROCEDURES['libc']['malloc']
@@ -25,6 +25,13 @@
 #
 # There are many more, see:
 # https://github.com/angr/angr/tree/master/angr/procedures/libc
+#
+# Additionally, note that, when the binary is executed, the main function is not
+# the first piece of code called. In the _start function, __libc_start_main is
+# called to start your program. The initialization that occurs in this function
+# can take a long time with Angr, so you should replace it with a SimProcedure.
+# angr.SIM_PROCEDURES['glibc']['__libc_start_main']
+# Note 'glibc' instead of 'libc'.
 
 import angr
 import sys

@@ -76,6 +76,7 @@ def main(argv):
     # Recall that we need to constrain the to_check parameter (see top) of the 
     # check_equals_ function. Determine the address that is being passed as the
     # parameter and load it into a bitvector so that we can constrain it.
+    # (!)
     constrained_parameter_address = 0x804a050
     constrained_parameter_size_bytes = 16
     constrained_parameter_bitvector = solution_state.memory.load(
@@ -83,12 +84,19 @@ def main(argv):
       constrained_parameter_size_bytes
     )
 
-    # Constrain the system to find an input that will make
+    # We want to constrain the system to find an input that will make
     # constrained_parameter_bitvector equal the desired value.
-    constrained_parameter_desired_value = 'KLXNXIBRIMHLJQXZ'.encode() # :string
+    # (!)
+    constrained_parameter_desired_value = 'KLXNXIBRIMHLJQXZ'.encode() # :string (encoded)
+
+    # Specify a claripy expression (using Pythonic syntax) that tests whether
+    # constrained_parameter_bitvector == constrained_parameter_desired_value.
+    # Add the constraint to the state to let z3 attempt to find an input that
+    # will make this expression true.
     solution_state.add_constraints(constrained_parameter_bitvector == constrained_parameter_desired_value)
 
     # Solve for the constrained_parameter_bitvector.
+    # (!)
     solution = solution_state.solver.eval(password,cast_to=bytes).decode()
 
     print(solution)

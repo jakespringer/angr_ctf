@@ -51,8 +51,8 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Solve for the symbolic values. We are trying to solve for a string.
-    # Therefore, we will use eval, with named parameter cast_to=str
-    # which returns a string instead of an integer.
+    # Therefore, we will use eval, with named parameter cast_to=bytes
+    # which returns bytes that can be decoded to a string instead of an integer.
     # (!)
     solution0 = solution_state.solver.eval(password0,cast_to=bytes).decode()
     solution1 = solution_state.solver.eval(password1,cast_to=bytes).decode()

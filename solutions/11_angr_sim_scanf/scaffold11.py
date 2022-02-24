@@ -9,19 +9,21 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   class ReplacementScanf(angr.SimProcedure):
     # Finish the parameters to the scanf function. Hint: 'scanf("%u %u", ...)'.
     # (!)
-    def run(self, format_string, ...???):
+    def run(self, format_string, scanf0_address, ...):
+      # Hint: scanf0_address is passed as a parameter, isn't it?
       scanf0 = claripy.BVS('scanf0', ???)
       ...
 
       # The scanf function writes user input to the buffers to which the 
       # parameters point.
-      # Hint: scanf0_address is passed as a parameter, isn't it?
-      scanf0_address = ???
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
       ...
 
@@ -30,7 +32,8 @@ def main(argv):
       # store multiple bitvectors. You can either use a list, tuple, or multiple
       # keys to reference the different bitvectors.
       # (!)
-      self.state.globals['solutions'] = ???
+      self.state.globals['solution0'] = ???
+      ...
 
   scanf_symbol = ???
   project.hook_symbol(scanf_symbol, ReplacementScanf())
@@ -51,7 +54,8 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Grab whatever you set aside in the globals dict.
-    stored_solutions = solution_state.globals['solutions']
+    stored_solutions0 = solution_state.globals['solution0']
+    ...
     solution = ???
 
     print(solution)

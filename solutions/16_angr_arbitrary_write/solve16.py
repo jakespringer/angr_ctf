@@ -1,3 +1,35 @@
+# Essentially, the program does the following:
+#
+# scanf("%d %20s", &key, user_input);
+# ...
+#   // if certain unknown conditions are true...
+#   strncpy(random_buffer, user_input);
+# ...
+# if (strncmp(secure_buffer, reference_string)) {
+#   // The secure_buffer does not equal the reference string.
+#   puts("Try again.");
+# } else {
+#   // The two are equal.
+#   puts("Good Job.");
+# }
+#
+# If this program has no bugs in it, it would _always_ print "Try again." since
+# user_input copies into random_buffer, not secure_buffer.
+#
+# The question is: can we find a buffer overflow that will allow us to overwrite
+# the random_buffer pointer to point to secure_buffer? (Spoiler: we can, but we
+# will need to use Angr.)
+#
+# We want to identify a place in the binary, when strncpy is called, when we can:
+#  1) Control the source contents (not the source pointer!)
+#     * This will allow us to write arbitrary data to the destination.
+#  2) Control the destination pointer
+#     * This will allow us to write to an arbitrary location.
+# If we can meet both of those requirements, we can write arbitrary data to an
+# arbitrary location. Finally, we need to contrain the source contents to be
+# equal to the reference_string and the destination pointer to be equal to the
+# secure_buffer.
+
 import angr
 import claripy
 import sys
@@ -70,7 +102,10 @@ def main(argv):
     # (!)
     src_contents = state.memory.load(strncpy_src, strncpy_len)
 
-    # Determine if the destination pointer and the source is symbolic.
+    # Our goal is to determine if we can write arbitrary data to an arbitrary
+    # location. This means determining if the source contents are symbolic
+    # (arbitrary data) and the destination pointer is symbolic (arbitrary
+    # destination).
     # (!)
     if state.solver.symbolic(src_contents) and state.solver.symbolic(strncpy_dest):
       # Use ltrace to determine the password. Decompile the binary to determine
@@ -91,6 +126,11 @@ def main(argv):
       # To access the beginning of the string, we need to access the last 16
       # bits, or bits 48-63:
       #  b[63:48] == 'AB'
+      # In this specific case, since we don't necessarily know the length of the
+      # contents (unless you look at the binary), we can use the following:
+      #  b[-1:-16] == 'AB', since, in Python, -1 is the end of the list, and -16
+      # is the 16th element from the end of the list. The actual numbers should
+      # correspond with the length of password_string.
       # (!)
       does_src_hold_password = src_contents[-1:-64] == password_string
 
@@ -99,13 +139,18 @@ def main(argv):
       # (!)
       does_dest_equal_buffer_address = strncpy_dest == buffer_address
 
-      # We can pass multiple expressions to extra_constraints!
+      # In the previous challenge, we copied the state, added constraints to the
+      # copied state, and then determined if the constraints of the new state
+      # were satisfiable. Since that pattern is so common, Angr implemented a
+      # parameter 'extra_constraints' for the satisfiable function that does the
+      # exact same thing.  Note that we can pass multiple expressions to
+      # extra_constraints.
       if state.satisfiable(extra_constraints=(does_src_hold_password, does_dest_equal_buffer_address)):
         state.add_constraints(does_src_hold_password, does_dest_equal_buffer_address)
         return True
       else:
         return False
-    else: # not path.state.solver.symbolic(???)
+    else: # not state.solver.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)

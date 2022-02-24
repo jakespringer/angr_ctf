@@ -1,8 +1,8 @@
 # This binary takes both an integer and a string as a parameter. A certain
 # integer input causes the program to reach a buffer overflow with which we can
-# read a string from an arbitrary memory location. Our goal is to use Angr to 
+# read a string from an arbitrary memory location. Our goal is to use Angr to
 # search the program for this buffer overflow and then automatically generate
-# an exploit to read the string "Good Job." 
+# an exploit to read the string "Good Job."
 #
 # What is the point of reading the string "Good Job."?
 # This CTF attempts to replicate a simplified version of a possible vulnerability
@@ -14,7 +14,7 @@
 # The general strategy for crafting this script will be to:
 # 1) Search for calls of the 'puts' function, which will eventually be exploited
 #    to print out "Good Job."
-# 2) Determine if the first parameter of 'puts', a pointer to the string to be 
+# 2) Determine if the first parameter of 'puts', a pointer to the string to be
 #    printed, can be controlled by the user to be set to the location of the
 #    "Good Job." string.
 # 3) Solve for the input that prints "Good Job."
@@ -94,7 +94,7 @@ def main(argv):
   # Again, scanf needs to be replaced.
   class ReplacementScanf(angr.SimProcedure):
     # Hint: scanf("%u %20s")
-    def run(self, format_string, ...???):
+    def run(self, format_string, ???, ???):
       # %u
       scanf0 = claripy.BVS('scanf0', ???)
       
@@ -107,13 +107,11 @@ def main(argv):
       for char in scanf1.chop(bits=8):
         # Ensure that each character in the string is printable. An interesting
         # experiment, once you have a working solution, would be to run the code
-        # without constraining the characters to the capital letters.
+        # without constraining the characters to the printable range of ASCII.
         # Even though the solution will technically work without this, it's more
         # difficult to enter in a solution that contains character you can't
         # copy, paste, or type into your terminal or the web form that checks 
         # your solution.
-        # If you are using the web form to submit answers, your solution must be
-        # entirely alphanumeric except for spaces.
         # (!)
         self.state.add_constraints(char >= ???, char <= ???)
 
@@ -165,11 +163,11 @@ def main(argv):
     # bitvector we checked may be controllable by the user.
     # Use it to determine if the pointer passed to puts is symbolic.
     # (!)
-    if state.se.symbolic(???):
+    if state.solver.symbolic(???):
       # Determine the location of the "Good Job." string. We want to print it
       # out, and we will do so by attempting to constrain the puts parameter to
-      # equal it. (Hint: look at .rodata).
-      # Hint: use 'objdump -s <binary>' to look for the string's address.
+      # equal it. Hint: use 'objdump -s <binary>' to look for the string's
+      # address in .rodata.
       # (!)
       good_job_string_address = ??? # :integer, probably hexadecimal
 
@@ -196,12 +194,13 @@ def main(argv):
 
       # Finally, we test if we can satisfy the constraints of the state.
       if copied_state.satisfiable():
-        # Before we return, let's add the constraint to the solver for real.
+        # Before we return, let's add the constraint to the solver for real,
+        # instead of just querying whether the constraint _could_ be added.
         state.add_constraints(is_vulnerable_expression)
         return True
       else:
         return False
-    else: # not state.se.symbolic(???)
+    else: # not state.solver.symbolic(???)
       return False
 
   simulation = project.factory.simgr(initial_state)
