@@ -1,13 +1,3 @@
-${
-import random, os
-random.seed(os.urandom(8))
-
-def randomly_modify(var):
-  operator = random.choice(['+=', '^='])
-  random_int = random.randint(0, 0xFFFFFFFF)
-  write(var + operator + str(random_int) + ';')
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -15,33 +5,24 @@ register int eax asm("eax");
 register int ebx asm("ebx");
 register int edx asm("edx");
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 void print_msg() {
   printf("%s", msg);
 }
 
 int complex_function_1(int input) {
-${
-for i in range(0, random.randint(16, 48)):
-  randomly_modify('input')
-}$
+{{ complex_function_1 }}
   return input;
 }
 
 int complex_function_2(int input) {
-${
-for i in range(0, random.randint(16, 48)):
-  randomly_modify('input')
-}$
+{{ complex_function_2 }}
   return input;
 }
 
 int complex_function_3(int input) {
-${
-for i in range(0, random.randint(16, 48)):
-  randomly_modify('input')
-}$
+{{ complex_function_3 }}
   return input;
 }
 

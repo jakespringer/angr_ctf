@@ -14,7 +14,7 @@ def main(argv):
   # start_address will specify where the symbolic execution engine should begin.
   # Note that we are using blank_state, not entry_state.
   # (!)
-  start_address = 0x8048918  # :integer (probably hexadecimal)
+  start_address = 0x80488c7  # :integer (probably hexadecimal)
   initial_state = project.factory.blank_state(
     addr=start_address,
     add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
