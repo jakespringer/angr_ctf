@@ -12,9 +12,17 @@ def recursive_if_else(variable, value, end_statement, depth):
   else:
     if_true = random.choice([True, False])
     if (if_true):
-      ret_str = 'if (' + generate_true_statement(variable, value) + ') {' + recursive_if_else(variable, value, end_statement, depth - 1) + '} else {' + recursive_if_else(variable, value, end_statement, depth - 1) + '}'
+      ret_str = 'if (' + generate_true_statement(variable, value) + ') {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '} else {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '}'
     else:
-      ret_str = 'if (!' + generate_true_statement(variable, value) + ') {' + recursive_if_else(variable, value, end_statement, depth - 1) + '} else {' + recursive_if_else(variable, value, end_statement, depth - 1) + '}'
+      ret_str = 'if (!' + generate_true_statement(variable, value) + ') {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '} else {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '}'
     return ret_str
 
 def generate(argv):
