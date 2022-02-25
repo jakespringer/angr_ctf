@@ -1,25 +1,16 @@
-${
-import random, os
-random.seed(os.urandom(8))
-
-letter0 = random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-integer = random.randint(0, 256)
-lamb = random.choice([2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71])
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 void print_msg() {
   printf("%s", msg);
 }
 
 int complex_function(int value, int i) {
-#define LAMBDA ${ write(lamb) }$
+#define LAMBDA {{ lamb }}
   if (!('A' <= value && value <= 'Z')) {
     printf("Try again.\n");
     exit(1);
@@ -40,7 +31,7 @@ int main(int argc, char* argv[]) {
   int counter0 = 0;
   int counter1 = 0;
   for (int i=0; i<32; ++i) {
-    if (buffer[i] == complex_function(${ write('\'' + letter0 + '\'' ) }$, i + ${ write(integer) }$) ) {
+    if (buffer[i] == complex_function('{{ letter0 }}', i + {{ integer }}) ) {
       counter0++;
     }
   }
