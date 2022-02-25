@@ -130,7 +130,7 @@ def main(argv):
     # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
-    solution_state.add_constraints(solution_state.regs.eip == 0x425a4e50)
+    solution_state.add_constraints(solution_state.regs.eip == 0x4d435250)
 
     solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
     print(solution)
