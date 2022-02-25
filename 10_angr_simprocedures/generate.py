@@ -1,7 +1,29 @@
 #!/usr/bin/env python3
+import sys, random, os, tempfile, jinja2
 
-import sys, random, os, tempfile
-from templite import Templite
+def generate_true_statement(variable, value):
+  random_int = random.randint(0, 0xFFFFFFFF)
+  value_xor_int = value ^ random_int
+  return '(!(' + variable + ' ^ ' + str(random_int) + ' ^ ' + str(value_xor_int) + '))'
+
+def recursive_if_else(variable, value, end_statement, depth):
+  if depth == 0:
+    return end_statement
+  else:
+    if_true = random.choice([True, False])
+    if (if_true):
+      ret_str = 'if (' + generate_true_statement(variable, value) + ') {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '} else {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '}'
+    else:
+      ret_str = 'if (!' + generate_true_statement(variable, value) + ') {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '} else {'
+      ret_str += recursive_if_else(variable, value, end_statement, depth - 1)
+      ret_str += '}'
+    return ret_str
 
 def generate(argv):
   if len(argv) != 3:
@@ -10,17 +32,15 @@ def generate(argv):
 
   seed = argv[1]
   output_file = argv[2]
-
   random.seed(seed)
-
-  description = ''
-  with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
-    description = desc_file.read().encode('unicode_escape')
 
   userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
   userdef = ''.join([random.choice(userdef_charset) for _ in range(16)])
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '10_angr_simprocedures.c.templite'), 'r').read()
-  c_code = Templite(template).render(description=description, userdef=userdef)
+  statement = f"equals = check_equals_{userdef}(buffer, 16);"
+  recursive_if_else_string = recursive_if_else('x', 0xDEADBEEF, statement, 8)
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '10_angr_simprocedures.c.jinja'), 'r').read()
+  t = jinja2.Template(template)
+  c_code = t.render(description='', userdef=userdef, recursive_if_else=recursive_if_else_string)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)

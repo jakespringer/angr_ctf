@@ -76,7 +76,7 @@ def main(argv):
         user_input_buffer_length
       )
 
-      check_against_string = 'EKMKRRERXYYUPXNG'.encode()
+      check_against_string = 'OSIWHBXIFOQVSBZB'.encode()
       
       # Finally, instead of setting eax, we can use a Pythonic return statement
       # to return the output of this function. 
@@ -93,7 +93,7 @@ def main(argv):
   # of 'hook_symbol' and specify the address of the function. To find the 
   # correct symbol, disassemble the binary.
   # (!)
-  check_equals_symbol = 'check_equals_EKMKRRERXYYUPXNG' # :string
+  check_equals_symbol = 'check_equals_OSIWHBXIFOQVSBZB' # :string
   project.hook_symbol(check_equals_symbol, ReplacementCheckEquals())
 
   simulation = project.factory.simgr(initial_state)
