@@ -1,5 +1,5 @@
 #!/bin/bash
-# Binaries generated via python2 package.py obj/wuchang/angr
+# Binaries generated via python package.py obj/wuchang/angr
 echo "Solving all of the levels... This could take a while."
 ANGR_OUT_00="$(python3 00_angr_find/solve00.py 00_angr_find/00_angr_find 2> /dev/null)"
 echo -n "."

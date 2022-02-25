@@ -6,15 +6,15 @@ all:
 
 env:
 	( \
-	  virtualenv -p python2 env; \
-	  env/bin/pip install templite; \
+	  virtualenv -p python3 env; \
+	  env/bin/pip install jinja2; \
 	)
 
 web: env
-	$(foreach user,$(USERS), mkdir -p $(WWWDIR)/$(user)/angr/solved; env/bin/python2 package.py $(WWWDIR)/$(user)/angr;)
+	$(foreach user,$(USERS), mkdir -p $(WWWDIR)/$(user)/angr/solved; env/bin/python package.py $(WWWDIR)/$(user)/angr;)
 
 local: env
-	$(foreach user,$(USERS), env/bin/python2 package.py obj/$(user)/angr;)
+	$(foreach user,$(USERS), env/bin/python package.py obj/$(user)/angr;)
 
 clean: local_clean web_clean
 
