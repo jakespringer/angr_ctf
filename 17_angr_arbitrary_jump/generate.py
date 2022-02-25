@@ -25,7 +25,6 @@ def generate(argv):
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '17_angr_arbitrary_jump.c.jinja'), 'r').read()
   t = jinja2.Template(template)
   c_code = t.render(description='', padding0=padding0, padding1=padding1)
-  print(c_code)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)

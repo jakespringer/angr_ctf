@@ -41,7 +41,6 @@ def generate(argv):
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '11_angr_sim_scanf.c.jinja'), 'r').read()
   t = jinja2.Template(template)
   c_code = t.render(description='', userdef=userdef, len_userdef=len(userdef), padding0=padding0, padding1=padding1, padding2=padding2, recursive_if_else=recursive_if_else_string)
-  print(c_code)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)

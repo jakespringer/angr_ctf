@@ -37,7 +37,6 @@ def generate(argv):
   template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '16_angr_arbitrary_write.c.jinja'), 'r').read()
   t = jinja2.Template(template)
   c_code = t.render(description='', userdef=userdef, expanded_switch_statement=expanded_switch_statement_string)
-  print(c_code)
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
