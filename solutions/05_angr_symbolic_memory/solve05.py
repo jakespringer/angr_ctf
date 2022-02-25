@@ -25,13 +25,13 @@ def main(argv):
   # 'value' (a bitvector) to 'address' (a memory location, as an integer.) The
   # 'address' parameter can also be a bitvector (and can be symbolic!).
   # (!)
-  password0_address = 0xb6f44c0
+  password0_address = 0xab232c0
   initial_state.memory.store(password0_address, password0)
-  password1_address = 0xb6f44c8
+  password1_address = 0xab232c8
   initial_state.memory.store(password1_address, password1)
-  password2_address = 0xb6f44d0
+  password2_address = 0xab232d0
   initial_state.memory.store(password2_address, password2)
-  password3_address = 0xb6f44d8
+  password3_address = 0xab232d8
   initial_state.memory.store(password3_address, password3)
 
 
