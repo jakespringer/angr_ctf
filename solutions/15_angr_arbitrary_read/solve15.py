@@ -172,7 +172,7 @@ def main(argv):
       # equal it. Hint: use 'objdump -s <binary>' to look for the string's
       # address in .rodata.
       # (!)
-      good_job_string_address = 0x58434353 # :integer, probably hexadecimal
+      good_job_string_address = 0x4f534957 # :integer, probably hexadecimal
 
       # Create an expression that will test if puts_parameter equals
       # good_job_string_address. If we add this as a constraint to our solver,
