@@ -30,10 +30,10 @@ def main(argv):
   # size=number of bytes being stored (e.g. 32-bit address = 4 bytes)
   # (!)
   fake_heap_address0 = 0x4444444
-  pointer_to_malloc_memory_address0 = 0x9c0a48c
+  pointer_to_malloc_memory_address0 = 0xa2def74
   initial_state.memory.store(pointer_to_malloc_memory_address0, fake_heap_address0, endness=project.arch.memory_endness, size=4)
   fake_heap_address1 = 0x4444454
-  pointer_to_malloc_memory_address1 = 0x9c0a494
+  pointer_to_malloc_memory_address1 = 0xa2def7c
   initial_state.memory.store(pointer_to_malloc_memory_address1, fake_heap_address1, endness=project.arch.memory_endness, size=4)
 
   # Store our symbolic values at our fake_heap_address. Look at the binary to
