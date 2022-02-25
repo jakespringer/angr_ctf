@@ -1,14 +1,9 @@
-${
-import random, os
-random.seed(os.urandom(8))
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 void print_msg() {
   printf("%s", msg);
@@ -20,9 +15,9 @@ void print_good() {
 }
 
 void read_input() {
-  char padding0[${ write(random.randint(0, 32)) }$];
+  char padding0[{{ padding0 }}];
   char buffer[8];
-  char padding1[${ write(random.randint(0, 32)) }$];
+  char padding1[{{ padding1 }}];
 
   scanf("%s", buffer);
 }

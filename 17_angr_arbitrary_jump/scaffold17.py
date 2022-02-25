@@ -31,77 +31,109 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = ??? 
+  # Make a symbolic input that has a decent size to trigger overflow
+  # (!)
+  symbolic_input = claripy.BVS("input", ???)
+
+  # Create initial state and set stdin to the symbolic input
+  initial_state = project.factory.entry_state(
+          stdin=symbolic_input,
+          add_options = {
+              angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+              angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS
+              }
+          )
+
+  # Ensure that every byte of input is within the acceptable ASCII range (A..Z)
+  # (!)
+  for byte in symbolic_input.chop(bits=8):
+    initial_state.add_constraints(
+      claripy.And(
+        byte >= ???,
+        byte <= ???
+      )
+    )
 
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
-  # 'simulation.unconstrained'.
-  simulation = project.factory.simgr(initial_state, save_unconstrained=True)
+  # 'simulation.unconstrained'.  Additionally, we will be using a few stashes
+  # that are not included by default, such as 'found' and 'not_needed'. You will
+  # see how these are used later.
+  # (!)
+  simulation = project.factory.simgr(
+    initial_state,
+    save_unconstrained=???,
+    stashes={
+      'active' : [???],
+      'unconstrained' : [],
+      'found' : [],
+      'not_needed' : []
+    }
+  )
 
   # Explore will not work for us, since the method specified with the 'find'
   # parameter will not be called on an unconstrained state. Instead, we want to
-  # explore the binary ourselves.
-  # To get started, construct an exit condition to know when we've found a
-  # solution. We will later be able to move states from the unconstrained list
-  # to the simulation.found list. Alternatively, you can create a boolean value
-  # that serves the same purpose.
-  
-  # We will set this to the exploitable state once we find it.
-  solution_state = None
+  # explore the binary ourselves. To get started, construct an exit condition
+  # to know when the simulation has found a solution. We will later move
+  # states from the unconstrained list to the simulation.found list.
+  # Create a boolean value that indicates a state has been found.
   def has_found_solution():
-    return solution_state is not None
+    return simulation.found
 
-  # Check if there are still unconstrained states left to check. Once we
-  # determine a given unconstrained state is not exploitable, we can throw it
-  # out. Use the simulation.unconstrained list.
-  def has_unconstrained():
-    return len(simulation.unconstrained) > 0
+  # An unconstrained state occurs when there are too many possible branches
+  # from a single instruction. This occurs, among other ways, when the
+  # instruction pointer (on x86, eip) is completely symbolic, meaning
+  # that user input can control the address of code the computer executes.
+  # For example, imagine the following pseudo assembly:
+  #
+  # mov user_input, eax
+  # jmp eax
+  #
+  # The value of what the user entered dictates the next instruction. This
+  # is an unconstrained state. It wouldn't usually make sense for the execution
+  # engine to continue. (Where should the program jump to if eax could be
+  # anything?) Normally, when Angr encounters an unconstrained state, it throws
+  # it out. In our case, we want to exploit the unconstrained state to jump to
+  # a location of our choosing.  Check if there are still unconstrained states
+  # by examining the simulation.unconstrained list.
+  # (!)
+  def has_unconstrained_to_check():
+    return ???
 
   # The list simulation.active is a list of all states that can be explored
   # further.
   # (!)
   def has_active():
-    # Reimplement me! See below to see how this is used. Hint: should look very
-    # similar to has_unconstrained()
-    pass
+    return ???
 
-  while (has_active() or has_unconstrained()) and (not has_found_solution()):
-    # Check every unconstrained state that the simulation has found so far.
-    # (!)
+  while (has_active() or has_unconstrained_to_check()) and (not has_found_solution()):
     for unconstrained_state in simulation.unconstrained:
-      # Get the eip register (review 03_angr_symbolic_registers).
-      # (!)
-      eip = unconstrained_state.regs.???
-
-      # Check if we can set the state to our print_good function.
-      # (!)
-      if unconstrained_state.satisfiable(extra_constraints=(eip == ???)):
-        # We can!
-        solution_state = unconstrained_state
-
-        # Now, constrain eip to equal the address of the print_good function.
+        # Look for unconstrained states and move them to the 'found' stash.
+        # A 'stash' should be a string that corresponds to a list that stores
+        # all the states that the state group keeps. Values include:
+        #  'active' = states that can be stepped
+        #  'deadended' = states that have exited the program
+        #  'errored' = states that encountered an error with Angr
+        #  'unconstrained' = states that are unconstrained
+        #  'found' = solutions
+        #  anything else = whatever you want, perhaps you want a 'not_needed',
+        #                  you can call it whatever you want
         # (!)
-        ...
-
-        break
-
-    # Since we already checked all of the unconstrained states and did not find
-    simulation.drop(stash='unconstrained')
+      simulation.move('unconstrained', 'found')
 
     # Advance the simulation.
     simulation.step()
 
-  if solution_state:
-    # Ensure that every printed byte is within the acceptable ASCII range (A..Z)
-    for byte in solution_state.posix.files[sys.stdin.fileno()].all_bytes().chop(bits=8):
-      solution_state.add_constraints(byte >= ???, byte <= ???)
+  if simulation.found:
+    solution_state = simulation.found[0]
 
-    # Solve for the user input (recall that this is
+    # Constrain the instruction pointer to target the print_good function and
+    # then solve for the user input (recall that this is
     # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
-    ...
+    solution_state.add_constraints(solution_state.regs.eip == ???)
 
-    solution = ???
+    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')

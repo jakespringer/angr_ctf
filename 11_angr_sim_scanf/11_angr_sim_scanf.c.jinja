@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <stdint.h>
+
+#define USERDEF0 "{{ userdef }}"
+#define LEN_USERDEF {{ len_userdef }}
+
+char msg[] = "{{ description }}";
+
+char padding0[{{ padding0 }}];
+char buffer1[5];
+char padding1[{{ padding1 }}];
+char buffer0[5];
+char padding2[{{ padding2 }}];
+
+void print_msg() {
+  printf("%s", msg);
+}
+
+int complex_function(int value, int i) {
+#define LAMBDA 29
+  if (!('A' <= value && value <= 'Z')) {
+    printf("Try again.\n");
+    exit(1);
+  }
+  return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
+}
+
+int main(int argc, char* argv[]) {
+  char password[20];
+  int keep_going = 1;
+  unsigned int x = 0xDEADBEEF;
+
+  //print_msg();
+
+  memset(password, 0, 20);
+  strncpy(&password[0], USERDEF0, LEN_USERDEF);
+
+  /* complex function on password */
+  for (int j=0; j<8; ++j) {
+    password[j] = complex_function(password[j], j);
+  }
+
+  printf("Enter the password: ");
+
+  {{ recursive_if_else }}
+
+  if (!keep_going) {
+    printf("Try again.\n");
+  } else {
+    printf("Good Job.\n");
+  }
+}

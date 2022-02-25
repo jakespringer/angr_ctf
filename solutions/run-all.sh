@@ -1,4 +1,5 @@
 #!/bin/bash
+# Binaries generated via python package.py obj/wuchang/angr
 echo "Solving all of the levels... This could take a while."
 ANGR_OUT_00="$(python3 00_angr_find/solve00.py 00_angr_find/00_angr_find 2> /dev/null)"
 echo -n "."
@@ -14,7 +15,7 @@ ANGR_OUT_05="$(python3 05_angr_symbolic_memory/solve05.py 05_angr_symbolic_memor
 echo -n "."
 ANGR_OUT_06="$(python3 06_angr_symbolic_dynamic_memory/solve06.py 06_angr_symbolic_dynamic_memory/06_angr_symbolic_dynamic_memory 2> /dev/null)"
 echo -n "."
-ANGR_OUT_07="$(python3 07_angr_symbolic_file/solve07.py 07_angr_symbolic_file/07_angr_symbolic_file 2> /dev/null)"
+ANGR_OUT_07="$(python3 07_angr_symbolic_file/solve07.py 07_angr_symbolic_file/07_angr_symbolic_file 2> /dev/null) | awk '{print $1}'"
 echo -n "."
 ANGR_OUT_08="$(python3 08_angr_constraints/solve08.py 08_angr_constraints/08_angr_constraints 2> /dev/null)"
 echo -n "."
@@ -24,7 +25,7 @@ ANGR_OUT_10="$(python3 10_angr_simprocedures/solve10.py 10_angr_simprocedures/10
 echo -n "."
 ANGR_OUT_11="$(python3 11_angr_sim_scanf/solve11.py 11_angr_sim_scanf/11_angr_sim_scanf 2> /dev/null)"
 echo -n "."
-ANGR_OUT_12="$(python3 12_angr_veritesting/solve12.py 12_angr_veritesting/12_angr_veritesting 2> /dev/null)"
+ANGR_OUT_12="$(python3 12_angr_veritesting/solve12.py 12_angr_veritesting/12_angr_veritesting 2> /dev/null | tail -1)"
 echo -n "."
 ANGR_OUT_13="$(python3 13_angr_static_binary/solve13.py 13_angr_static_binary/13_angr_static_binary 2> /dev/null)"
 echo -n "."

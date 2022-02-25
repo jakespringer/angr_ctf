@@ -14,10 +14,10 @@ def main(argv):
   # base + offset, where offset is their address in the file.
   # (!)
   base = ???
-  project = angr.Project(path_to_binary, load_options={ 
-    'main_opts' : { 
-      'custom_base_addr' : base 
-    } 
+  project = angr.Project(path_to_binary, load_options={
+    'main_opts' : {
+      'custom_base_addr' : base
+    }
   })
 
   # Initialize any symbolic values here; you will need at least one to pass to
@@ -27,7 +27,7 @@ def main(argv):
   # Begin the state at the beginning of the validate function, as if it was
   # called by the program. Determine the parameters needed to call validate and
   # replace 'parameters...' with bitvectors holding the values you wish to pass.
-  # Recall that 'claripy.BVV(value, size_in_bits)' constructs a bitvector 
+  # Recall that 'claripy.BVV(value, size_in_bits)' constructs a bitvector
   # initialized to a single value.
   # Remember to add the base value you specified at the beginning to the
   # function address!
@@ -52,7 +52,7 @@ def main(argv):
 
   if simulation.found:
     solution_state = simulation.found[0]
-  
+
     # Determine where the program places the return value, and constrain it so
     # that it is true. Then, solve for the solution and print it.
     # (!)

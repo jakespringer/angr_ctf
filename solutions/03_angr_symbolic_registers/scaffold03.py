@@ -15,7 +15,11 @@ def main(argv):
   # Note that we are using blank_state, not entry_state.
   # (!)
   start_address = ???  # :integer (probably hexadecimal)
-  initial_state = project.factory.blank_state(addr=start_address)
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Create a symbolic bitvector (the datatype Angr uses to inject symbolic
   # values into the binary.) The first parameter is just a name Angr uses
@@ -63,7 +67,7 @@ def main(argv):
     # care about one, so we can use eval, which returns any (but only one)
     # solution. Pass eval the bitvector you want to solve for.
     # (!)
-    solution0 = solution_state.se.eval(password0)
+    solution0 = solution_state.solver.eval(password0)
     ...
 
     # Aggregate and format the solutions you computed above, and then print

@@ -1,2 +1,2 @@
-templite ~= 0.2.1
+jinja2
 angr ~= 6.7

@@ -1,19 +1,12 @@
-${
-import random, os
-random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-userdef0 = ''.join(random.choice(userdef_charset) for _ in range(8))
-}$
-
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-#define USERDEF0 "${ userdef0 }$"
-#define USERDEF1 "${ userdef1 }$.txt"
+#define USERDEF0 "{{ userdef0 }}"
+#define USERDEF1 "{{ userdef1 }}.txt"
 #define FILESIZE 64
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 char buffer[FILESIZE];
 FILE* fp;

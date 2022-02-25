@@ -25,16 +25,20 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  start_address = 0x80488db
-  initial_state = project.factory.blank_state(addr=start_address)
+  start_address = 0x80488bc
+  initial_state = project.factory.blank_state(
+    addr=start_address,
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Specify some information needed to construct a simulated file. For this
   # challenge, the filename is hardcoded, but in theory, it could be symbolic. 
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = 'WCEXPXBW.txt'  # :string
-  symbolic_file_size_bytes = 64
+  filename = 'FOQVSBZB.txt'  # :string
+  symbolic_file_size_bytes = 8
 
   # Construct a bitvector for the password and then store it in the file's
   # backing memory. For example, imagine a simple file, 'hello.txt':

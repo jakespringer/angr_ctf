@@ -1,16 +1,16 @@
 # This challenge is similar to the previous one. It operates under the same
-# premise that you will have to replace the check_equals_ function. In this 
-# case, however, check_equals_ is called so many times that it wouldn't make 
+# premise that you will have to replace the check_equals_ function. In this
+# case, however, check_equals_ is called so many times that it wouldn't make
 # sense to hook where each one was called. Instead, use a SimProcedure to write
-# your own check_equals_ implementation and then hook the check_equals_ symbol 
+# your own check_equals_ implementation and then hook the check_equals_ symbol
 # to replace all calls to scanf with a call to your SimProcedure.
 #
-# You may be thinking: 
+# You may be thinking:
 #   Why can't I just use hooks? The function is called many times, but if I hook
-#   the address of the function itself (rather than the addresses where it is 
+#   the address of the function itself (rather than the addresses where it is
 #   called), I can replace its behavior everywhere. Furthermore, I can get the
 #   parameters by reading them off the stack (with memory.load(regs.esp + xx)),
-#   and return a value by simply setting eax! Since I know the length of the 
+#   and return a value by simply setting eax! Since I know the length of the
 #   function in bytes, I can return from the hook just before the 'ret'
 #   instruction is called, which will allow the program to jump back to where it
 #   was before it called my hook.
@@ -29,7 +29,10 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Define a class that inherits angr.SimProcedure in order to take advantage
   # of Angr's SimProcedures.

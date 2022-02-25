@@ -1,21 +1,13 @@
-${
-import random, os
-random.seed(os.urandom(8))
-
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-userdef = repr(''.join(random.choice(userdef_charset) for _ in range(32)))[1:-1].replace('\"', '\\\"')
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define USERDEF "${ userdef }$"
+#define USERDEF "{{ userdef }}"
 
-char padding0[ ${ padding0 }$ ];
+char padding0[ {{ padding0 }} ];
 char user_input[32+1];
-char padding1[ ${ padding1 }$ ];
+char padding1[ {{ padding1 }} ];
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 void print_msg() {
   printf("%s", msg);

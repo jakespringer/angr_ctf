@@ -19,11 +19,14 @@ def main(argv):
 
   # Since Angr can handle the initial call to scanf, we can start from the
   # beginning.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Hook the address of where check_equals_ is called.
   # (!)
-  check_equals_called_address = 0x80486b8
+  check_equals_called_address = 0x80486ca
 
   # The length parameter in angr.Hook specifies how many bytes the execution
   # engine should skip after completing the hook. This will allow hooks to
@@ -37,8 +40,13 @@ def main(argv):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
     # int check_equals_(char* to_check, int length) { ...
-    user_input_buffer_address = 0x804a054 # :integer, probably hexadecimal
+    user_input_buffer_address = 0x804a044 # :integer, probably hexadecimal
     user_input_buffer_length = 16
+
+    # Reminder: state.memory.load will read the stored value at the address
+    # user_input_buffer_address of byte length user_input_buffer_length.
+    # It will return a bitvector holding the value. This value can either be
+    # symbolic or concrete, depending on what was stored there in the program.
     user_input_string = state.memory.load(
       user_input_buffer_address,
       user_input_buffer_length
@@ -47,13 +55,17 @@ def main(argv):
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'XKSPZSJKJYQCQXZV'.encode() # :string
+    check_against_string = 'OSIWHBXIFOQVSBZB'.encode() # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.
     # However, since we are describing an equation to be used by z3 (not to be
     # evaluated immediately), we cannot use Python if else syntax. Instead, we 
     # have to use claripy's built in function that deals with if statements.
+    # claripy.If(expression, ret_if_true, ret_if_false) will output an
+    # expression that evaluates to ret_if_true if expression is true and
+    # ret_if_false otherwise.
+    # Think of it like the Python "value0 if expression else value1".
     state.regs.eax = claripy.If(
       user_input_string == check_against_string, 
       claripy.BVV(1, 32), 

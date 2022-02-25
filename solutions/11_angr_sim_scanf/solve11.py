@@ -9,21 +9,22 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   class ReplacementScanf(angr.SimProcedure):
     # Finish the parameters to the scanf function. Hint: 'scanf("%u %u", ...)'.
     # (!)
-    def run(self, format_string, param0, param1):
+    def run(self, format_string, scanf0_address, scanf1_address):
+      # Hint: scanf0_address is passed as a parameter, isn't it?
       scanf0 = claripy.BVS('scanf0', 32)
       scanf1 = claripy.BVS('scanf1', 32)
 
       # The scanf function writes user input to the buffers to which the 
       # parameters point.
-      # Hint: scanf0_address is passed as a parameter, isn't it?
-      scanf0_address = param0
       self.state.memory.store(scanf0_address, scanf0, endness=project.arch.memory_endness)
-      scanf1_address = param1
       self.state.memory.store(scanf1_address, scanf1, endness=project.arch.memory_endness)
 
       # Now, we want to 'set aside' references to our symbolic values in the
@@ -31,7 +32,8 @@ def main(argv):
       # store multiple bitvectors. You can either use a list, tuple, or multiple
       # keys to reference the different bitvectors.
       # (!)
-      self.state.globals['solutions'] = (scanf0, scanf1)
+      self.state.globals['solution0'] = scanf0
+      self.state.globals['solution1'] = scanf1
 
   scanf_symbol = '__isoc99_scanf'
   project.hook_symbol(scanf_symbol, ReplacementScanf())
@@ -52,9 +54,9 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Grab whatever you set aside in the globals dict.
-    stored_solutions = solution_state.globals['solutions']
-    solution = ' '.join(map(str, map(solution_state.solver.eval, stored_solutions)))
-
+    stored_solutions0 = solution_state.globals['solution0']
+    stored_solutions1 = solution_state.globals['solution1']
+    solution = f'{solution_state.solver.eval(stored_solutions0)} {solution_state.solver.eval(stored_solutions1)}'
     print(solution)
   else:
     raise Exception('Could not find the solution')

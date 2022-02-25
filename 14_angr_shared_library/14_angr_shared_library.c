@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#ifndef __19_ANGR_SHARED_LIBRARY
-#define __19_ANGR_SHARED_LIBRARY
+#ifndef __14_ANGR_SHARED_LIBRARY
+#define __14_ANGR_SHARED_LIBRARY
 
 extern void print_msg(void);
 extern int validate(char*, int);

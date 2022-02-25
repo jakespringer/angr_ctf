@@ -1,27 +1,3 @@
-${
-import random, os
-random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
-
-def check_string_recursive(array0, array1, random_list, bit):
-  if bit < 0:
-    write('maybe_good(%s, %s);' % (array0, array1))
-  else:
-    if random_list[0]:
-      write('if (CHECK_BIT(%s, %d) == CHECK_BIT(%s, %d)) {' % (array0, bit, array1, bit))
-      check_string_recursive(array0, array1, random_list[1:], bit-1)
-      write('} else { avoid_me(); ')
-      check_string_recursive(array0, array1, random_list[1:], bit-1)
-      write('}')
-    else:
-      write('if (CHECK_BIT(%s, %d) != CHECK_BIT(%s, %d)) { avoid_me();' % (array0, bit, array1, bit))
-      check_string_recursive(array0, array1, random_list[1:], bit-1)
-      write('} else { ')
-      check_string_recursive(array0, array1, random_list[1:], bit-1)
-      write('}')
-}$
-
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,14 +5,14 @@ def check_string_recursive(array0, array1, random_list, bit):
 #include <unistd.h>
 #include <stdint.h>
 
-#define USERDEF "${ userdef }$"
-#define LEN_USERDEF ${ write(len(userdef)) }$
+#define USERDEF "{{ userdef }}"
+#define LEN_USERDEF {{ len_userdef }}
 
 // return true if nth bit of array is 1
 #define CHECK_BIT(array, bit_index) (!!(((uint8_t*) array)[bit_index / 8] & (((uint8_t) 0x1) << (bit_index % 8))))
 
 char msg[] =
-  "${ description }$";
+  "{{ description }}";
 
 uint8_t should_succeed = 1;
 
@@ -84,5 +60,5 @@ int main(int argc, char* argv[]) {
     buffer[i] = (char) complex_function(buffer[i], i);
   }
 
-  ${ check_string_recursive('buffer', 'password', random_list, 12) }$
+  {{ check_string }}
 }

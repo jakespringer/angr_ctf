@@ -4,7 +4,10 @@ import sys
 def main(argv):
   path_to_binary = ???
   project = angr.Project(path_to_binary)
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
   simulation = project.factory.simgr(initial_state)
 
   # Explore the binary, but this time, instead of only looking for a state that
@@ -19,7 +22,7 @@ def main(argv):
 
   if simulation.found:
     solution_state = simulation.found[0]
-    print(solution_state.posix.dumps(sys.stdin.fileno()))
+    print(solution_state.posix.dumps(sys.stdin.fileno()).decode())
   else:
     raise Exception('Could not find the solution')
 

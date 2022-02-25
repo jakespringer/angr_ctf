@@ -38,7 +38,10 @@ def main(argv):
   # Tell Angr where to start executing (should it start from the main()
   # function or somewhere else?) For now, use the entry_state function
   # to instruct Angr to start from the main() function.
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   # Create a simulation manager initialized with the starting state. It provides
   # a number of useful tools to search and execute the binary.
@@ -49,7 +52,7 @@ def main(argv):
   # This function will keep executing until it either finds a solution or it 
   # has explored every possible path through the executable.
   # (!)
-  print_good_address = 0x804867d  # :integer (probably in hexadecimal)
+  print_good_address = 0x804868c  # :integer (probably in hexadecimal)
   simulation.explore(find=print_good_address)
 
   # Check that we have found a solution. The simulation.explore() method will

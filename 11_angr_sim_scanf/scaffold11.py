@@ -9,12 +9,16 @@ def main(argv):
   path_to_binary = argv[1]
   project = angr.Project(path_to_binary)
 
-  initial_state = project.factory.entry_state()
+  initial_state = project.factory.entry_state(
+    add_options = { angr.options.SYMBOL_FILL_UNCONSTRAINED_MEMORY,
+                    angr.options.SYMBOL_FILL_UNCONSTRAINED_REGISTERS}
+  )
 
   class ReplacementScanf(angr.SimProcedure):
     # Finish the parameters to the scanf function. Hint: 'scanf("%u %u", ...)'.
     # (!)
     def run(self, format_string, scanf0_address, ...):
+      # Hint: scanf0_address is passed as a parameter, isn't it?
       scanf0 = claripy.BVS('scanf0', ???)
       ...
 
@@ -29,7 +33,7 @@ def main(argv):
       # keys to reference the different bitvectors.
       # (!)
       self.state.globals['solution0'] = ???
-      self.state.globals['solution1'] = ???
+      ...
 
   scanf_symbol = ???
   project.hook_symbol(scanf_symbol, ReplacementScanf())
