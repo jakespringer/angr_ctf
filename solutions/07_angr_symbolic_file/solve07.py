@@ -37,7 +37,7 @@ def main(argv):
   # Note: to read from the file, the binary calls
   # 'fread(buffer, sizeof(char), 64, file)'.
   # (!)
-  filename = 'ICDRVCAC.txt'  # :string
+  filename = 'FOQVSBZB.txt'  # :string
   symbolic_file_size_bytes = 8
 
   # Construct a bitvector for the password and then store it in the file's
