@@ -40,7 +40,7 @@ def main(argv):
     # Determine the address where user input is stored. It is passed as a
     # parameter ot the check_equals_ function. Then, load the string. Reminder:
     # int check_equals_(char* to_check, int length) { ...
-    user_input_buffer_address = 0x804a054 # :integer, probably hexadecimal
+    user_input_buffer_address = 0x804a044 # :integer, probably hexadecimal
     user_input_buffer_length = 16
 
     # Reminder: state.memory.load will read the stored value at the address
@@ -55,7 +55,7 @@ def main(argv):
     # Determine the string this function is checking the user input against.
     # It's encoded in the name of this function; decompile the program to find
     # it.
-    check_against_string = 'UESEBDDUBNSKSGDJ'.encode() # :string
+    check_against_string = 'OSIWHBXIFOQVSBZB'.encode() # :string
 
     # gcc uses eax to store the return value, if it is an integer. We need to
     # set eax to 1 if check_against_string == user_input_string and 0 otherwise.

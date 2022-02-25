@@ -1,16 +1,11 @@
-${
-import random, os
-random.seed(os.urandom(8))
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
 
-#define USERDEF "${ userdef }$"
+#define USERDEF "{{ userdef }}"
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 char buffer[17];
 char password[16];
@@ -29,7 +24,7 @@ int complex_function(int value, int i) {
   return ((value - 'A' + (LAMBDA * i)) % ('Z' - 'A' + 1)) + 'A';
 }
 
-int check_equals_${ userdef }$(char* to_check, size_t length) {
+int check_equals_{{ userdef }}(char* to_check, size_t length) {
   uint32_t num_correct = 0;
   for (int i=0; i<length; ++i) {
     if (to_check[i] == password[i]) {
@@ -52,7 +47,7 @@ int main(int argc, char* argv[]) {
     buffer[i] = complex_function(buffer[i], -i+18);
   }
 
-  equals = check_equals_${ userdef }$(buffer, 16);
+  equals = check_equals_{{ userdef }}(buffer, 16);
 
   for (int i=0; i<16; ++i) {
     password[i] = complex_function(password[i], i+9);
