@@ -1,18 +1,11 @@
-${
-import random, os
-random.seed(os.urandom(8))
-userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
-}$
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define USERDEF "${ userdef }$"
-#define LEN_USERDEF ${ write(len(userdef)) }$
+#define USERDEF "{{ userdef }}"
+#define LEN_USERDEF {{ len_userdef }}
 
-char msg[] = "${ description }$";
+char msg[] = "{{ description }}";
 
 void print_msg() {
   printf("%s", msg);

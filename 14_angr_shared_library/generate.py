@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-
-import sys, random, os, tempfile
-from templite import Templite
+import sys, random, os, tempfile, jinja2
 
 def generate(argv):
   if len(argv) != 3:
@@ -10,15 +8,14 @@ def generate(argv):
 
   seed = argv[1]
   output_file = argv[2]
-
   random.seed(seed)
 
-  description = ''
-  with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'description.txt'), 'r') as desc_file:
-    description = desc_file.read().encode('unicode_escape')
+  userdef_charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+  userdef = ''.join(random.choice(userdef_charset) for _ in range(8))
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library_so.c.templite'), 'r').read()
-  c_code = Templite(template).render(description=description)
+  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library_so.c.jinja'), 'r').read()
+  t = jinja2.Template(template)
+  c_code = t.render(description='', userdef=userdef, len_userdef=len(userdef))
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
@@ -28,8 +25,7 @@ def generate(argv):
     os.system('rm 14_angr_shared_library.o')
     os.system('chmod -x ' + os.path.join('/'.join(output_file.split('/')[0:-1]), 'lib' + output_file.split('/')[-1] + '.so'))
 
-  template = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library.c.templite'), 'r').read()
-  c_code = Templite(template).render()
+  c_code = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), '14_angr_shared_library.c'), 'r').read()
 
   with tempfile.NamedTemporaryFile(delete=False, suffix='.c', mode='w') as temp:
     temp.write(c_code)
