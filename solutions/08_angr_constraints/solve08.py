@@ -59,7 +59,7 @@ def main(argv):
   )
   password = claripy.BVS('password', 8*16)
 
-  password_address = 0x804a050
+  password_address = 0x804a040
   initial_state.memory.store(password_address, password)
 
   simulation = project.factory.simgr(initial_state)
@@ -77,7 +77,7 @@ def main(argv):
     # check_equals_ function. Determine the address that is being passed as the
     # parameter and load it into a bitvector so that we can constrain it.
     # (!)
-    constrained_parameter_address = 0x804a050
+    constrained_parameter_address = 0x804a040
     constrained_parameter_size_bytes = 16
     constrained_parameter_bitvector = solution_state.memory.load(
       constrained_parameter_address,
@@ -87,7 +87,7 @@ def main(argv):
     # We want to constrain the system to find an input that will make
     # constrained_parameter_bitvector equal the desired value.
     # (!)
-    constrained_parameter_desired_value = 'KLXNXIBRIMHLJQXZ'.encode() # :string (encoded)
+    constrained_parameter_desired_value = 'OSIWHBXIFOQVSBZB'.encode() # :string (encoded)
 
     # Specify a claripy expression (using Pythonic syntax) that tests whether
     # constrained_parameter_bitvector == constrained_parameter_desired_value.
