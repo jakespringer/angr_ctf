@@ -112,8 +112,8 @@ def main(argv):
       # the address of the buffer it checks the password against. Our goal is to
       # overwrite that buffer to store the password.
       # (!)
-      password_string = 'SMLDYJAP'.encode() # :string
-      buffer_address = 0x44534954 # :integer, probably in hexadecimal
+      password_string = 'NEDVTNOP'.encode() # :string
+      buffer_address = 0x4d43523c # :integer, probably in hexadecimal
 
       # Create an expression that tests if the first n bytes is length. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
