@@ -61,8 +61,8 @@ def main(argv):
   # can search for the address just before the function returns and then
   # constrain eax
   # (!)
-  success_address = base + 0x71c
-  simulation.explore(find=success_address)
+  check_constraint_address = base + 0x71c
+  simulation.explore(find=check_constraint_address)
 
   if simulation.found:
     solution_state = simulation.found[0]
