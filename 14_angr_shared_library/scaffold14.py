@@ -50,6 +50,7 @@ def main(argv):
   # (!)
   password = claripy.BVS( ???, ??? )
   initial_state.memory.store( ??? , ???)
+  
   simulation = project.factory.simgr(initial_state)
 
   # We wish to reach the end of the validate function and constrain the
@@ -58,7 +59,7 @@ def main(argv):
   # can search for the address just before the function returns and then
   # constrain eax
   # (!)
-  success_address = ???
+  success_address = base + ???
   simulation.explore(find=success_address)
 
   if simulation.found:
