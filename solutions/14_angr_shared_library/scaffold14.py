@@ -1,6 +1,10 @@
 # The shared library has the function validate, which takes a string and returns
 # either true (1) or false (0). The binary calls this function. If it returns
 # true, the program prints "Good Job." otherwise, it prints "Try again."
+#
+# Note: When you run this script, make sure you run it on
+# lib14_angr_shared_library.so, not the executable. This level is intended to
+# teach how to analyse binary formats that are not typical executables.
 
 import angr
 import claripy
@@ -16,13 +20,14 @@ def main(argv):
   base = ???
   project = angr.Project(path_to_binary, load_options={
     'main_opts' : {
-      'custom_base_addr' : base
+      'base_addr' : base
     }
   })
 
   # Initialize any symbolic values here; you will need at least one to pass to
   # the validate function.
-  ...
+  # (!)
+  buffer_pointer = claripy.BVV(???, ???)
 
   # Begin the state at the beginning of the validate function, as if it was
   # called by the program. Determine the parameters needed to call validate and
@@ -32,22 +37,29 @@ def main(argv):
   # Remember to add the base value you specified at the beginning to the
   # function address!
   # Hint: int validate(char* buffer, int length) { ...
-  # Another hint: the password is 8 bytes long.
   # (!)
-  validate_function_address = ???
-  initial_state = project.factory.call_state(validate_function_address, parameters...)
+  validate_function_address = base + ???
+  initial_state = project.factory.call_state(
+                    validate_function_address,
+                    buffer_pointer,
+                    ???
+                  )
 
-  # You will need to add code to inject a symbolic value into the program at the
-  # end of the function that constrains eax to equal true (value of 1) just
-  # before the function returns. There are multiple ways to do this:
-  # 1. Use a hook.
-  # 2. Search for the address just before the function returns and then
-  #    constrain eax (this may require putting code elsewhere)
-  ...
-
+  # Inject a symbolic value for the password buffer into the program and
+  # instantiate the simulation. Another hint: the password is 8 bytes long.
+  # (!)
+  password = claripy.BVS( ???, ??? )
+  initial_state.memory.store( ??? , ???)
+  
   simulation = project.factory.simgr(initial_state)
 
-  success_address = ???
+  # We wish to reach the end of the validate function and constrain the
+  # return value of the function (stored in eax) to equal true (value of 1)
+  # just before the function returns. We could use a hook, but instead we
+  # can search for the address just before the function returns and then
+  # constrain eax
+  # (!)
+  success_address = base + ???
   simulation.explore(find=success_address)
 
   if simulation.found:
@@ -56,6 +68,7 @@ def main(argv):
     # Determine where the program places the return value, and constrain it so
     # that it is true. Then, solve for the solution and print it.
     # (!)
+    solution_state.add_constraints( ??? )
     solution = ???
     print(solution)
   else:
