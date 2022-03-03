@@ -27,7 +27,7 @@
 # https://github.com/angr/angr/tree/master/angr/procedures/libc
 #
 # Additionally, note that, when the binary is executed, the main function is not
-# the first piece of code called. In the _start function, __libc_start_main is 
+# the first piece of code called. In the _start function, __libc_start_main is
 # called to start your program. The initialization that occurs in this function
 # can take a long time with Angr, so you should replace it with a SimProcedure.
 # angr.SIM_PROCEDURES['glibc']['__libc_start_main']
