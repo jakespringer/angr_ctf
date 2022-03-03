@@ -87,8 +87,8 @@ def main(argv):
     #  esp + 1 -> |     address    |
     #      esp -> \________________/
     # (!)
-    strncpy_src = ???
     strncpy_dest = ???
+    strncpy_src = ???
     strncpy_len = ???
 
     # We need to find out if src is symbolic, however, we care about the

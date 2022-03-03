@@ -91,8 +91,8 @@ def main(argv):
     #  esp + 1 -> |     address    |
     #      esp -> \________________/
     # (!)
-    strncpy_src = state.memory.load(state.regs.esp + 8, 4, endness=project.arch.memory_endness)
     strncpy_dest = state.memory.load(state.regs.esp + 4, 4, endness=project.arch.memory_endness)
+    strncpy_src = state.memory.load(state.regs.esp + 8, 4, endness=project.arch.memory_endness)
     strncpy_len = state.memory.load(state.regs.esp + 12, 4, endness=project.arch.memory_endness)
 
     # We need to find out if src is symbolic, however, we care about the
