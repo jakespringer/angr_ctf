@@ -44,16 +44,6 @@ def main(argv):
               }
           )
 
-  # Ensure that every byte of input is within the acceptable ASCII range (A..Z)
-  # (!)
-  for byte in symbolic_input.chop(bits=8):
-    initial_state.add_constraints(
-      claripy.And(
-        byte >= ???,
-        byte <= ???
-      )
-    )
-
   # The save_unconstrained=True parameter specifies to Angr to not throw out
   # unconstrained states. Instead, it will move them to the list called
   # 'simulation.unconstrained'.  Additionally, we will be using a few stashes
@@ -128,12 +118,20 @@ def main(argv):
     solution_state = simulation.found[0]
 
     # Constrain the instruction pointer to target the print_good function and
-    # then solve for the user input (recall that this is
-    # 'solution_state.posix.dumps(sys.stdin.fileno())')
     # (!)
     solution_state.add_constraints(solution_state.regs.eip == ???)
 
-    solution = solution_state.posix.dumps(sys.stdin.fileno()).decode()
+    # Constrain the symbolic input to fall within printable range (capital
+    # letters) for the web UI.  Ensure UTF-8 encoding.
+    # (!)
+    for byte in symbolic_input.chop(bits=8):
+      solution_state.add_constraints(
+              byte >= ???,
+              byte <= ???
+      )
+
+    # Solve for the symbolic_input
+    solution = solution_state.solver.eval(symbolic_input,cast_to=bytes).decode()
     print(solution)
   else:
     raise Exception('Could not find the solution')
