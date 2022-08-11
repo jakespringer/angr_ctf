@@ -180,23 +180,7 @@ def main(argv):
       # at level 08 to remind yourself of the syntax of this.
       # (!)
       is_vulnerable_expression = puts_parameter == good_job_string_address # :boolean bitvector expression
-
-      # Have Angr evaluate the state to determine if all the constraints can
-      # be met, including the one we specified above. If it can be satisfied,
-      # we have found our exploit!
-      #
-      # When doing this, however, we do not want to edit our state in case we
-      # have not yet found what we are looking for. To test if our expression
-      # is satisfiable without editing the original, we need to clone the state.
-      copied_state = state.copy()
-
-      # We can now play around with the copied state without changing the
-      # original. We need to add our vulnerable expression as a state to test it.
-      # Look at level 08 and compare this call to how it is called there.
-      copied_state.add_constraints(is_vulnerable_expression)
-
-      # Finally, we test if we can satisfy the constraints of the state.
-      if copied_state.satisfiable():
+      if state.satisfiable(extra_constraints=(is_vulnerable_expression,)):
         # Before we return, let's add the constraint to the solver for real,
         # instead of just querying whether the constraint _could_ be added.
         state.add_constraints(is_vulnerable_expression)
