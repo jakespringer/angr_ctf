@@ -18,7 +18,7 @@ You'll find a walkthrough for playing some levels at [walkthrough](walkthrough/)
 
 Other interesting resources: 
 * https://blog.notso.pro/2019-03-20-angr-introduction-part0/
-* https://github.com/ZERO-A-ONE/AngrCTF_FITM from @ZERO-A-ONE 
+* https://github.com/ZERO-A-ONE/AngrCTF_FITM from [@ZERO-A-ONE](https://github.com/ZERO-A-ONE)
 
 ## Troubleshooting
 While compiling using "`make USERS=<user> local`" you might have the following error: <br>
