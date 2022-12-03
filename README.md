@@ -6,17 +6,20 @@ A Makefile is included that performs an automated build for both a local install
   A list of users is passed in via the `USERS` environment variable, which will then build the binaries for each user listed.
 
 ## Building
+### Local
 Build binaries in `obj/{foo,bar}/angr`: <br>
   ```make USERS='foo bar' local```
-  > All that is left is to go to the target directory (`obj/{foo,bar}/angr`), you'll find the built binaries as well as the python files to play the levels
 
+* You can go to the target directory (`obj/{foo,bar}/angr`), you'll find the built binaries as well as the python files to play the levels
+
+### Web, MetaCTF
 Build binaries in upper-level MetaCTF repo `../www/static/obj/{foo,bar}/angr`: <br>
   ```make USERS='foo bar' web```
 
 ## Playing the levels
-You'll find a walkthrough for playing some levels at [walkthrough](walkthrough/)
+Eventually, you'll find a walkthrough for playing some levels at [walkthrough](walkthrough/)
 
-Other interesting resources: 
+In the meantime, check these other interesting resources: 
 * https://blog.notso.pro/2019-03-20-angr-introduction-part0/
 * https://github.com/ZERO-A-ONE/AngrCTF_FITM from [@ZERO-A-ONE](https://github.com/ZERO-A-ONE)
 
