@@ -17,7 +17,7 @@ Build binaries in upper-level MetaCTF repo `../www/static/obj/{foo,bar}/angr`: <
   ```make USERS='foo bar' web```
 
 ## Playing the levels
-Eventually, you'll find a walkthrough for playing some levels at [walkthrough](walkthrough/)
+Eventually, you'll find a walkthrough for playing some levels in [walkthrough](walkthrough/)
 
 In the meantime, check these other interesting resources: 
 * https://blog.notso.pro/2019-03-20-angr-introduction-part0/
