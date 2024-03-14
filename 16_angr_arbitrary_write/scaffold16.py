@@ -111,7 +111,7 @@ def main(argv):
       password_string = ??? # :string
       buffer_address = ??? # :integer, probably in hexadecimal
 
-      # Create an expression that tests if the first n bytes is length. Warning:
+      # Create an expression that tests the value of the string. Warning:
       # while typical Python slices (array[start:end]) will work with bitvectors,
       # they are indexed in an odd way. The ranges must start with a high value
       # and end with a low value. Additionally, the bits are indexed from right
