@@ -22,7 +22,7 @@ def main(argv):
   # to reference it. 
   # You will have to construct multiple bitvectors. Copy the two lines below
   # and change the variable names. To figure out how many (and of what size)
-  # you need, dissassemble the binary and determine the format parameter passed
+  # you need, disassemble the binary and determine the format parameter passed
   # to scanf.
   # (!)
   password0_size_in_bits = ???  # :integer
@@ -38,7 +38,7 @@ def main(argv):
   #
   # You will have to set multiple registers to distinct bitvectors. Copy and
   # paste the line below and change the register. To determine which registers
-  # to inject which symbol, dissassemble the binary and look at the instructions
+  # to inject which symbol, disassemble the binary and look at the instructions
   # immediately following the call to scanf.
   # (!)
   initial_state.regs.??? = password0

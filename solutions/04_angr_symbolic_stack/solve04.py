@@ -3,7 +3,7 @@
 # execution and not how to construct stack frames, these comments will work you
 # through understanding what is on the stack.
 #   ! ! !
-# IMPORTANT: Any addresses in this script aren't necessarily right! Dissassemble
+# IMPORTANT: Any addresses in this script aren't necessarily right! Disassemble
 #            the binary yourself to determine the correct addresses!
 #   ! ! !
 
