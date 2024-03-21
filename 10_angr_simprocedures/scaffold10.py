@@ -42,7 +42,7 @@ def main(argv):
     # acts largely the same as any function written in C. Any parameter after
     # 'self' will be treated as a parameter to the function you are replacing.
     # The parameters will be bitvectors. Additionally, the Python can return in
-    # the ususal Pythonic way. Angr will treat this in the same way it would
+    # the usual Pythonic way. Angr will treat this in the same way it would
     # treat a native function in the binary returning. An example:
     #
     # int add_if_positive(int a, int b) {
